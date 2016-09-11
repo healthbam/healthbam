@@ -15,6 +15,11 @@ TODO - put the rest of this README in a development section?
 
 ### Setting Up IDE
 
+If using IntelliJ, "Import Project", and select the build.gradle file.
+This will build and set up IntelliJ for the project.
+
+Alternative method: you can run this command to generate an "ipr" file that can be opened:
+
 ~~~~shell
 ./gradlew idea
 ~~~~
