@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+
+    <include resource="org/springframework/boot/logging/logback/base.xml" />
+
+    <logger name="org.springframework.web" level="DEBUG" />
+
+    <logger name="org.hmhb" level="DEBUG" />
+
+    <appender name="metrics-file-appender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <file>${LOG_PATH}/metrics.log</file>
+
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+        </encoder>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <FileNamePattern>%i.log.zip</FileNamePattern>
+            <MinIndex>1</MinIndex>
+            <MaxIndex>20</MaxIndex>
+        </rollingPolicy>
+
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>25MB</MaxFileSize>
+        </triggeringPolicy>
+
+    </appender>
+
+    <logger name="org.hmhb.config.MetricsConfig" level="DEBUG">
+        <appender-ref ref="metrics-file-appender" additivity="false" />
+    </logger>
+
+</configuration>

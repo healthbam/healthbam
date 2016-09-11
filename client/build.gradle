@@ -1,0 +1,5 @@
+jar {
+    baseName = 'hmhb-client'
+    from 'src/main/webjar'
+    into "META-INF/resources/webjars/${baseName}/${project.version}"
+}

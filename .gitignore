@@ -1,12 +1,48 @@
+# java class files
 *.class
 
-# Mobile Tools for Java (J2ME)
+# mobile tools for java (J2ME)
 .mtj.tmp/
 
-# Package Files #
+# java package files
 *.jar
 *.war
 *.ear
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+# where gradlew puts the gradle it downloads
+.gradle
+
+# gradle's build directory
+build/
+
+# ignore gradle gui config
+gradle-app.setting
+
+# avoid ignoring gradle wrapper jar file (.jar files are usually ignored)
+!gradle-wrapper.jar
+
+# cache of project
+.gradletasknamecache
+
+# work around https://youtrack.jetbrains.com/issue/IDEA-116898
+# gradle/wrapper/gradle-wrapper.properties
+
+# intellij files
+*.iml
+*.ipr
+*.iws
+
+# vim swap files
+*.swp
+
+# where I'm choosing to spring boot to put the logs
+/logs/
+
+# local env vars for running "heroku local"
+.env
+
+# ignore node_modules pulled down by npm
+node_modules/
