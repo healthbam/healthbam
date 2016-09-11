@@ -39,7 +39,7 @@
         User
     ) {
         var example = this;
-        $log.log("it works!");
+        $log.log("it works?????????");
         example.users = User.query();
     }
 
