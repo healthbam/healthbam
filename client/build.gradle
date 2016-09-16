@@ -1,5 +1,28 @@
+plugins {
+    id "com.moowork.gulp" version "0.13"
+    id "com.moowork.node" version "0.13"
+}
+
+/* Run npm install. */
+gulp_default.dependsOn "npmInstall"
+
+/* Run gulp install. */
+gulp_default.dependsOn "installGulp"
+
+/* Before the processResources Java task, run the 'default' task in gulpfile.js. */
+processResources.dependsOn gulp_default
+
+node {
+    // Version of node to use.
+    version = "4.5.0"
+
+    // Enabled the automatic download. False is the default (for now).
+    download = true
+}
+
+/* Package as webjar. */
 jar {
-    baseName = 'hmhb-client'
-    from 'src/main/webjar'
+    baseName = "hmhb-client"
+    from "build/client"
     into "META-INF/resources/webjars/${baseName}/${project.version}"
 }

@@ -1,0 +1,18 @@
+html, body {
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Forces components loaded from ui-router to fill the dimensions of the ui-view. */
+div[ui-view] > * {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
