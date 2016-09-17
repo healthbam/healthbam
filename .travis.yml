@@ -10,7 +10,7 @@ script: ./gradlew clean build
 notifications:
   webhooks:
     urls:
-      secure: X7cvQ+Y5l/Oguv1QL++ap3Lm/mSfHW6qRuYxMRo2cNyU/fhRdEtGEWBTa9jpP6v8aLNo8Q+X7+GPebHC+E+Q1j6rCHP42nyKEH3VTApgEVUD2OIskTSdNXYDS2y63gepFfqZnE5FFAUHCX/9Hg4I+wUZxWtLVJxe50o8MCh28zpr/PqLiUatYSKiQqeZ+I2gGeT9veaYqJRpsUHiB1uCj17PH5AyyNonTTrHe5uOFgm+15Iv1Z1Si6Via3Gj5hN+VC9nmv1Qf1P5GMDosz8wajh3/PgdBErhq5JZ0O48B9H+tunuxFkME8zlvKNXXrJJ7oGaeUfqXX19CqXksp0iWsEbWi5Lz4ZAFbKZ23gMWMrlmo/7AV5bkzKNtj2gzp1ZNBoa2hC3bA2/nlR1dt/4PZKsqExbWWSJDYZ676kqcJROD5PZ+RBmevth7CUVwbww4x44mEeBPc5nhNwH5eAGjFv6Hzl1oQNnQvbDgvu3eK4IlM1xkNw72pfCS+87l1te683oNqnIEI8zMDsNN/ZuVfqfOF6BdxmIUiN7tvbk5dJftOVsHwf3g9n8zld+yk6TiUoLYtjySCxJana0T5lMdBOrreNCtYx9TWtJ9JwD2a56SILPLHW8565KapZp8NBrQo51f63N3GtFMOxVoSu9BjwZ0tiWCkWRd9CHNiZgy0Y=
+      - https://hooks.slack.com/services/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
     on_success: always
     on_failure: always
     on_start: always
