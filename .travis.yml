@@ -1,11 +1,16 @@
 sudo: false
+
 language: java
+
 jdk:
-- oraclejdk8
+  - oraclejdk8
+
 script: ./gradlew clean build
+
 notifications:
-  slack:
-    rooms:
-      secure: od8PIpphw5Ar5VMMaZMGTqOTim5beV6IdAS8QalLq6mWepV5gku+PxJvBXmEVpiDRuIznCimWKts7ukYK8spUzMvV3H+cKWtAwjYgn9JW7jMv+9QMvemTjyxoQTf1pM1OLed3nSbaCDcKQNWzOv9DMv+tGhYZowSUgCb7lYTvVw+c+8woAz51ZcaWl89D2eO1uXgFFoKaDY+fudUjL59URmR+KkEPb3TCrLc6gkFoYNIX1/uX9rWXQaUohR5/buVWWm4l7IYJHpqhVCxQmJwPMUtg42WahL+IhI0G7H7TcVLJCk7fi/0pLgzUeFxwQR1UcfhFMfgiC9UtCYrOFd3j1p6keyZCQkL6VR35QlmYZz5Dl+UX/SoZYwOnLsJQHSim5/dsM8425yDYjXCsiHC/q+/Fkt41Tfy79QZxqx8AA1dLsl3EtuMzZV8x+WiQPMw2xqjWm3OD+S6wZsp7Akic4SegaysHwxMnroGK3/vvhqChKkopPxWpYm2nqvjIFASjgyJI8VjCuGCn3le0VabaqlSeagFzj3EeM3fGMIZijgwSfRpRXULC656uB/N/L3JQPtXGNZA9HnSqN5f9A33kNmewLqxcXAuCN9onPNpfIbiaVMz5Qbk8QjPOso8NUcEy4Z05H7GUpUaO1ch+qbo6SAj3m0vEVY2Ue7M4k79F4Y=
+  webhooks:
+    urls:
+      secure: X7cvQ+Y5l/Oguv1QL++ap3Lm/mSfHW6qRuYxMRo2cNyU/fhRdEtGEWBTa9jpP6v8aLNo8Q+X7+GPebHC+E+Q1j6rCHP42nyKEH3VTApgEVUD2OIskTSdNXYDS2y63gepFfqZnE5FFAUHCX/9Hg4I+wUZxWtLVJxe50o8MCh28zpr/PqLiUatYSKiQqeZ+I2gGeT9veaYqJRpsUHiB1uCj17PH5AyyNonTTrHe5uOFgm+15Iv1Z1Si6Via3Gj5hN+VC9nmv1Qf1P5GMDosz8wajh3/PgdBErhq5JZ0O48B9H+tunuxFkME8zlvKNXXrJJ7oGaeUfqXX19CqXksp0iWsEbWi5Lz4ZAFbKZ23gMWMrlmo/7AV5bkzKNtj2gzp1ZNBoa2hC3bA2/nlR1dt/4PZKsqExbWWSJDYZ676kqcJROD5PZ+RBmevth7CUVwbww4x44mEeBPc5nhNwH5eAGjFv6Hzl1oQNnQvbDgvu3eK4IlM1xkNw72pfCS+87l1te683oNqnIEI8zMDsNN/ZuVfqfOF6BdxmIUiN7tvbk5dJftOVsHwf3g9n8zld+yk6TiUoLYtjySCxJana0T5lMdBOrreNCtYx9TWtJ9JwD2a56SILPLHW8565KapZp8NBrQo51f63N3GtFMOxVoSu9BjwZ0tiWCkWRd9CHNiZgy0Y=
     on_success: always
     on_failure: always
+    on_start: always
