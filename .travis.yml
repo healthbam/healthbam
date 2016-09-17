@@ -5,8 +5,6 @@ language: java
 jdk:
   - oraclejdk8
 
-script: ./gradlew clean build
-
 notifications:
   webhooks:
     urls:
@@ -14,3 +12,5 @@ notifications:
     on_success: always
     on_failure: always
     on_start: always
+
+script: ./gradlew clean build
