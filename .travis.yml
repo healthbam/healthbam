@@ -6,3 +6,10 @@ jdk:
   - oraclejdk8
 
 script: ./gradlew clean build
+
+notifications:
+  slack:
+    rooms:
+      secure: H9pIpqTy0CgFpy7hcm/b9kRQafkWW8N3OFFzmb38o1rMGhjge/1RSgsl3vJcqFfiyEbYkSyqgkZEx4wjhUHuhjmepDHcNEYiSTvQJVa0EIIwR6Y+4ADXq++AowWPPCeTiSr0dUZ4CZFXbx2WzrhguKrZGHsh4ZREw8h8tNrGhKuFoxym7pbVE/Ujp0yFnu+HzyxBXHI90yy/NVxThGRSA48BiBV+1c9OfYNhaHelka2bYmaacG3DAsstLZP/S0Rzewb/NVXgczgfwrRVA99VMM9KRR/CE7YvSz6nvH01bPpc3kqEf0SMZaflXvbkkwULbAYg/cI/C1lyP2XUtN4+5p3jO2B5SsPsuaaR8HPpq6xX3+pJK0UA4W3xeSQ3NpFkLoGvzpdVVyblCvIRGxuCJI6n2onB65IyF2ukguLbQdgV5ddXbh0bNEEibRags/b4bbJVYEaY/mmJ5VX8c0007Li3VO0JFdQJmEwD0p18Hey4q0LggZUhZEYzBXglWXuQ5N1Ld/L6JSgiRpcv87wvKU5xgVXFI+PYnZHSWyDWJ8fGrBDJ3c+7VocTfzfa1jRV3cgJdMfQrjyW6oo4onZoAEEPfTNOtJ8BR16ZhcovEI7L9ytH7liGDqVf0FtWt2bDRzer+fam8UwDbbUdNzjJkffN0tFyqGerRs/4qr59WlI=
+    on_success: always
+    on_failure: always
