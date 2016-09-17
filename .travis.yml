@@ -5,4 +5,12 @@ language: java
 jdk:
   - oraclejdk8
 
+notifications:
+  webhooks:
+    urls:
+      - https://hooks.slack.com/services/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
+    on_success: always
+    on_failure: always
+    on_start: always
+
 script: ./gradlew clean build
