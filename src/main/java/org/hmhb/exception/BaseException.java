@@ -1,4 +1,4 @@
-package org.hmhb.exceptions;
+package org.hmhb.exception;
 
 public class BaseException extends RuntimeException {
 

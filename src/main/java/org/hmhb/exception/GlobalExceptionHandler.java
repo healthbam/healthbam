@@ -1,4 +1,4 @@
-package org.hmhb.exceptions;
+package org.hmhb.exception;
 
 import javax.servlet.http.HttpServletRequest;
 

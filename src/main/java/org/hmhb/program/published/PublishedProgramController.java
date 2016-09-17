@@ -1,4 +1,4 @@
-package org.hmhb.users;
+package org.hmhb.program.published;
 
 import javax.annotation.Nonnull;
 
@@ -18,17 +18,17 @@ import org.springframework.web.bind.annotation.RestController;
 import static java.util.Objects.requireNonNull;
 
 @RestController
-public class UserController {
+public class PublishedProgramController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PublishedProgramController.class);
 
-    private UserService service;
+    private final PublishedProgramService service;
 
     @Autowired
-    public void setService(
-            @Nonnull UserService service
+    public PublishedProgramController(
+            @Nonnull PublishedProgramService service
     ) {
-        LOGGER.debug("{} constructed", UserController.class.getSimpleName());
+        LOGGER.debug("constructed");
         this.service = requireNonNull(service, "service cannot be null");
     }
 
@@ -36,10 +36,10 @@ public class UserController {
     @RequestMapping(
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE,
-            path = "/api/users"
+            path = "/api/published-programs"
     )
-    public List<HmhbUser> getAll() {
-        LOGGER.debug("{}.getAll called", UserController.class.getSimpleName());
+    public List<PublishedProgram> getAll() {
+        LOGGER.debug("getAll called");
         return service.getAll();
     }
 
@@ -47,12 +47,12 @@ public class UserController {
     @RequestMapping(
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE,
-            path = "/api/users/{id}"
+            path = "/api/published-programs/{id}"
     )
-    public HmhbUser getById(
+    public PublishedProgram getById(
             @PathVariable long id
     ) {
-        LOGGER.debug("{}.getById called: id={}", UserController.class.getSimpleName(), id);
+        LOGGER.debug("getById called: id={}", id);
         return service.getById(id);
     }
 
@@ -61,13 +61,13 @@ public class UserController {
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE,
-            path = "/api/users"
+            path = "/api/published-programs"
     )
-    public HmhbUser create(
-            @RequestBody HmhbUser user
+    public PublishedProgram create(
+            @RequestBody PublishedProgram program
     ) {
-        LOGGER.debug("{}.create called: user={}", UserController.class.getSimpleName(), user);
-        return service.save(user);
+        LOGGER.debug("create called: program={}", program);
+        return service.save(program);
     }
 
     @Timed
@@ -75,26 +75,26 @@ public class UserController {
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE,
-            path = "/api/users/{id}"
+            path = "/api/published-programs/{id}"
     )
-    public HmhbUser update(
+    public PublishedProgram update(
             @PathVariable long id,
-            @RequestBody HmhbUser user
+            @RequestBody PublishedProgram program
     ) {
-        LOGGER.debug("{}.update called: id={}, user={}", UserController.class.getSimpleName(), id, user);
-        return service.save(user);
+        LOGGER.debug("update called: id={}, program={}", id, program);
+        return service.save(program);
     }
 
     @Timed
     @RequestMapping(
             method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_VALUE,
-            path = "/api/users/{id}"
+            path = "/api/published-programs/{id}"
     )
-    public HmhbUser delete(
+    public PublishedProgram delete(
             @PathVariable long id
     ) {
-        LOGGER.debug("{}.delete called: id={}", UserController.class.getSimpleName(), id);
+        LOGGER.debug("delete called: id={}", id);
         return service.delete(id);
     }
 

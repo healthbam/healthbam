@@ -23,31 +23,137 @@
 
             <div>Welcome!</div>
 
-            <div ng-repeat="user in example.users">
-                <display-user user="user">
-                </display-user>
-            </div>
+            <all-programs></all-programs>
 
         </div>
 
-        <script id="display-user.html"
+        <script id="program.html"
+                type="text/ng-template">
+                <div>
+                    <label>Program ID:</label>
+                    <input ng-model="publishedProgram.program.id"
+                           type="text">
+                </div>
+                <div>
+                    <label>Organization Name:</label>
+                    <input ng-model="publishedProgram.program.organizationName"
+                           type="text">
+                </div>
+                <div>
+                    <label>Geo Info:</label>
+                    <input ng-model="publishedProgram.program.geo"
+                           type="text">
+                </div>
+                <div>
+                    <label>Created On:</label>
+                    <input ng-model="publishedProgram.program.createdOn"
+                           type="text">
+                </div>
+                <div>
+                    <label>Created By:</label>
+                    <input ng-model="publishedProgram.program.createdBy"
+                           type="text">
+                </div>
+                <div>
+                    <label>Last Updated On:</label>
+                    <input ng-model="publishedProgram.program.updatedOn"
+                           type="text">
+                </div>
+                <div>
+                    <label>Last Updated By:</label>
+                    <input ng-model="publishedProgram.program.updatedBy"
+                           type="text">
+                </div>
+        </script>
+
+        <script id="program-request.html"
+                type="text/ng-template">
+            <div>
+                <label>Request ID:</label>
+                <input ng-model="programRequest.request.id"
+                       type="text">
+            </div>
+            <div>
+                <label>Request Update For Program ID:</label>
+                <input ng-model="programRequest.request.programId"
+                       type="text">
+            </div>
+            <div>
+                <label>Organization Name:</label>
+                <input ng-model="programRequest.request.organizationName"
+                       type="text">
+            </div>
+            <div>
+                <label>Geo Info:</label>
+                <input ng-model="programRequest.request.geo"
+                       type="text">
+            </div>
+            <div>
+                <label>Created On:</label>
+                <input ng-model="programRequest.request.createdOn"
+                       type="text">
+            </div>
+            <div>
+                <label>Created By:</label>
+                <input ng-model="programRequest.request.createdBy"
+                       type="text">
+            </div>
+            <div>
+                <label>Last Updated On:</label>
+                <input ng-model="programRequest.request.updatedOn"
+                       type="text">
+            </div>
+            <div>
+                <label>Last Updated By:</label>
+                <input ng-model="programRequest.request.updatedBy"
+                       type="text">
+            </div>
+        </script>
+
+        <script id="all-programs.html"
                 type="text/ng-template">
 
             <div>
-                <label>ID:</label>
-                <span ng-bind="displayUser.user.id"></span>
+                <button ng-click="allPrograms.refreshProgramsAndRequests()">
+                    Refresh
+                </button>
             </div>
-            <div>
-                <label>Email:</label>
-                <a ng-href="mailto:{{displayUser.user.email}}"></a>
+
+            <h3>Current Programs</h3>
+
+            <div ng-repeat="program in allPrograms.programs">
+                <published-program program="program">
+                </published-program>
+                <button ng-click="allPrograms.saveProgram(program)">
+                    Save
+                </button>
+                <button ng-click="allPrograms.removeProgram(program)">
+                    Remove
+                </button>
+                <hr>
             </div>
-            <div>
-                <label>Name:</label>
-                <span ng-bind-template="{{displayUser.user.lastName}}, {{displayUser.user.firstName}}"></span>
-            </div>
-            <div>
-                <label>Birthdate:</label>
-                <span ng-bind="displayUser.user.birthDate | date"></span>
+
+            <h3>
+                Requested Programs
+
+                <button ng-click="allPrograms.addNewProgramRequest()">
+                    Add New
+                </button>
+            </h3>
+
+            <div ng-repeat="request in allPrograms.programRequests">
+                <program-request request="request">
+                </program-request>
+                <button ng-click="allPrograms.publishProgramRequest(request)">
+                    Publish
+                </button>
+                <button ng-click="allPrograms.saveProgramRequest(request)">
+                    Save
+                </button>
+                <button ng-click="allPrograms.removeProgramRequest(request)">
+                    Remove
+                </button>
+                <hr>
             </div>
 
         </script>
