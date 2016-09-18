@@ -1,0 +1,60 @@
+<div layout="column"
+     flex>
+
+    <md-toolbar layout="row">
+
+        <div class="md-toolbar-tools">
+
+            <md-button class="md-icon-button"
+                       aria-label="Toggle Main Menu">
+                <md-icon md-font-library="material-icons">
+                    menu
+                </md-icon>
+                <md-tooltip md-direction="bottom">
+                    Main menu
+                </md-tooltip>
+            </md-button>
+
+            <img src="/images/logo-64px.png"
+                 alt="Healthy Mothers, Healthy Babies Coalition of Georgia">
+
+        </div>
+
+    </md-toolbar>
+
+    <div flex="grow"
+         layout="row">
+
+        <md-sidenav md-is-locked-open="true"
+                    class="md-whiteframe-z2">
+
+            <md-list>
+
+                <md-list-item>
+                    Todo - actions
+                </md-list-item>
+
+                <md-list-item>
+                    Todo - actions
+                </md-list-item>
+
+                <md-list-item>
+                    Todo - actions
+                </md-list-item>
+
+                <md-list-item>
+                    Todo - actions
+                </md-list-item>
+
+            </md-list>
+
+        </md-sidenav>
+
+        <div ui-view
+             flex
+             layout="column">
+        </div>
+
+    </div>
+
+</div>
