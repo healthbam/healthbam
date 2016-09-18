@@ -1,5 +1,3 @@
-DROP TABLE IF EXISTS hmhb_user; /* get rid of this in the next PR */
-
 DROP TABLE IF EXISTS requested_program;
 DROP TABLE IF EXISTS published_program;
 
