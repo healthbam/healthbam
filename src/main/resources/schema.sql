@@ -1,13 +1,43 @@
-DROP TABLE IF EXISTS hmhb_user;
+DROP TABLE IF EXISTS hmhb_user; /* get rid of this in the next PR */
 
-CREATE TABLE hmhb_user (
-    id SERIAL PRIMARY KEY,
-    email TEXT,
-    first_name TEXT,
-    last_name TEXT,
-    birth_date DATE
+DROP TABLE IF EXISTS requested_program;
+DROP TABLE IF EXISTS published_program;
+
+CREATE TABLE published_program (
+    id BIGSERIAL PRIMARY KEY,
+    organization_name TEXT NOT NULL,
+    mission TEXT,
+    geo TEXT NOT NULL,
+    /* look up geo data in map API */
+    /* address info? */
+    summary TEXT,
+    outcomes TEXT,
+    public_email TEXT,
+    public_phone TEXT,
+    private_email TEXT,
+    private_phone TEXT,
+    created_on DATE NOT NULL,
+    created_by TEXT NOT NULL,
+    updated_on DATE,
+    updated_by TEXT
 );
 
-/* Set the sequence to the 2000s so my data.sql can keep it's hardcoded 1001, 1002, etc. */
-SELECT setval(pg_get_serial_sequence('hmhb_user', 'id'), 2000);
---SELECT setval('public.hmhb_user_id_seq', 2000);
+CREATE TABLE requested_program (
+    id BIGSERIAL PRIMARY KEY,
+    program_id BIGINT REFERENCES published_program(id),
+    organization_name TEXT NOT NULL,
+    mission TEXT,
+    geo TEXT NOT NULL,
+    /* look up geo data in map API */
+    /* address info? */
+    summary TEXT,
+    outcomes TEXT,
+    public_email TEXT,
+    public_phone TEXT,
+    private_email TEXT,
+    private_phone TEXT,
+    created_on DATE NOT NULL,
+    created_by TEXT NOT NULL,
+    updated_on DATE,
+    updated_by TEXT
+);
