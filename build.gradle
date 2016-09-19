@@ -27,8 +27,20 @@ allprojects {
 
 apply plugin: 'spring-boot'
 
+springBoot {
+    /* This adds the build info into the /info actuator. */
+    buildInfo()
+}
+
 jar {
     baseName = 'hmhb-server'
+
+    manifest {
+        attributes(
+                "Implementation-Title": baseName,
+                "Implementation-Version": version
+        )
+    }
 }
 
 dependencies {
