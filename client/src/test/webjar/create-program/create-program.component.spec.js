@@ -1,19 +1,19 @@
 (function (angular, jasmine, beforeEach, describe, it) {
     "use strict";
 
-    /* All of the healthBam.addProgram module's tests. */
-    describe("healthBam.addProgram module", function () {
+    /* All of the healthBam.createProgram module's tests. */
+    describe("healthBam.createProgram module", function () {
 
         beforeEach(
             function () {
                 /* Load the module to test. */
-                angular.mock.module("healthBam.addProgram");
+                angular.mock.module("healthBam.createProgram");
             }
         );
 
-        describe("AddProgramController", function () {
+        describe("CreateProgramController", function () {
 
-            var addProgram,
+            var createProgram,
                 $componentController,
                 locals,
                 bindings;
@@ -32,9 +32,9 @@
                         }
                     );
 
-                    /* Get the controller for the addProgram component. */
-                    addProgram = $componentController(
-                        "healthBamAddProgram",
+                    /* Get the controller for the createProgram component. */
+                    createProgram = $componentController(
+                        "healthBamCreateProgram",
                         locals,
                         bindings
                     );
@@ -42,7 +42,7 @@
             );
 
             it("should exist", function () {
-                expect(addProgram).toEqual(jasmine.any(Object));
+                expect(createProgram).toEqual(jasmine.any(Object));
             });
 
         });
