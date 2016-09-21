@@ -13,7 +13,41 @@
     ) {
         var main = this;
 
+        /**
+         * A function for Jessica to make a change to.
+         */
+        function jessica() {
+            $log.debug("TODO");
+        }
+
+        /**
+         * A function for KP to make a change to.
+         */
+        function kp() {
+            $log.debug("TODO");
+        }
+
+        /**
+         * A function for John to make a change to.
+         */
+        function john() {
+            $log.debug("TODO");
+        }
+
+        /**
+         * This function only exists to prevent everyone from modifying the same area in code.
+         *
+         * TODO - remove this once everyone has submitted a code change
+         */
+        function training() {
+            jessica();
+            kp();
+            john();
+        }
+
         $log.debug("Main Controller loaded", main);
+
+        training();
     }
 
     /* Inject dependencies. */
