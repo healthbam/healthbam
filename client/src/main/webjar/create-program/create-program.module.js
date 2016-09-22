@@ -2,9 +2,10 @@
     "use strict";
 
     angular.module(
-        "healthBam.addProgram",
+        "healthBam.createProgram",
         [
-            "ngMaterial"
+            "ngMaterial",
+            "healthBam.programFormDialog"
         ]
     );
 

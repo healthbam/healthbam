@@ -1,0 +1,344 @@
+<md-dialog aria-label="Program Form Dialog"
+           flex="80">
+
+    <form name="programFormDialog.programForm"
+          ng-submit="programFormDialog.save()">
+
+        <md-dialog-content>
+            <div class="md-dialog-content">
+
+                <h1>
+                    <span ng-if="programFormDialog.requestedProgram.id">
+                        Edit existing program
+                    </span>
+                    <span ng-if="!programFormDialog.requestedProgram.id">
+                        Create a new program
+                    </span>
+                </h1>
+
+                <!-- Public information -->
+                <h2>
+                    <span md-colors="{color: 'primary'}">
+                        Public: Organization information
+                    </span>
+                </h2>
+
+                <div layout-gt-sm="row">
+
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>
+                            Company/Organization
+                        </label>
+                        <input name="organizationName"
+                               ng-model="programFormDialog.requestedProgram.organizationName"
+                               required>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>
+                            Contact email
+                        </label>
+                        <input name="organizationEmail"
+                               ng-model="programFormDialog.requestedProgram.organizationEmail"
+                               type="email">
+                    </md-input-container>
+
+                </div>
+
+                <div layout-gt-sm="row">
+
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>
+                            Website
+                        </label>
+                        <input name="website"
+                               ng-model="programFormDialog.requestedProgram.website"
+                               type="url">
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>
+                            Facebook page
+                        </label>
+                        <input name="facebook"
+                               ng-model="programFormDialog.requestedProgram.facebook"
+                               type="url">
+                    </md-input-container>
+
+                </div>
+
+                <h2>
+                    <span md-colors="{color: 'primary'}">
+                        Public: Program information
+                    </span>
+                </h2>
+
+                <div layout-gt-sm="row">
+
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>
+                            Program name
+                        </label>
+                        <input name="programName"
+                               ng-model="programFormDialog.requestedProgram.programName"
+                               required>
+                    </md-input-container>
+
+                    <md-input-container class="md-block">
+                        <label>
+                            Program start year
+                        </label>
+                        <input name="programStartYear"
+                               ng-model="programFormDialog.requestedProgram.programStartYear"
+                               type="number"
+                               min="1500"
+                               max="{{programFormDialog.getCurrentYear()}}"
+                               ng-pattern="/^[0-9]{4}$/"
+                               required>
+                    </md-input-container>
+
+                </div>
+
+                <md-input-container class="md-block">
+                    <label>
+                        Address
+                    </label>
+                    <input name="address"
+                           ng-model="programFormDialog.requestedProgram.address"
+                           required>
+                </md-input-container>
+
+                <div layout-gt-sm="row">
+
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>
+                            City
+                        </label>
+                        <input name="city"
+                               ng-model="programFormDialog.requestedProgram.city"
+                               required>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>
+                            State
+                        </label>
+                        <input name="state"
+                               ng-model="programFormDialog.requestedProgram.state"
+                               required>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>
+                            Postal code
+                        </label>
+                        <input name="zip"
+                               ng-model="programFormDialog.requestedProgram.zip"
+                               required>
+                    </md-input-container>
+
+                </div>
+
+                <div>
+                    <fieldset md-colors="{borderColor: 'primary'}">
+                        <legend md-colors="{color: 'primary'}">
+                            Program areas (check all that apply)
+                        </legend>
+                        <div layout-wrap
+                             layout-gt-sm="row" >
+                            <div flex-gt-sm="50"
+                                 ng-repeat="programArea in programFormDialog.programAreas">
+                                <md-checkbox ng-model="programArea.value"
+                                             aria-label="programArea.name">
+                                    <!-- Checkbox doesn't work with ng-bind. -->
+                                    {{programArea.name}}
+                                </md-checkbox>
+                            </div>
+
+                            <div flex-gt-sm="50">
+                                <md-checkbox ng-model="programFormDialog.otherProgramArea"
+                                             aria-label="Other">
+                                    Other (please explain)
+                                </md-checkbox>
+                            </div>
+
+                        </div>
+                        <md-input-container ng-if="programFormDialog.otherProgramArea"
+                                            class="md-block">
+                            <label>
+                                Explanation
+                            </label>
+                            <input name="otherProgramAreaExplanation"
+                                   ng-model="programFormDialog.requestedProgram.otherProgramAreaExplanation"
+                                   required>
+                        </md-input-container>
+                    </fieldset>
+                </div>
+
+                <md-input-container class="md-block">
+                    <label>
+                        Counties served
+                    </label>
+                    <input name="countiesServed"
+                           ng-model="programFormDialog.requestedProgram.countiesServed"
+                           required>
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <label>
+                        Primary goal #1
+                    </label>
+                    <textarea name="primaryGoal1"
+                              ng-model="programFormDialog.requestedProgram.primaryGoal1"
+                              md-maxlength="500"
+                              rows="1"
+                              required>
+                    </textarea>
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <label>
+                        Primary goal #2
+                    </label>
+                    <textarea name="primaryGoal2"
+                              ng-model="programFormDialog.requestedProgram.primaryGoal2"
+                              md-maxlength="500"
+                              rows="1">
+                    </textarea>
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <label>
+                        Primary goal #3
+                    </label>
+                    <textarea name="primaryGoal3"
+                              ng-model="programFormDialog.requestedProgram.primaryGoal3"
+                              md-maxlength="500"
+                              rows="1">
+                    </textarea>
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <label>
+                        Measurable outcome #1
+                    </label>
+                    <textarea name="measurableOutcome1"
+                              ng-model="programFormDialog.requestedProgram.measurableOutcome1"
+                              md-maxlength="500"
+                              rows="1"
+                              required>
+                    </textarea>
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <label>
+                        Measurable outcome #2
+                    </label>
+                    <textarea name="measurableOutcome2"
+                              ng-model="programFormDialog.requestedProgram.measurableOutcome2"
+                              md-maxlength="500"
+                              rows="1">
+                    </textarea>
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <label>
+                        Measurable outcome #3
+                    </label>
+                    <textarea name="measurableOutcome3"
+                              ng-model="programFormDialog.requestedProgram.measurableOutcome3"
+                              md-maxlength="500"
+                              rows="1">
+                    </textarea>
+                </md-input-container>
+
+                <!-- Private information -->
+                <h2>
+                    <span md-colors="{color: 'primary'}">
+                        Private: Tell us about yourself!
+                    </span>
+                </h2>
+
+                <div layout-gt-sm="row">
+
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>
+                            First name
+                        </label>
+                        <input name="privateFirstName"
+                               ng-model="programFormDialog.requestedProgram.privateFirstName">
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>
+                            Last name
+                        </label>
+                        <input name="privateLastName"
+                               ng-model="programFormDialog.requestedProgram.privateLastName">
+                    </md-input-container>
+
+                </div>
+
+                <div layout-gt-sm="row">
+
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>
+                            Company/Organization
+                        </label>
+                        <input name="privateOrganizationName"
+                               ng-model="programFormDialog.requestedProgram.privateOrganizationName">
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>
+                            Position
+                        </label>
+                        <input name="privatePosition"
+                               ng-model="programFormDialog.requestedProgram.privatePosition">
+                    </md-input-container>
+
+                </div>
+
+                <div layout-gt-sm="row">
+
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>
+                            Phone
+                        </label>
+                        <input name="privatePhone"
+                               ng-model="programFormDialog.requestedProgram.privatePhone">
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>
+                            Email
+                        </label>
+                        <input name="privateEmail"
+                               ng-model="programFormDialog.requestedProgram.privateEmail"
+                               type="email">
+                    </md-input-container>
+
+                </div>
+
+            </div>
+        </md-dialog-content>
+
+        <md-dialog-actions>
+
+            <span flex></span>
+
+            <md-button ng-click="programFormDialog.cancel()"
+                       aria-label="Cancel">
+                Cancel
+            </md-button>
+
+            <md-button type="submit"
+                       aria-label="Save">
+                Save
+            </md-button>
+
+        </md-dialog-actions>
+
+    </form>
+
+</md-dialog>

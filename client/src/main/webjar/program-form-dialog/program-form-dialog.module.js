@@ -2,14 +2,11 @@
     "use strict";
 
     angular.module(
-        "healthBam.map",
+        "healthBam.programFormDialog",
         [
             "ngMaterial",
-            "ui.router",
-            "ngMap",
             "healthBam.templates",
-            "healthBam.main",
-            "healthBam.createProgram"
+            "healthBam.requestedProgram"
         ]
     );
 
