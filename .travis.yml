@@ -13,6 +13,7 @@ before_cache:
 
 cache:
   directories:
+    - client/node_modules/
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
 
