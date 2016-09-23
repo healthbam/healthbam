@@ -14,13 +14,6 @@
         var main = this;
 
         /**
-         * A function for Ryan to test that auto deploy is working.
-         */
-        function ryan() {
-            $log.debug("testing auto deploy 1");
-        }
-
-        /**
          * A function for Jessica to make a change to.
          */
         function jessica() {
@@ -47,7 +40,6 @@
          * TODO - remove this once everyone has submitted a code change
          */
         function training() {
-            ryan();
             jessica();
             kp();
             john();
