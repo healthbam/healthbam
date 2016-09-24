@@ -1,0 +1,1279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="2.8" jmeter="2.13 r1665067">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
+      <stringProp name="TestPlan.comments"></stringProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath"></stringProp>
+    </TestPlan>
+    <hashTree>
+      <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP Request Defaults" enabled="true">
+        <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+          <collectionProp name="Arguments.arguments"/>
+        </elementProp>
+        <stringProp name="HTTPSampler.domain">localhost</stringProp>
+        <stringProp name="HTTPSampler.port">8080</stringProp>
+        <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+        <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        <stringProp name="HTTPSampler.protocol"></stringProp>
+        <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+        <stringProp name="HTTPSampler.path"></stringProp>
+        <stringProp name="HTTPSampler.concurrentPool">4</stringProp>
+      </ConfigTestElement>
+      <hashTree/>
+      <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+        <collectionProp name="HeaderManager.headers">
+          <elementProp name="" elementType="Header">
+            <stringProp name="Header.name">Content-Type</stringProp>
+            <stringProp name="Header.value">application/json</stringProp>
+          </elementProp>
+          <elementProp name="" elementType="Header">
+            <stringProp name="Header.name">Accept</stringProp>
+            <stringProp name="Header.value">application/json</stringProp>
+          </elementProp>
+        </collectionProp>
+      </HeaderManager>
+      <hashTree/>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <longProp name="ThreadGroup.start_time">1474725626000</longProp>
+        <longProp name="ThreadGroup.end_time">1474725626000</longProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Test Organizations" enabled="true"/>
+        <hashTree>
+          <DebugSampler guiclass="TestBeanGUI" testclass="DebugSampler" testname="-- Begin Organization Tests --" enabled="true">
+            <boolProp name="displayJMeterProperties">false</boolProp>
+            <boolProp name="displayJMeterVariables">true</boolProp>
+            <boolProp name="displaySystemProperties">false</boolProp>
+          </DebugSampler>
+          <hashTree/>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="getAllOrgs" enabled="true">
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+              <collectionProp name="Arguments.arguments"/>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">api/organizations</stringProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <boolProp name="HTTPSampler.monitor">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="49586">200</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">8</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="JSR223 Assertion" enabled="true">
+              <stringProp name="scriptLanguage">javascript</stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="cacheKey"></stringProp>
+              <stringProp name="script">function setFailure(message) {
+	prev.setSuccessful(false);
+	prev.setResponseMessage(prev.getResponseMessage() + message);
+}
+
+function assert(success, message) {
+	if (!success) {
+		setFailure(message);
+	}
+}
+
+function assertEquals(actual, expected) {
+	var actualStr = JSON.stringify(actual),
+	    expectedStr = JSON.stringify(expected);
+	assert(
+		actualStr === expectedStr,
+		&quot;\n\nNOT EQUAL: actual = &quot; + actualStr + &quot;\n               expected = &quot; + expectedStr
+	);
+}
+
+var responseString = SampleResult.getResponseDataAsString();
+var responseData = JSON.parse(responseString);
+</stringProp>
+            </JSR223Assertion>
+            <hashTree/>
+          </hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="createNewOrg" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+	&quot;name&quot;: &quot;Test Org - ${__time(yyyy-MM-dd hh:mm:ss.SSS a z)}&quot;,&#xd;
+	&quot;contactPhone&quot;: &quot;800-555-1234&quot;,&#xd;
+	&quot;contactEmail&quot;: &quot;test.org.one@mailinator.com&quot;,&#xd;
+	&quot;websiteUrl&quot;: &quot;http://www.test-org-one.com&quot;,&#xd;
+	&quot;facebookUrl&quot;: &quot;http://www.facebook.com/TestOrgOne&quot;&#xd;
+}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">api/organizations</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <boolProp name="HTTPSampler.monitor">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="49586">200</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">8</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="JSR223 Assertion" enabled="true">
+              <stringProp name="cacheKey"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">function setFailure(message) {
+	prev.setSuccessful(false);
+	prev.setResponseMessage(prev.getResponseMessage() + message);
+}
+
+function assert(success, message) {
+	if (!success) {
+		setFailure(message);
+	}
+}
+
+function assertEquals(actual, expected) {
+	var actualStr = JSON.stringify(actual),
+	    expectedStr = JSON.stringify(expected);
+	assert(
+		actualStr === expectedStr,
+		&quot;\n\nNOT EQUAL: actual = &quot; + actualStr + &quot;\n               expected = &quot; + expectedStr
+	);
+}
+
+var responseString = SampleResult.getResponseDataAsString();
+var responseData = JSON.parse(responseString);
+
+assert(responseData.id, &quot;id was not set!&quot;);
+assertEquals(responseData.contactPhone, &quot;800-555-1234&quot;);
+assertEquals(responseData.contactEmail, &quot;test.org.one@mailinator.com&quot;);
+assertEquals(responseData.websiteUrl, &quot;http://www.test-org-one.com&quot;);
+assertEquals(responseData.facebookUrl, &quot;http://www.facebook.com/TestOrgOne&quot;);
+
+vars.put(&quot;orgId&quot;, responseData.id);
+</stringProp>
+              <stringProp name="scriptLanguage">javascript</stringProp>
+            </JSR223Assertion>
+            <hashTree/>
+          </hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="getOrgById (new info expected)" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value"></stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">api/organizations/${orgId}</stringProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <boolProp name="HTTPSampler.monitor">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="49586">200</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">8</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="JSR223 Assertion" enabled="true">
+              <stringProp name="cacheKey"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">function setFailure(message) {
+	prev.setSuccessful(false);
+	prev.setResponseMessage(prev.getResponseMessage() + message);
+}
+
+function assert(success, message) {
+	if (!success) {
+		setFailure(message);
+	}
+}
+
+function assertEquals(actual, expected) {
+	var actualStr = JSON.stringify(actual),
+	    expectedStr = JSON.stringify(expected);
+	assert(
+		actualStr === expectedStr,
+		&quot;\n\nNOT EQUAL: actual = &quot; + actualStr + &quot;\n               expected = &quot; + expectedStr
+	);
+}
+
+var responseString = SampleResult.getResponseDataAsString();
+var responseData = JSON.parse(responseString);
+
+assertEquals(responseData.id, Number(vars.get(&quot;orgId&quot;)));
+assertEquals(responseData.contactPhone, &quot;800-555-1234&quot;);
+assertEquals(responseData.contactEmail, &quot;test.org.one@mailinator.com&quot;);
+assertEquals(responseData.websiteUrl, &quot;http://www.test-org-one.com&quot;);
+assertEquals(responseData.facebookUrl, &quot;http://www.facebook.com/TestOrgOne&quot;);
+</stringProp>
+              <stringProp name="scriptLanguage">javascript</stringProp>
+            </JSR223Assertion>
+            <hashTree/>
+          </hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="updateOrg" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+	&quot;id&quot;: ${orgId},&#xd;
+	&quot;name&quot;: &quot;Updated Test Org - ${__time(yyyy-MM-dd hh:mm:ss.SSS a z)}&quot;,&#xd;
+	&quot;contactPhone&quot;: &quot;800-555-1234&quot;,&#xd;
+	&quot;contactEmail&quot;: &quot;updated.test.org.one@mailinator.com&quot;,&#xd;
+	&quot;websiteUrl&quot;: &quot;http://www.updated-test-org-one.com&quot;,&#xd;
+	&quot;facebookUrl&quot;: &quot;http://www.facebook.com/UpdatedTestOrgOne&quot;&#xd;
+}&#xd;
+</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">api/organizations/${orgId}</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <boolProp name="HTTPSampler.monitor">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="49586">200</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">8</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="JSR223 Assertion" enabled="true">
+              <stringProp name="cacheKey"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">function setFailure(message) {
+	prev.setSuccessful(false);
+	prev.setResponseMessage(prev.getResponseMessage() + message);
+}
+
+function assert(success, message) {
+	if (!success) {
+		setFailure(message);
+	}
+}
+
+function assertEquals(actual, expected) {
+	var actualStr = JSON.stringify(actual),
+	    expectedStr = JSON.stringify(expected);
+	assert(
+		actualStr === expectedStr,
+		&quot;\n\nNOT EQUAL: actual = &quot; + actualStr + &quot;\n               expected = &quot; + expectedStr
+	);
+}
+
+var responseString = SampleResult.getResponseDataAsString();
+var responseData = JSON.parse(responseString);
+
+assertEquals(responseData.id, Number(vars.get(&quot;orgId&quot;)));
+assertEquals(responseData.contactPhone, &quot;800-555-1234&quot;);
+assertEquals(responseData.contactEmail, &quot;updated.test.org.one@mailinator.com&quot;);
+assertEquals(responseData.websiteUrl, &quot;http://www.updated-test-org-one.com&quot;);
+assertEquals(responseData.facebookUrl, &quot;http://www.facebook.com/UpdatedTestOrgOne&quot;);
+</stringProp>
+              <stringProp name="scriptLanguage">javascript</stringProp>
+            </JSR223Assertion>
+            <hashTree/>
+          </hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="getOrgById (updated info expected)" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value"></stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">api/organizations/${orgId}</stringProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <boolProp name="HTTPSampler.monitor">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="49586">200</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">8</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="JSR223 Assertion" enabled="true">
+              <stringProp name="cacheKey"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">function setFailure(message) {
+	prev.setSuccessful(false);
+	prev.setResponseMessage(prev.getResponseMessage() + message);
+}
+
+function assert(success, message) {
+	if (!success) {
+		setFailure(message);
+	}
+}
+
+function assertEquals(actual, expected) {
+	var actualStr = JSON.stringify(actual),
+	    expectedStr = JSON.stringify(expected);
+	assert(
+		actualStr === expectedStr,
+		&quot;\n\nNOT EQUAL: actual = &quot; + actualStr + &quot;\n               expected = &quot; + expectedStr
+	);
+}
+
+var responseString = SampleResult.getResponseDataAsString();
+var responseData = JSON.parse(responseString);
+
+assertEquals(responseData.id, Number(vars.get(&quot;orgId&quot;)));
+assertEquals(responseData.contactPhone, &quot;800-555-1234&quot;);
+assertEquals(responseData.contactEmail, &quot;updated.test.org.one@mailinator.com&quot;);
+assertEquals(responseData.websiteUrl, &quot;http://www.updated-test-org-one.com&quot;);
+assertEquals(responseData.facebookUrl, &quot;http://www.facebook.com/UpdatedTestOrgOne&quot;);
+</stringProp>
+              <stringProp name="scriptLanguage">javascript</stringProp>
+            </JSR223Assertion>
+            <hashTree/>
+          </hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="deleteOrg" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value"></stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">api/organizations/${orgId}</stringProp>
+            <stringProp name="HTTPSampler.method">DELETE</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <boolProp name="HTTPSampler.monitor">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="49586">200</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">8</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="JSR223 Assertion" enabled="true">
+              <stringProp name="cacheKey"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">function setFailure(message) {
+	prev.setSuccessful(false);
+	prev.setResponseMessage(prev.getResponseMessage() + message);
+}
+
+function assert(success, message) {
+	if (!success) {
+		setFailure(message);
+	}
+}
+
+function assertEquals(actual, expected) {
+	var actualStr = JSON.stringify(actual),
+	    expectedStr = JSON.stringify(expected);
+	assert(
+		actualStr === expectedStr,
+		&quot;\n\nNOT EQUAL: actual = &quot; + actualStr + &quot;\n               expected = &quot; + expectedStr
+	);
+}
+
+var responseString = SampleResult.getResponseDataAsString();
+var responseData = JSON.parse(responseString);
+
+assertEquals(responseData.id, Number(vars.get(&quot;orgId&quot;)));
+assertEquals(responseData.contactPhone, &quot;800-555-1234&quot;);
+assertEquals(responseData.contactEmail, &quot;updated.test.org.one@mailinator.com&quot;);
+assertEquals(responseData.websiteUrl, &quot;http://www.updated-test-org-one.com&quot;);
+assertEquals(responseData.facebookUrl, &quot;http://www.facebook.com/UpdatedTestOrgOne&quot;);
+</stringProp>
+              <stringProp name="scriptLanguage">javascript</stringProp>
+            </JSR223Assertion>
+            <hashTree/>
+          </hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="getOrgById (not-found expected)" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value"></stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">api/organizations/${orgId}</stringProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <boolProp name="HTTPSampler.monitor">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="51512">404</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+              <boolProp name="Assertion.assume_success">true</boolProp>
+              <intProp name="Assertion.test_type">8</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+          </hashTree>
+          <DebugSampler guiclass="TestBeanGUI" testclass="DebugSampler" testname="-- End Organization Tests --" enabled="true">
+            <boolProp name="displayJMeterProperties">false</boolProp>
+            <boolProp name="displayJMeterVariables">true</boolProp>
+            <boolProp name="displaySystemProperties">false</boolProp>
+          </DebugSampler>
+          <hashTree/>
+        </hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Test Programs" enabled="true"/>
+        <hashTree>
+          <DebugSampler guiclass="TestBeanGUI" testclass="DebugSampler" testname="-- Begin Program Tests --" enabled="true">
+            <boolProp name="displayJMeterProperties">false</boolProp>
+            <boolProp name="displayJMeterVariables">true</boolProp>
+            <boolProp name="displaySystemProperties">false</boolProp>
+          </DebugSampler>
+          <hashTree/>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="createNewOrgForProgram" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+	&quot;name&quot;: &quot;Test Org For Program - ${__time(yyyy-MM-dd hh:mm:ss.SSS a z)}&quot;,&#xd;
+	&quot;contactPhone&quot;: &quot;800-555-9999&quot;,&#xd;
+	&quot;contactEmail&quot;: &quot;test.org.program@mailinator.com&quot;,&#xd;
+	&quot;websiteUrl&quot;: &quot;http://www.test-org-program.com&quot;,&#xd;
+	&quot;facebookUrl&quot;: &quot;http://www.facebook.com/TestOrgProgram&quot;&#xd;
+}&#xd;
+</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">api/organizations</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <boolProp name="HTTPSampler.monitor">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="49586">200</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">8</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="JSR223 Assertion" enabled="true">
+              <stringProp name="cacheKey"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">function setFailure(message) {
+	prev.setSuccessful(false);
+	prev.setResponseMessage(prev.getResponseMessage() + message);
+}
+
+function assert(success, message) {
+	if (!success) {
+		setFailure(message);
+	}
+}
+
+function assertEquals(actual, expected) {
+	var actualStr = JSON.stringify(actual),
+	    expectedStr = JSON.stringify(expected);
+	assert(
+		actualStr === expectedStr,
+		&quot;\n\nNOT EQUAL: actual = &quot; + actualStr + &quot;\n               expected = &quot; + expectedStr
+	);
+}
+
+var responseString = SampleResult.getResponseDataAsString();
+var responseData = JSON.parse(responseString);
+
+assert(responseData.id, &quot;id was not set!&quot;);
+assertEquals(responseData.contactPhone, &quot;800-555-9999&quot;);
+assertEquals(responseData.contactEmail, &quot;test.org.program@mailinator.com&quot;);
+assertEquals(responseData.websiteUrl, &quot;http://www.test-org-program.com&quot;);
+assertEquals(responseData.facebookUrl, &quot;http://www.facebook.com/TestOrgProgram&quot;);
+
+vars.put(&quot;orgId&quot;, responseData.id);
+</stringProp>
+              <stringProp name="scriptLanguage">javascript</stringProp>
+            </JSR223Assertion>
+            <hashTree/>
+          </hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="getAllPrograms" enabled="true">
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+              <collectionProp name="Arguments.arguments"/>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">api/programs</stringProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <boolProp name="HTTPSampler.monitor">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="49586">200</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">8</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="JSR223 Assertion" enabled="true">
+              <stringProp name="scriptLanguage">javascript</stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="cacheKey"></stringProp>
+              <stringProp name="script">function setFailure(message) {
+	prev.setSuccessful(false);
+	prev.setResponseMessage(prev.getResponseMessage() + message);
+}
+
+function assert(success, message) {
+	if (!success) {
+		setFailure(message);
+	}
+}
+
+function assertEquals(actual, expected) {
+	var actualStr = JSON.stringify(actual),
+	    expectedStr = JSON.stringify(expected);
+	assert(
+		actualStr === expectedStr,
+		&quot;\n\nNOT EQUAL: actual = &quot; + actualStr + &quot;\n               expected = &quot; + expectedStr
+	);
+}
+
+var responseString = SampleResult.getResponseDataAsString();
+var responseData = JSON.parse(responseString);
+</stringProp>
+            </JSR223Assertion>
+            <hashTree/>
+          </hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="createNewProgram" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+	&quot;name&quot;: &quot;Test Program ${__time(yyyy-MM-dd hh:mm:ss.SSS a z)}&quot;,&#xd;
+	&quot;organization&quot;: {&#xd;
+		&quot;id&quot;: ${orgId},&#xd;
+		&quot;name&quot;: &quot;Do not cascade update&quot;,&#xd;
+		&quot;contactPhone&quot;: &quot;770-555-1234&quot;,&#xd;
+		&quot;contactEmail&quot;: &quot;org.one@mailinator.com&quot;,&#xd;
+		&quot;websiteUrl&quot;: &quot;http://www.org-one.org&quot;,&#xd;
+		&quot;facebookUrl&quot;: &quot;http://www.facebook.com/OrgOne&quot;&#xd;
+	},&#xd;
+	&quot;startYear&quot;: 2005,&#xd;
+	&quot;streetAddress&quot;: &quot;456 Peachtree St.&quot;,&#xd;
+	&quot;state&quot;: &quot;GA&quot;,&#xd;
+	&quot;zipCode&quot;: &quot;30332&quot;&#xd;
+}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">api/programs</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <boolProp name="HTTPSampler.monitor">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="49586">200</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">8</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="JSR223 Assertion" enabled="true">
+              <stringProp name="cacheKey"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">function setFailure(message) {
+	prev.setSuccessful(false);
+	prev.setResponseMessage(prev.getResponseMessage() + message);
+}
+
+function assert(success, message) {
+	if (!success) {
+		setFailure(message);
+	}
+}
+
+function assertEquals(actual, expected) {
+	var actualStr = JSON.stringify(actual),
+	    expectedStr = JSON.stringify(expected);
+	assert(
+		actualStr === expectedStr,
+		&quot;\n\nNOT EQUAL: actual = &quot; + actualStr + &quot;\n               expected = &quot; + expectedStr
+	);
+}
+
+var responseString = SampleResult.getResponseDataAsString();
+var responseData = JSON.parse(responseString);
+
+assert(responseData.id, &quot;id was not set!&quot;);
+
+assertEquals(responseData.startYear, 2005);
+assertEquals(responseData.streetAddress, &quot;456 Peachtree St.&quot;);
+assertEquals(responseData.state, &quot;GA&quot;);
+assertEquals(responseData.zipCode, &quot;30332&quot;);
+
+assertEquals(responseData.organization.id, Number(${orgId}));
+assertEquals(responseData.organization.contactPhone, &quot;800-555-9999&quot;);
+assertEquals(responseData.organization.contactEmail, &quot;test.org.program@mailinator.com&quot;);
+assertEquals(responseData.organization.websiteUrl, &quot;http://www.test-org-program.com&quot;);
+assertEquals(responseData.organization.facebookUrl, &quot;http://www.facebook.com/TestOrgProgram&quot;);
+
+vars.put(&quot;programId&quot;, responseData.id);
+</stringProp>
+              <stringProp name="scriptLanguage">javascript</stringProp>
+            </JSR223Assertion>
+            <hashTree/>
+          </hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="getProgramById (new info expected)" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value"></stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">api/programs/${programId}</stringProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <boolProp name="HTTPSampler.monitor">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="49586">200</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">8</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="JSR223 Assertion" enabled="true">
+              <stringProp name="cacheKey"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">function setFailure(message) {
+	prev.setSuccessful(false);
+	prev.setResponseMessage(prev.getResponseMessage() + message);
+}
+
+function assert(success, message) {
+	if (!success) {
+		setFailure(message);
+	}
+}
+
+function assertEquals(actual, expected) {
+	var actualStr = JSON.stringify(actual),
+	    expectedStr = JSON.stringify(expected);
+	assert(
+		actualStr === expectedStr,
+		&quot;\n\nNOT EQUAL: actual = &quot; + actualStr + &quot;\n               expected = &quot; + expectedStr
+	);
+}
+
+var responseString = SampleResult.getResponseDataAsString();
+var responseData = JSON.parse(responseString);
+
+assertEquals(responseData.id, Number(${programId}));
+assertEquals(responseData.startYear, 2005);
+assertEquals(responseData.streetAddress, &quot;456 Peachtree St.&quot;);
+assertEquals(responseData.state, &quot;GA&quot;);
+assertEquals(responseData.zipCode, &quot;30332&quot;);
+
+assertEquals(responseData.organization.id, Number(${orgId}));
+assertEquals(responseData.organization.contactPhone, &quot;800-555-9999&quot;);
+assertEquals(responseData.organization.contactEmail, &quot;test.org.program@mailinator.com&quot;);
+assertEquals(responseData.organization.websiteUrl, &quot;http://www.test-org-program.com&quot;);
+assertEquals(responseData.organization.facebookUrl, &quot;http://www.facebook.com/TestOrgProgram&quot;);
+</stringProp>
+              <stringProp name="scriptLanguage">javascript</stringProp>
+            </JSR223Assertion>
+            <hashTree/>
+          </hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="updateProgram" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+	&quot;id&quot;: ${programId},&#xd;
+	&quot;name&quot;: &quot;Updated Test Program ${__time(yyyy-MM-dd hh:mm:ss.SSS a z)}&quot;,&#xd;
+	&quot;organization&quot;: {&#xd;
+		&quot;id&quot;: ${orgId},&#xd;
+		&quot;name&quot;: &quot;Do not cascade update&quot;,&#xd;
+		&quot;contactPhone&quot;: &quot;770-555-1234&quot;,&#xd;
+		&quot;contactEmail&quot;: &quot;org.one@mailinator.com&quot;,&#xd;
+		&quot;websiteUrl&quot;: &quot;http://www.org-one.org&quot;,&#xd;
+		&quot;facebookUrl&quot;: &quot;http://www.facebook.com/OrgOne&quot;&#xd;
+	},&#xd;
+	&quot;startYear&quot;: 2009,&#xd;
+	&quot;streetAddress&quot;: &quot;456 Updated Peachtree St.&quot;,&#xd;
+	&quot;state&quot;: &quot;GA&quot;,&#xd;
+	&quot;zipCode&quot;: &quot;30333&quot;&#xd;
+}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">api/programs/${programId}</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <boolProp name="HTTPSampler.monitor">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="49586">200</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">8</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="JSR223 Assertion" enabled="true">
+              <stringProp name="cacheKey"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">function setFailure(message) {
+	prev.setSuccessful(false);
+	prev.setResponseMessage(prev.getResponseMessage() + message);
+}
+
+function assert(success, message) {
+	if (!success) {
+		setFailure(message);
+	}
+}
+
+function assertEquals(actual, expected) {
+	var actualStr = JSON.stringify(actual),
+	    expectedStr = JSON.stringify(expected);
+	assert(
+		actualStr === expectedStr,
+		&quot;\n\nNOT EQUAL: actual = &quot; + actualStr + &quot;\n               expected = &quot; + expectedStr
+	);
+}
+
+var responseString = SampleResult.getResponseDataAsString();
+var responseData = JSON.parse(responseString);
+
+assertEquals(responseData.id, Number(${programId}));
+assertEquals(responseData.startYear, 2009);
+assertEquals(responseData.streetAddress, &quot;456 Updated Peachtree St.&quot;);
+assertEquals(responseData.state, &quot;GA&quot;);
+assertEquals(responseData.zipCode, &quot;30333&quot;);
+
+assertEquals(responseData.organization.id, Number(${orgId}));
+assertEquals(responseData.organization.contactPhone, &quot;800-555-9999&quot;);
+assertEquals(responseData.organization.contactEmail, &quot;test.org.program@mailinator.com&quot;);
+assertEquals(responseData.organization.websiteUrl, &quot;http://www.test-org-program.com&quot;);
+assertEquals(responseData.organization.facebookUrl, &quot;http://www.facebook.com/TestOrgProgram&quot;);
+</stringProp>
+              <stringProp name="scriptLanguage">javascript</stringProp>
+            </JSR223Assertion>
+            <hashTree/>
+          </hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="getProgramById (updated info expected)" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value"></stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">api/programs/${programId}</stringProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <boolProp name="HTTPSampler.monitor">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="49586">200</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">8</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="JSR223 Assertion" enabled="true">
+              <stringProp name="cacheKey"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">function setFailure(message) {
+	prev.setSuccessful(false);
+	prev.setResponseMessage(prev.getResponseMessage() + message);
+}
+
+function assert(success, message) {
+	if (!success) {
+		setFailure(message);
+	}
+}
+
+function assertEquals(actual, expected) {
+	var actualStr = JSON.stringify(actual),
+	    expectedStr = JSON.stringify(expected);
+	assert(
+		actualStr === expectedStr,
+		&quot;\n\nNOT EQUAL: actual = &quot; + actualStr + &quot;\n               expected = &quot; + expectedStr
+	);
+}
+
+var responseString = SampleResult.getResponseDataAsString();
+var responseData = JSON.parse(responseString);
+
+assert(responseData.id, Number(${programId}));
+assertEquals(responseData.startYear, 2009);
+assertEquals(responseData.streetAddress, &quot;456 Updated Peachtree St.&quot;);
+assertEquals(responseData.state, &quot;GA&quot;);
+assertEquals(responseData.zipCode, &quot;30333&quot;);
+
+assertEquals(responseData.organization.id, Number(${orgId}));
+assertEquals(responseData.organization.contactPhone, &quot;800-555-9999&quot;);
+assertEquals(responseData.organization.contactEmail, &quot;test.org.program@mailinator.com&quot;);
+assertEquals(responseData.organization.websiteUrl, &quot;http://www.test-org-program.com&quot;);
+assertEquals(responseData.organization.facebookUrl, &quot;http://www.facebook.com/TestOrgProgram&quot;);
+</stringProp>
+              <stringProp name="scriptLanguage">javascript</stringProp>
+            </JSR223Assertion>
+            <hashTree/>
+          </hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="deleteProgram" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value"></stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">api/programs/${programId}</stringProp>
+            <stringProp name="HTTPSampler.method">DELETE</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <boolProp name="HTTPSampler.monitor">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="49586">200</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">8</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="JSR223 Assertion" enabled="true">
+              <stringProp name="cacheKey"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">function setFailure(message) {
+	prev.setSuccessful(false);
+	prev.setResponseMessage(prev.getResponseMessage() + message);
+}
+
+function assert(success, message) {
+	if (!success) {
+		setFailure(message);
+	}
+}
+
+function assertEquals(actual, expected) {
+	var actualStr = JSON.stringify(actual),
+	    expectedStr = JSON.stringify(expected);
+	assert(
+		actualStr === expectedStr,
+		&quot;\n\nNOT EQUAL: actual = &quot; + actualStr + &quot;\n               expected = &quot; + expectedStr
+	);
+}
+
+var responseString = SampleResult.getResponseDataAsString();
+var responseData = JSON.parse(responseString);
+
+assert(responseData.id, Number(${programId}));
+assertEquals(responseData.startYear, 2009);
+assertEquals(responseData.streetAddress, &quot;456 Updated Peachtree St.&quot;);
+assertEquals(responseData.state, &quot;GA&quot;);
+assertEquals(responseData.zipCode, &quot;30333&quot;);
+
+assertEquals(responseData.organization.id, Number(${orgId}));
+assertEquals(responseData.organization.contactPhone, &quot;800-555-9999&quot;);
+assertEquals(responseData.organization.contactEmail, &quot;test.org.program@mailinator.com&quot;);
+assertEquals(responseData.organization.websiteUrl, &quot;http://www.test-org-program.com&quot;);
+assertEquals(responseData.organization.facebookUrl, &quot;http://www.facebook.com/TestOrgProgram&quot;);
+</stringProp>
+              <stringProp name="scriptLanguage">javascript</stringProp>
+            </JSR223Assertion>
+            <hashTree/>
+          </hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="getProgramById (not-found expected)" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value"></stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">api/programs/${programId}</stringProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <boolProp name="HTTPSampler.monitor">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="51512">404</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+              <boolProp name="Assertion.assume_success">true</boolProp>
+              <intProp name="Assertion.test_type">8</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+          </hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="cleanupOrgForProgram" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value"></stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">api/organizations/${orgId}</stringProp>
+            <stringProp name="HTTPSampler.method">DELETE</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <boolProp name="HTTPSampler.monitor">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="49586">200</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">8</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="JSR223 Assertion" enabled="true">
+              <stringProp name="cacheKey"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">function setFailure(message) {
+	prev.setSuccessful(false);
+	prev.setResponseMessage(prev.getResponseMessage() + message);
+}
+
+function assert(success, message) {
+	if (!success) {
+		setFailure(message);
+	}
+}
+
+function assertEquals(actual, expected) {
+	var actualStr = JSON.stringify(actual),
+	    expectedStr = JSON.stringify(expected);
+	assert(
+		actualStr === expectedStr,
+		&quot;\n\nNOT EQUAL: actual = &quot; + actualStr + &quot;\n               expected = &quot; + expectedStr
+	);
+}
+
+var responseString = SampleResult.getResponseDataAsString();
+var responseData = JSON.parse(responseString);
+
+assertEquals(responseData.id, Number(vars.get(&quot;orgId&quot;)));
+assertEquals(responseData.contactPhone, &quot;800-555-9999&quot;);
+assertEquals(responseData.contactEmail, &quot;test.org.program@mailinator.com&quot;);
+assertEquals(responseData.websiteUrl, &quot;http://www.test-org-program.com&quot;);
+assertEquals(responseData.facebookUrl, &quot;http://www.facebook.com/TestOrgProgram&quot;);
+</stringProp>
+              <stringProp name="scriptLanguage">javascript</stringProp>
+            </JSR223Assertion>
+            <hashTree/>
+          </hashTree>
+          <DebugSampler guiclass="TestBeanGUI" testclass="DebugSampler" testname="-- End Program Tests --" enabled="true">
+            <boolProp name="displayJMeterProperties">false</boolProp>
+            <boolProp name="displayJMeterVariables">true</boolProp>
+            <boolProp name="displaySystemProperties">false</boolProp>
+          </DebugSampler>
+          <hashTree/>
+        </hashTree>
+      </hashTree>
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>false</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <threadCounts>true</threadCounts>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
+      <hashTree/>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>

@@ -1,92 +1,75 @@
-INSERT INTO published_program (
-        organization_name,
-        mission,
-        geo,
-        summary,
-        outcomes,
-        public_email,
-        public_phone,
-        private_email,
-        private_phone,
-        created_on,
-        created_by,
-        updated_on,
-        updated_by
+INSERT INTO organization (
+    name,
+    contact_phone,
+    contact_email,
+    website_url,
+    facebook_url,
+    created_on,
+    created_by
 ) VALUES (
-        'Existing Org 1',
-        'To fill in some pre-existing data.',
-        'geo is required info, but will not be this format',
-        'Summary of report here?',
-        'Info on outcomes here.',
-        'public.john.doe@mailinator.com',
-        '770-555-0000',
-        'private.john.doe@mailinator.com',
-        '404-555-9999',
-        TIMESTAMP '2016-09-02 11:30:29',
-        'initial data',
-        NULL,
-        NULL
+    'Org 1',
+    '770-555-1234',
+    'org.one@mailinator.com',
+    'http://www.org-one.org',
+    'http://www.facebook.com/OrgOne',
+    TIMESTAMP '2016-09-02 11:11:29',
+    'initial data script'
 );
 
-INSERT INTO published_program (
-        organization_name,
-        mission,
-        geo,
-        summary,
-        outcomes,
-        public_email,
-        public_phone,
-        private_email,
-        private_phone,
-        created_on,
-        created_by,
-        updated_on,
-        updated_by
+INSERT INTO organization (
+    name,
+    contact_phone,
+    contact_email,
+    website_url,
+    facebook_url,
+    created_on,
+    created_by
 ) VALUES (
-        'Existing Org 2',
-        'To fill in more than one pre-existing data.',
-        'geo is required info, but will not be this format',
-        'Summary of report here?',
-        'Info on outcomes here.',
-        'public.jane.doe@mailinator.com',
-        '770-555-0000',
-        'private.jane.doe@mailinator.com',
-        '404-555-9999',
-        TIMESTAMP '2016-09-02 18:30:29',
-        'initial data',
-        TIMESTAMP '2016-09-05 21:30:29',
-        'Ryan'
+    'Org 2',
+    '770-555-1234',
+    'org.two@mailinator.com',
+    'http://www.org-two.org',
+    'http://www.facebook.com/OrgTwo',
+    TIMESTAMP '2016-09-04 12:20:29',
+    'initial data script'
 );
 
-
-INSERT INTO requested_program (
-        program_id,
-        organization_name,
-        mission,
-        geo,
-        summary,
-        outcomes,
-        public_email,
-        public_phone,
-        private_email,
-        private_phone,
-        created_on,
-        created_by,
-        updated_on,
-        updated_by
+INSERT INTO program (
+    name,
+    organization_id,
+    start_year,
+    street_address,
+    state,
+    zip_code,
+    created_on,
+    created_by
 ) VALUES (
-        NULL,
-        'New Org Request 1',
-        'To fill in a pre-existing request.',
-        'geo is required info, but will not be this format',
-        'Summary of report here?',
-        'Info on outcomes here.',
-        'public.jane.doe@mailinator.com',
-        '770-555-0000',
-        'private.jane.doe@mailinator.com',
-        '404-555-9999',
-        TIMESTAMP '2016-09-01 15:45:29',
-        '127.0.0.1',
-        TIMESTAMP '2016-09-05 21:30:29',
-        'Ryan'
+    'Program 1.1',
+    (SELECT id FROM organization WHERE name = 'Org 1'),
+    1999,
+    '123 Peachtree St.',
+    'GA',
+    '30332',
+    TIMESTAMP '2016-09-05 11:59:29',
+    'initial data script'
+);
+
+INSERT INTO program (
+    name,
+    organization_id,
+    start_year,
+    street_address,
+    state,
+    zip_code,
+    created_on,
+    created_by
+) VALUES (
+    'Program 1.2',
+    (SELECT id FROM organization WHERE name = 'Org 1'),
+    2001,
+    '222 Peachtree St.',
+    'GA',
+    '30332',
+    TIMESTAMP '2016-09-06 10:30:29',
+    'initial data script'
 );

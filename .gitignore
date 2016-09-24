@@ -42,6 +42,9 @@ gradle-app.setting
 # where I'm choosing to spring boot to put the logs
 /logs/
 
+# jmeter log file
+jmeter.log
+
 # local env vars for running "heroku local"
 .env
 

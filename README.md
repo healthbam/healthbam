@@ -45,28 +45,16 @@ Now you can run the latest code you have built locally with:
 heroku local
 ~~~~
 
-### Pushing changes to Heroku
-
-TODO - link to heroku toolbelt setup
-
-TODO - figure out how to add everyone to my heroku
-
-You can push the latest changes merged into master to heroku with:
-
-~~~~shell
-git push heroku master
-~~~~
-
 ### Testing In The Console
 
-#### Users REST Calls
+#### Organization REST Calls
 
 ##### Get All Example
 
 ~~~~shell
 curl -v \
      -X GET \
-     'http://localhost:8080/api/users'
+     'http://localhost:8080/api/organizations'
 ~~~~
 
 ##### Get Single Example
@@ -74,7 +62,7 @@ curl -v \
 ~~~~shell
 curl -v \
      -X GET \
-     'http://localhost:8080/api/users/1001'
+     'http://localhost:8080/api/organizations/1001'
 ~~~~
 
 ##### Create Example
@@ -83,8 +71,8 @@ curl -v \
 curl -v \
      -X POST \
      -H 'Content-Type: application/json' \
-     -d '{ "email": "ryan.bard@mailinator.com", "firstName": "Ryan", "lastName": "Bard", "birthDate": 344390000000 }' \
-     'http://localhost:8080/api/users'
+     -d '{ "name": "Test Org", "contactPhone": "800-555-1234", "contactEmail": "test.org@mailinator.com", "websiteUrl": "http://www.test-org.com", "facebookUrl": "http://www.facebook.com/TestOrg" }' \
+     'http://localhost:8080/api/organizations'
 ~~~~
 
 ##### Update Example
@@ -93,8 +81,8 @@ curl -v \
 curl -v \
      -X POST \
      -H 'Content-Type: application/json' \
-     -d '{ "id": 1001, "email": "jon.doe@mailinator.com", "firstName": "Jon", "lastName": "Doe", "birthDate": 344390400999 }' \
-     'http://localhost:8080/api/users/1001'
+     -d '{ "id": 1001, "name": "Updated Test Org", "contactPhone": "800-555-1234", "contactEmail": "test.org@mailinator.com", "websiteUrl": "http://www.test-org.com", "facebookUrl": "http://www.facebook.com/TestOrg" }' \
+     'http://localhost:8080/api/organizations/1001'
 ~~~~
 
 ##### Delete Example
@@ -102,7 +90,53 @@ curl -v \
 ~~~~shell
 curl -v \
      -X DELETE \
-     'http://localhost:8080/api/users/1001'
+     'http://localhost:8080/api/organizations/1001'
+~~~~
+
+#### Program REST Calls
+
+##### Get All Example
+
+~~~~shell
+curl -v \
+     -X GET \
+     'http://localhost:8080/api/programs'
+~~~~
+
+##### Get Single Example
+
+~~~~shell
+curl -v \
+     -X GET \
+     'http://localhost:8080/api/programs/1001'
+~~~~
+
+##### Create Example
+
+~~~~shell
+curl -v \
+     -X POST \
+     -H 'Content-Type: application/json' \
+     -d '{ "name": "Test Program", "organization": { "id": 1 }, "startYear": 2005, "streetAddress": "456 Peachtree St.", "state": "GA", "zipCode": "30332" }' \
+     'http://localhost:8080/api/programs'
+~~~~
+
+##### Update Example
+
+~~~~shell
+curl -v \
+     -X POST \
+     -H 'Content-Type: application/json' \
+     -d '{ "id": 1001, "name": "Updated Test Program", "organization": { "id": 1 }, "startYear": 2005, "streetAddress": "456 Peachtree St.", "state": "GA", "zipCode": "30332" }' \
+     'http://localhost:8080/api/programs/1001'
+~~~~
+
+##### Delete Example
+
+~~~~shell
+curl -v \
+     -X DELETE \
+     'http://localhost:8080/api/programs/1001'
 ~~~~
 
 ### Perks Offered By Spring Boot

@@ -1,4 +1,4 @@
-package org.hmhb.program.published;
+package org.hmhb.program;
 
 import java.util.Collections;
 import java.util.List;
@@ -10,34 +10,34 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Unit tests for {@link PublishedProgramController}.
+ * Unit tests for {@link ProgramController}.
  */
-public class PublishedProgramControllerTest {
+public class ProgramControllerTest {
 
-    private PublishedProgramController toTest;
-    private PublishedProgramService service;
+    private ProgramController toTest;
+    private ProgramService service;
 
-    private PublishedProgram program;
+    private Program program;
 
     @Before
     public void setUp() {
-        service = mock(PublishedProgramService.class);
+        service = mock(ProgramService.class);
 
-        toTest = new PublishedProgramController(service);
+        toTest = new ProgramController(service);
 
-        program = new PublishedProgram();
+        program = new Program();
         program.setId(123L);
     }
 
     @Test
     public void testGetAll() {
-        List<PublishedProgram> expected = Collections.singletonList(program);
+        List<Program> expected = Collections.singletonList(program);
 
         /* Train the mocks. */
         when(service.getAll()).thenReturn(expected);
 
         /* Make the call. */
-        List<PublishedProgram> actual = toTest.getAll();
+        List<Program> actual = toTest.getAll();
 
         /* Verify the results. */
         assertEquals(expected, actual);
@@ -47,13 +47,13 @@ public class PublishedProgramControllerTest {
     public void testGetById() {
         long input = 123L;
 
-        PublishedProgram expected = program;
+        Program expected = program;
 
         /* Train the mocks. */
         when(service.getById(input)).thenReturn(expected);
 
         /* Make the call. */
-        PublishedProgram actual = toTest.getById(input);
+        Program actual = toTest.getById(input);
 
         /* Verify the results. */
         assertEquals(expected, actual);
@@ -61,16 +61,16 @@ public class PublishedProgramControllerTest {
 
     @Test
     public void testCreate() {
-        PublishedProgram input = new PublishedProgram();
-        input.setOrganizationName("some org");
+        Program input = new Program();
+        input.setName("some org");
 
-        PublishedProgram expected = program;
+        Program expected = program;
 
         /* Train the mocks. */
         when(service.save(input)).thenReturn(expected);
 
         /* Make the call. */
-        PublishedProgram actual = toTest.create(input);
+        Program actual = toTest.create(input);
 
         /* Verify the results. */
         assertEquals(expected, actual);
@@ -78,17 +78,17 @@ public class PublishedProgramControllerTest {
 
     @Test
     public void testUpdate() {
-        PublishedProgram input = new PublishedProgram();
+        Program input = new Program();
         input.setId(123L);
-        input.setOrganizationName("blah org");
+        input.setName("blah org");
 
-        PublishedProgram expected = program;
+        Program expected = program;
 
         /* Train the mocks. */
         when(service.save(input)).thenReturn(expected);
 
         /* Make the call. */
-        PublishedProgram actual = toTest.update(input.getId(), input);
+        Program actual = toTest.update(input.getId(), input);
 
         /* Verify the results. */
         assertEquals(expected, actual);
@@ -98,13 +98,13 @@ public class PublishedProgramControllerTest {
     public void testDelete() {
         long input = 123L;
 
-        PublishedProgram expected = program;
+        Program expected = program;
 
         /* Train the mocks. */
         when(service.delete(input)).thenReturn(expected);
 
         /* Make the call. */
-        PublishedProgram actual = toTest.delete(input);
+        Program actual = toTest.delete(input);
 
         /* Verify the results. */
         assertEquals(expected, actual);

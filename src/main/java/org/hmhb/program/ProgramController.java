@@ -1,4 +1,4 @@
-package org.hmhb.program.published;
+package org.hmhb.program;
 
 import javax.annotation.Nonnull;
 
@@ -18,15 +18,15 @@ import org.springframework.web.bind.annotation.RestController;
 import static java.util.Objects.requireNonNull;
 
 @RestController
-public class PublishedProgramController {
+public class ProgramController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(PublishedProgramController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProgramController.class);
 
-    private final PublishedProgramService service;
+    private final ProgramService service;
 
     @Autowired
-    public PublishedProgramController(
-            @Nonnull PublishedProgramService service
+    public ProgramController(
+            @Nonnull ProgramService service
     ) {
         LOGGER.debug("constructed");
         this.service = requireNonNull(service, "service cannot be null");
@@ -36,9 +36,9 @@ public class PublishedProgramController {
     @RequestMapping(
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE,
-            path = "/api/published-programs"
+            path = "/api/programs"
     )
-    public List<PublishedProgram> getAll() {
+    public List<Program> getAll() {
         LOGGER.debug("getAll called");
         return service.getAll();
     }
@@ -47,9 +47,9 @@ public class PublishedProgramController {
     @RequestMapping(
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE,
-            path = "/api/published-programs/{id}"
+            path = "/api/programs/{id}"
     )
-    public PublishedProgram getById(
+    public Program getById(
             @PathVariable long id
     ) {
         LOGGER.debug("getById called: id={}", id);
@@ -61,10 +61,10 @@ public class PublishedProgramController {
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE,
-            path = "/api/published-programs"
+            path = "/api/programs"
     )
-    public PublishedProgram create(
-            @RequestBody PublishedProgram program
+    public Program create(
+            @RequestBody Program program
     ) {
         LOGGER.debug("create called: program={}", program);
         return service.save(program);
@@ -75,11 +75,11 @@ public class PublishedProgramController {
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE,
-            path = "/api/published-programs/{id}"
+            path = "/api/programs/{id}"
     )
-    public PublishedProgram update(
+    public Program update(
             @PathVariable long id,
-            @RequestBody PublishedProgram program
+            @RequestBody Program program
     ) {
         LOGGER.debug("update called: id={}, program={}", id, program);
         return service.save(program);
@@ -89,9 +89,9 @@ public class PublishedProgramController {
     @RequestMapping(
             method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_VALUE,
-            path = "/api/published-programs/{id}"
+            path = "/api/programs/{id}"
     )
-    public PublishedProgram delete(
+    public Program delete(
             @PathVariable long id
     ) {
         LOGGER.debug("delete called: id={}", id);

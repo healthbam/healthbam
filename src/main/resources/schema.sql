@@ -1,41 +1,34 @@
+DROP TABLE IF EXISTS program;
+DROP TABLE IF EXISTS organization;
+
+CREATE TABLE organization (
+    id BIGSERIAL PRIMARY KEY,
+    name TEXT NOT NULL UNIQUE,
+    contact_phone TEXT,
+    contact_email TEXT,
+    website_url TEXT,
+    facebook_url TEXT,
+    created_on DATE NOT NULL,
+    created_by TEXT NOT NULL,
+    updated_on DATE,
+    updated_by TEXT
+);
+
+CREATE TABLE program (
+    id BIGSERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    organization_id BIGINT REFERENCES organization(id),
+    start_year INT NOT NULL,
+    street_address TEXT NOT NULL,
+    state TEXT NOT NULL,
+    zip_code TEXT NOT NULL,
+    created_on DATE NOT NULL,
+    created_by TEXT NOT NULL,
+    updated_on DATE,
+    updated_by TEXT,
+    UNIQUE (name, organization_id)
+);
+
+/* Leave these in for one PR to clean up the prod DB. */
 DROP TABLE IF EXISTS requested_program;
 DROP TABLE IF EXISTS published_program;
-
-CREATE TABLE published_program (
-    id BIGSERIAL PRIMARY KEY,
-    organization_name TEXT NOT NULL,
-    mission TEXT,
-    geo TEXT NOT NULL,
-    /* look up geo data in map API */
-    /* address info? */
-    summary TEXT,
-    outcomes TEXT,
-    public_email TEXT,
-    public_phone TEXT,
-    private_email TEXT,
-    private_phone TEXT,
-    created_on DATE NOT NULL,
-    created_by TEXT NOT NULL,
-    updated_on DATE,
-    updated_by TEXT
-);
-
-CREATE TABLE requested_program (
-    id BIGSERIAL PRIMARY KEY,
-    program_id BIGINT REFERENCES published_program(id),
-    organization_name TEXT NOT NULL,
-    mission TEXT,
-    geo TEXT NOT NULL,
-    /* look up geo data in map API */
-    /* address info? */
-    summary TEXT,
-    outcomes TEXT,
-    public_email TEXT,
-    public_phone TEXT,
-    private_email TEXT,
-    private_phone TEXT,
-    created_on DATE NOT NULL,
-    created_by TEXT NOT NULL,
-    updated_on DATE,
-    updated_by TEXT
-);
