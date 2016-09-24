@@ -1,19 +1,19 @@
 (function (angular, jasmine, beforeEach, describe, it) {
     "use strict";
 
-    /* All of the healthBam.createProgram module's tests. */
-    describe("healthBam.createProgram module", function () {
+    /* All of the healthBam.toolbar module's tests. */
+    describe("healthBam.toolbar module", function () {
 
         beforeEach(
             function () {
                 /* Load the module to test. */
-                angular.mock.module("healthBam.createProgram");
+                angular.mock.module("healthBam.toolbar");
             }
         );
 
-        describe("CreateProgramController", function () {
+        describe("ToolbarController", function () {
 
-            var createProgram,
+            var toolbar,
                 $componentController,
                 locals,
                 bindings;
@@ -29,14 +29,17 @@
                     angular.mock.inject(
                         function ($injector) {
                             $componentController = $injector.get("$componentController");
-                            locals.programFormDialogService = $injector.get("programFormDialogService");
                             locals.$log = $injector.get("$log");
                         }
                     );
 
-                    /* Get the controller for the createProgram component. */
-                    createProgram = $componentController(
-                        "healthBamCreateProgram",
+                    locals.$mdSidenav = jasmine.createSpy(
+                        "$mdSidenav"
+                    );
+
+                    /* Get the controller for the toolbar component. */
+                    toolbar = $componentController(
+                        "healthBamToolbar",
                         locals,
                         bindings
                     );
@@ -44,61 +47,68 @@
             );
 
             it("should exist", function () {
-                expect(createProgram).toEqual(jasmine.any(Object));
+                expect(toolbar).toEqual(jasmine.any(Object));
             });
 
             describe("$onInit", function () {
 
                 it("should log loading debug message", function () {
                     spyOn(locals.$log, "debug");
-                    createProgram.$onInit();
+                    toolbar.$onInit();
                     expect(locals.$log.debug).toHaveBeenCalledWith(
                         jasmine.any(String),
-                        createProgram
+                        toolbar
                     );
                 });
 
             });
 
-            describe("openProgramForm", function () {
+            describe("toggleSidenav", function () {
 
                 beforeEach(
                     function () {
-                        createProgram.$onInit();
+                        toolbar.$onInit();
                     }
                 );
 
                 it("should be exposed", function () {
-                    expect(createProgram.openProgramForm).toEqual(jasmine.any(Function));
+                    expect(toolbar.toggleSidenav).toEqual(jasmine.any(Function));
                 });
 
-                it("should open dialog and return its promise", function () {
+                it("should toggle sidenav and return its promise", function () {
 
                     var actual,
                         expected,
-                        event;
+                        healthBamSidenav;
 
                     expected = {
                         fake: "promise"
                     };
 
-                    event = {
-                        mock: "clickEvent"
-                    };
+                    healthBamSidenav = jasmine.createSpyObj(
+                        "healthBamSidenav",
+                        [
+                            "toggle"
+                        ]
+                    );
 
-                    spyOn(locals.programFormDialogService, "open");
-                    locals.programFormDialogService.open.and.returnValue(expected);
+                    locals.$mdSidenav.and.returnValue(healthBamSidenav);
 
-                    actual = createProgram.openProgramForm(event);
+                    healthBamSidenav.toggle.and.returnValue(expected);
+
+                    actual = toolbar.toggleSidenav();
 
                     expect(actual).toEqual(expected);
 
-                    expect(locals.programFormDialogService.open).toHaveBeenCalledWith(
-                        event
+                    expect(locals.$mdSidenav).toHaveBeenCalledWith(
+                        "healthBamSidenav"
                     );
+
+                    expect(healthBamSidenav.toggle).toHaveBeenCalled();
                 });
 
             });
+
         });
 
     });

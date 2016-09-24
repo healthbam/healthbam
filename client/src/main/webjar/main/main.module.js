@@ -7,7 +7,9 @@
             "ngMaterial",
             "ui.router",
             "ngMap",
-            "healthBam.templates"
+            "healthBam.templates",
+            "healthBam.toolbar",
+            "healthBam.sidenav"
         ]
     );
 

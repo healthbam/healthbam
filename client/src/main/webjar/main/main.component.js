@@ -45,9 +45,17 @@
             john();
         }
 
-        $log.debug("Main Controller loaded", main);
+        /**
+         * Initializes the controller.
+         */
+        function activate() {
+            $log.debug("Main Controller loaded", main);
 
-        training();
+            training();
+        }
+
+        /* Run activate when component is loaded. */
+        main.$onInit = activate;
     }
 
     /* Inject dependencies. */

@@ -33,7 +33,7 @@
             $log.debug("CreateProgram Controller loaded", createProgram);
         }
 
-        /* Run createProgram when component loaded. */
+        /* Run activate when component is loaded. */
         createProgram.$onInit = activate;
     }
 
