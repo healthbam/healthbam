@@ -1,4 +1,4 @@
-package org.hmhb.program.requested;
+package org.hmhb.organization;
 
 import java.util.Collections;
 import java.util.List;
@@ -10,34 +10,34 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Unit tests for {@link RequestedProgramController}.
+ * Unit tests for {@link OrganizationController}.
  */
-public class RequestedProgramControllerTest {
+public class OrganizationControllerTest {
 
-    private RequestedProgramController toTest;
-    private RequestedProgramService service;
+    private OrganizationController toTest;
+    private OrganizationService service;
 
-    private RequestedProgram request;
+    private Organization organization;
 
     @Before
     public void setUp() {
-        service = mock(RequestedProgramService.class);
+        service = mock(OrganizationService.class);
 
-        toTest = new RequestedProgramController(service);
+        toTest = new OrganizationController(service);
 
-        request = new RequestedProgram();
-        request.setId(123L);
+        organization = new Organization();
+        organization.setId(123L);
     }
 
     @Test
     public void testGetAll() {
-        List<RequestedProgram> expected = Collections.singletonList(request);
+        List<Organization> expected = Collections.singletonList(organization);
 
         /* Train the mocks. */
         when(service.getAll()).thenReturn(expected);
 
         /* Make the call. */
-        List<RequestedProgram> actual = toTest.getAll();
+        List<Organization> actual = toTest.getAll();
 
         /* Verify the results. */
         assertEquals(expected, actual);
@@ -47,13 +47,13 @@ public class RequestedProgramControllerTest {
     public void testGetById() {
         long input = 123L;
 
-        RequestedProgram expected = request;
+        Organization expected = organization;
 
         /* Train the mocks. */
         when(service.getById(input)).thenReturn(expected);
 
         /* Make the call. */
-        RequestedProgram actual = toTest.getById(input);
+        Organization actual = toTest.getById(input);
 
         /* Verify the results. */
         assertEquals(expected, actual);
@@ -61,16 +61,16 @@ public class RequestedProgramControllerTest {
 
     @Test
     public void testCreate() {
-        RequestedProgram input = new RequestedProgram();
-        input.setOrganizationName("some org");
+        Organization input = new Organization();
+        input.setName("some org");
 
-        RequestedProgram expected = request;
+        Organization expected = organization;
 
         /* Train the mocks. */
         when(service.save(input)).thenReturn(expected);
 
         /* Make the call. */
-        RequestedProgram actual = toTest.create(input);
+        Organization actual = toTest.create(input);
 
         /* Verify the results. */
         assertEquals(expected, actual);
@@ -78,44 +78,33 @@ public class RequestedProgramControllerTest {
 
     @Test
     public void testUpdate() {
-        RequestedProgram input = new RequestedProgram();
+        Organization input = new Organization();
         input.setId(123L);
-        input.setOrganizationName("blah org");
+        input.setName("blah org");
 
-        RequestedProgram expected = request;
+        Organization expected = organization;
 
         /* Train the mocks. */
         when(service.save(input)).thenReturn(expected);
 
         /* Make the call. */
-        RequestedProgram actual = toTest.update(input.getId(), input);
+        Organization actual = toTest.update(input.getId(), input);
 
         /* Verify the results. */
         assertEquals(expected, actual);
     }
 
     @Test
-    public void testPublish() {
-        RequestedProgram input = request;
-
-        /* Make the call. */
-        toTest.publish(input.getId(), input);
-
-        /* Verify the results. */
-        verify(service).publish(input);
-    }
-
-    @Test
     public void testDelete() {
         long input = 123L;
 
-        RequestedProgram expected = request;
+        Organization expected = organization;
 
         /* Train the mocks. */
         when(service.delete(input)).thenReturn(expected);
 
         /* Make the call. */
-        RequestedProgram actual = toTest.delete(input);
+        Organization actual = toTest.delete(input);
 
         /* Verify the results. */
         assertEquals(expected, actual);

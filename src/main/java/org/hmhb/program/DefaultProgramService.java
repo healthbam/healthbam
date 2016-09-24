@@ -1,4 +1,4 @@
-package org.hmhb.program.published;
+package org.hmhb.program;
 
 import javax.annotation.Nonnull;
 import javax.transaction.Transactional;
@@ -9,10 +9,13 @@ import java.util.List;
 import com.codahale.metrics.annotation.Timed;
 import org.apache.commons.lang3.StringUtils;
 import org.hmhb.audit.AuditHelper;
-import org.hmhb.exception.program.published.PublishedProgramGeoRequiredException;
-import org.hmhb.exception.program.published.PublishedProgramNotFoundException;
-import org.hmhb.exception.program.published.PublishedProgramOrgNameRequiredException;
-import org.hmhb.exception.program.published.UpdateRequestsExistException;
+import org.hmhb.exception.program.ProgramNameRequiredException;
+import org.hmhb.exception.program.ProgramNotFoundException;
+import org.hmhb.exception.program.ProgramOrganizationIdRequiredException;
+import org.hmhb.exception.program.ProgramStartYearRequiredException;
+import org.hmhb.exception.program.ProgramStateRequiredException;
+import org.hmhb.exception.program.ProgramZipCodeRequiredException;
+import org.hmhb.organization.OrganizationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,42 +24,45 @@ import org.springframework.stereotype.Service;
 import static java.util.Objects.requireNonNull;
 
 @Service
-public class DefaultPublishedProgramService implements PublishedProgramService {
+public class DefaultProgramService implements ProgramService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultPublishedProgramService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultProgramService.class);
 
     private final AuditHelper auditHelper;
-    private final PublishedProgramDao dao;
+    private final OrganizationService organizationService;
+    private final ProgramDao dao;
 
     @Autowired
-    public DefaultPublishedProgramService(
+    public DefaultProgramService(
             @Nonnull AuditHelper auditHelper,
-            @Nonnull PublishedProgramDao dao
+            @Nonnull OrganizationService organizationService,
+            @Nonnull ProgramDao dao
     ) {
         LOGGER.debug("constructed");
         this.auditHelper = requireNonNull(auditHelper, "auditHelper cannot be null");
+        this.organizationService = requireNonNull(organizationService, "organizationService cannot be null");
         this.dao = requireNonNull(dao, "dao cannot be null");
     }
 
     @Timed
     @Override
-    public PublishedProgram getById(
+    public Program getById(
             @Nonnull Long id
     ) {
         LOGGER.debug("getById called: id={}", id);
         requireNonNull(id, "id cannot be null");
-        PublishedProgram result = dao.findOne(id);
+        Program result = dao.findOne(id);
         if (result == null) {
-            throw new PublishedProgramNotFoundException(id);
+            throw new ProgramNotFoundException(id);
         }
         return result;
     }
 
     @Timed
     @Override
-    public List<PublishedProgram> getAll() {
+    public List<Program> getAll() {
         LOGGER.debug("getAll called");
-        List<PublishedProgram> target = new ArrayList<>();
+        List<Program> target = new ArrayList<>();
         dao.findAll().forEach(target::add);
         return target;
     }
@@ -64,16 +70,13 @@ public class DefaultPublishedProgramService implements PublishedProgramService {
     @Transactional
     @Timed
     @Override
-    public PublishedProgram delete(
+    public Program delete(
             @Nonnull Long id
     ) {
         LOGGER.debug("delete called: id={}", id);
         requireNonNull(id, "id cannot be null");
         /* Verify it exists. */
-        PublishedProgram program = getById(id);
-        if (program.getRequestedPrograms().size() > 0) {
-            throw new UpdateRequestsExistException(id);
-        }
+        Program program = getById(id);
         dao.delete(id);
         return program;
     }
@@ -81,18 +84,33 @@ public class DefaultPublishedProgramService implements PublishedProgramService {
     @Transactional
     @Timed
     @Override
-    public PublishedProgram save(
-            @Nonnull PublishedProgram program
+    public Program save(
+            @Nonnull Program program
     ) {
         LOGGER.debug("save called: program={}", program);
         requireNonNull(program, "program cannot be null");
 
-        if (StringUtils.isBlank(program.getOrganizationName())) {
-            throw new PublishedProgramOrgNameRequiredException();
+        if (StringUtils.isBlank(program.getName())) {
+            throw new ProgramNameRequiredException();
         }
 
-        if (StringUtils.isBlank(program.getGeo())) {
-            throw new PublishedProgramGeoRequiredException();
+        if (program.getOrganization() == null || program.getOrganization().getId() == null) {
+            throw new ProgramOrganizationIdRequiredException();
+        } else {
+            /* Verify the organization exists and get the updated organization info. */
+            program.setOrganization(organizationService.getById(program.getOrganization().getId()));
+        }
+
+        if (program.getStartYear() == null || program.getStartYear().equals(0)) {
+            throw new ProgramStartYearRequiredException();
+        }
+
+        if (StringUtils.isBlank(program.getState())) {
+            throw new ProgramStateRequiredException();
+        }
+
+        if (StringUtils.isBlank(program.getZipCode())) {
+            throw new ProgramZipCodeRequiredException();
         }
 
         if (program.getId() == null) {
@@ -103,7 +121,7 @@ public class DefaultPublishedProgramService implements PublishedProgramService {
             program.setUpdatedOn(null);
         } else {
             /* Verify it exists and get the original createdBy and createdOn. */
-            PublishedProgram programInDb = getById(program.getId());
+            Program programInDb = getById(program.getId());
 
             /* They aren't allowed to change created* or updated* in an update. */
             program.setCreatedBy(programInDb.getCreatedBy());
