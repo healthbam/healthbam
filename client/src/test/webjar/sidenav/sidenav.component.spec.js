@@ -1,19 +1,19 @@
 (function (angular, jasmine, beforeEach, describe, it) {
     "use strict";
 
-    /* All of the healthBam.createProgram module's tests. */
-    describe("healthBam.createProgram module", function () {
+    /* All of the healthBam.sidenav module's tests. */
+    describe("healthBam.sidenav module", function () {
 
         beforeEach(
             function () {
                 /* Load the module to test. */
-                angular.mock.module("healthBam.createProgram");
+                angular.mock.module("healthBam.sidenav");
             }
         );
 
-        describe("CreateProgramController", function () {
+        describe("SidenavController", function () {
 
-            var createProgram,
+            var sidenav,
                 $componentController,
                 locals,
                 bindings;
@@ -29,14 +29,17 @@
                     angular.mock.inject(
                         function ($injector) {
                             $componentController = $injector.get("$componentController");
-                            locals.programFormDialogService = $injector.get("programFormDialogService");
                             locals.$log = $injector.get("$log");
                         }
                     );
 
-                    /* Get the controller for the createProgram component. */
-                    createProgram = $componentController(
-                        "healthBamCreateProgram",
+                    locals.$mdMedia = jasmine.createSpy(
+                        "$mdMedia"
+                    );
+
+                    /* Get the controller for the sidenav component. */
+                    sidenav = $componentController(
+                        "healthBamSidenav",
                         locals,
                         bindings
                     );
@@ -44,61 +47,62 @@
             );
 
             it("should exist", function () {
-                expect(createProgram).toEqual(jasmine.any(Object));
+                expect(sidenav).toEqual(jasmine.any(Object));
             });
 
             describe("$onInit", function () {
 
                 it("should log loading debug message", function () {
                     spyOn(locals.$log, "debug");
-                    createProgram.$onInit();
+                    sidenav.$onInit();
                     expect(locals.$log.debug).toHaveBeenCalledWith(
                         jasmine.any(String),
-                        createProgram
+                        sidenav
                     );
                 });
 
             });
 
-            describe("openProgramForm", function () {
+            describe("sidenav.isLockedOpen", function () {
 
                 beforeEach(
                     function () {
-                        createProgram.$onInit();
+                        sidenav.$onInit();
                     }
                 );
 
                 it("should be exposed", function () {
-                    expect(createProgram.openProgramForm).toEqual(jasmine.any(Function));
+                    expect(sidenav.isLockedOpen).toEqual(jasmine.any(Function));
                 });
 
-                it("should open dialog and return its promise", function () {
+                it("should return true for screens larger than small", function () {
 
                     var actual,
-                        expected,
-                        event;
+                        expected = true;
 
-                    expected = {
-                        fake: "promise"
-                    };
-
-                    event = {
-                        mock: "clickEvent"
-                    };
-
-                    spyOn(locals.programFormDialogService, "open");
-                    locals.programFormDialogService.open.and.returnValue(expected);
-
-                    actual = createProgram.openProgramForm(event);
-
+                    locals.$mdMedia.and.returnValue(expected);
+                    actual = sidenav.isLockedOpen();
                     expect(actual).toEqual(expected);
+                    expect(locals.$mdMedia).toHaveBeenCalledWith(
+                        "gt-sm"
+                    );
+                });
 
-                    expect(locals.programFormDialogService.open).toHaveBeenCalledWith(
-                        event
+                it("should return false for screens small or smaller", function () {
+
+                    var actual,
+                        expected = false;
+
+                    locals.$mdMedia.and.returnValue(expected);
+                    actual = sidenav.isLockedOpen();
+                    expect(actual).toEqual(expected);
+                    expect(locals.$mdMedia).toHaveBeenCalledWith(
+                        "gt-sm"
                     );
                 });
 
             });
+
         });
 
     });

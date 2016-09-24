@@ -13,7 +13,15 @@
     ) {
         var map = this;
 
-        $log.debug("Map Controller loaded", map);
+        /**
+         * Initializes the controller.
+         */
+        function activate() {
+            $log.debug("Map Controller loaded", map);
+        }
+
+        /* Run activate when component is loaded. */
+        map.$onInit = activate;
     }
 
     /* Inject dependencies. */

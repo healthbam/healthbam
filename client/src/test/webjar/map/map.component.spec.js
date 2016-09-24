@@ -29,6 +29,7 @@
                     angular.mock.inject(
                         function ($injector) {
                             $componentController = $injector.get("$componentController");
+                            locals.$log = $injector.get("$log");
                         }
                     );
 
@@ -43,6 +44,19 @@
 
             it("should exist", function () {
                 expect(map).toEqual(jasmine.any(Object));
+            });
+
+            describe("$onInit", function () {
+
+                it("should log loading debug message", function () {
+                    spyOn(locals.$log, "debug");
+                    map.$onInit();
+                    expect(locals.$log.debug).toHaveBeenCalledWith(
+                        jasmine.any(String),
+                        map
+                    );
+                });
+
             });
 
         });
