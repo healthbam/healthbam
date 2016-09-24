@@ -28,7 +28,3 @@ CREATE TABLE program (
     updated_by TEXT,
     UNIQUE (name, organization_id)
 );
-
-/* Leave these in for one PR to clean up the prod DB. */
-DROP TABLE IF EXISTS requested_program;
-DROP TABLE IF EXISTS published_program;
