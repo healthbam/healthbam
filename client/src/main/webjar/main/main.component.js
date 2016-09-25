@@ -17,7 +17,7 @@
          * A function for Jessica to make a change to.
          */
         function jessica() {
-            $log.debug("TODO");
+            $log.debug("Jessica was here");
         }
 
         /**
