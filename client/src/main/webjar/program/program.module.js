@@ -2,7 +2,7 @@
     "use strict";
 
     angular.module(
-        "healthBam.publishedProgram",
+        "healthBam.program",
         [
             "ngResource"
         ]

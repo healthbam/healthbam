@@ -15,7 +15,7 @@
             var programFormDialogService,
                 $mdDialog,
                 $mdMedia,
-                RequestedProgram;
+                Program;
 
             beforeEach(
                 function () {
@@ -54,7 +54,7 @@
                     angular.mock.inject(
                         function ($injector) {
                             programFormDialogService = $injector.get("programFormDialogService");
-                            RequestedProgram = $injector.get("RequestedProgram");
+                            Program = $injector.get("Program");
                         }
                     );
                 }
@@ -80,7 +80,7 @@
                             escapeToClose: false,
                             bindToController: true,
                             locals: {
-                                requestedProgram: new RequestedProgram()
+                                program: new Program()
                             }
                         };
                     }
