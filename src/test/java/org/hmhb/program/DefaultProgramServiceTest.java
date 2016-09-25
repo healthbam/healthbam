@@ -34,6 +34,7 @@ public class DefaultProgramServiceTest {
     private static final String ORG_NAME = "test-org-name";
     private static final int START_YEAR = 1999;
     private static final String STREET_ADDRESS = "test-street-address";
+    private static final String CITY = "test-city";
     private static final String STATE = "test-state";
     private static final String ZIP_CODE = "test-zip-code";
 
@@ -68,6 +69,7 @@ public class DefaultProgramServiceTest {
         program.setOrganization(createOrg());
         program.setStartYear(START_YEAR);
         program.setStreetAddress(STREET_ADDRESS);
+        program.setCity(CITY);
         program.setState(STATE);
         program.setZipCode(ZIP_CODE);
 

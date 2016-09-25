@@ -38,6 +38,9 @@ public class Program {
     private String streetAddress;
 
     @NotNull
+    private String city;
+
+    @NotNull
     private String state;
 
     @NotNull
@@ -106,6 +109,14 @@ public class Program {
 
     public void setStreetAddress(String streetAddress) {
         this.streetAddress = streetAddress;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public String getState() {

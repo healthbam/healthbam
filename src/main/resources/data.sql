@@ -39,6 +39,7 @@ INSERT INTO program (
     organization_id,
     start_year,
     street_address,
+    city,
     state,
     zip_code,
     created_on,
@@ -47,9 +48,10 @@ INSERT INTO program (
     'Program 1.1',
     (SELECT id FROM organization WHERE name = 'Org 1'),
     1999,
-    '123 Peachtree St.',
+    '1006 North Highland Avenue Northeast',
+    'Atlanta',
     'GA',
-    '30332',
+    '30306',
     TIMESTAMP '2016-09-05 11:59:29',
     'initial data script'
 );
@@ -59,6 +61,7 @@ INSERT INTO program (
     organization_id,
     start_year,
     street_address,
+    city,
     state,
     zip_code,
     created_on,
@@ -67,9 +70,10 @@ INSERT INTO program (
     'Program 1.2',
     (SELECT id FROM organization WHERE name = 'Org 1'),
     2001,
-    '222 Peachtree St.',
+    '600 Chastain Rd NW #310',
+    'Kennesaw',
     'GA',
-    '30332',
+    '30144',
     TIMESTAMP '2016-09-06 10:30:29',
     'initial data script'
 );
