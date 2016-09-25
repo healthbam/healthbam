@@ -1,14 +1,25 @@
 <md-content flex>
 
-    <ng-map center="[32.662111, -83.438306]"
+    <ng-map ng-if="map.programs.$resolved"
+            center="[32.662111, -83.438306]"
             zoom="7"
             default-style=""
+            styles="{{map.mapStyle}}"
             zoom-control="true"
             zoom-control-options="{style:'LARGE', position:'LEFT_TOP'}"
             pan-control="false"
             rotate-control="false"
             map-type-control="false"
             street-view-control="false">
+
+        <custom-marker ng-repeat="program in map.programs"
+                       position="{{program.streetAddress}}, {{program.city}}, {{program.state}} {{program.zipCode}}">
+            <md-icon md-font-library="material-icons"
+                     md-colors="{color: 'primary'}">
+                place
+            </md-icon>
+        </custom-marker>
+
     </ng-map>
 
 </md-content>
