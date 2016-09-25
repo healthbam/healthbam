@@ -7,13 +7,13 @@
      * Service for creating program-form dialog instances.
      * @param $mdDialog
      * @param $mdMedia
-     * @param RequestedProgram
+     * @param Program
      * @returns programFormDialogService.
      */
     function programFormDialogServiceFactory(
         $mdDialog,
         $mdMedia,
-        RequestedProgram
+        Program
     ) {
 
         /**
@@ -32,7 +32,7 @@
                 escapeToClose: false,
                 bindToController: true,
                 locals: {
-                    requestedProgram: new RequestedProgram()
+                    program: new Program()
                 }
             };
 
@@ -48,7 +48,7 @@
     programFormDialogServiceFactory.$inject = [
         "$mdDialog",
         "$mdMedia",
-        "RequestedProgram"
+        "Program"
     ];
 
     /* Create programFormDialogService. */

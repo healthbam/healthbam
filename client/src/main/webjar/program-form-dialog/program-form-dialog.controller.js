@@ -20,7 +20,7 @@
          * @returns promise.
          */
         function cancel() {
-            return $mdDialog.cancel(programFormDialog.requestedProgram);
+            return $mdDialog.cancel(programFormDialog.program);
         }
 
         /**
@@ -37,20 +37,20 @@
          * @returns promise.
          */
         function save() {
-            programFormDialog.requestedProgram.programAreas = programFormDialog.programAreas.filter(
+            programFormDialog.program.programAreas = programFormDialog.programAreas.filter(
                 isProgramAreaSelected
             );
 
             if (!programFormDialog.otherProgramArea) {
                 /* If "Other" not checked, don't save explanation field. */
-                delete programFormDialog.requestedProgram.otherProgramAreaExplanation;
+                delete programFormDialog.program.otherProgramAreaExplanation;
             }
 
             /*
-             * TODO: call programFormDialog.requestedProgram.$save()
+             * TODO: call programFormDialog.program.$save()
              * hide on success promise, show error toast on fail promise.
              */
-            return $mdDialog.hide(programFormDialog.requestedProgram);
+            return $mdDialog.hide(programFormDialog.program);
         }
 
         /**

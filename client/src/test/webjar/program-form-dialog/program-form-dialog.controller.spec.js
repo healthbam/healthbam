@@ -16,7 +16,7 @@
                 $controller,
                 locals,
                 bindings,
-                RequestedProgram;
+                Program;
 
             beforeEach(
                 function () {
@@ -30,12 +30,12 @@
                         function ($injector) {
                             $controller = $injector.get("$controller");
                             locals.$mdDialog = $injector.get("$mdDialog");
-                            RequestedProgram = $injector.get("RequestedProgram");
+                            Program = $injector.get("Program");
                         }
                     );
 
                     /* Set bindings. */
-                    bindings.requestedProgram = new RequestedProgram();
+                    bindings.program = new Program();
 
                     /* Get the programFormDialog controller. */
                     programFormDialog = $controller(
@@ -56,7 +56,7 @@
                     expect(programFormDialog.cancel).toEqual(jasmine.any(Function));
                 });
 
-                it("should cancel dialog with requestedProgram", function () {
+                it("should cancel dialog with program", function () {
 
                     var actual,
                         expected = {
@@ -70,7 +70,7 @@
                     actual = programFormDialog.cancel();
 
                     expect(locals.$mdDialog.cancel).toHaveBeenCalledWith(
-                        programFormDialog.requestedProgram
+                        programFormDialog.program
                     );
 
                     expect(actual).toEqual(expected);
@@ -84,7 +84,7 @@
                     expect(programFormDialog.save).toEqual(jasmine.any(Function));
                 });
 
-                it("should cancel dialog with requestedProgram", function () {
+                it("should cancel dialog with program", function () {
 
                     var actual,
                         expected = {
@@ -98,7 +98,7 @@
                     actual = programFormDialog.save();
 
                     expect(locals.$mdDialog.hide).toHaveBeenCalledWith(
-                        programFormDialog.requestedProgram
+                        programFormDialog.program
                     );
 
                     expect(actual).toEqual(expected);
