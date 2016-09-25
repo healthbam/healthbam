@@ -57,6 +57,11 @@
                     );
                 });
 
+                it("should expose mapStyle", function () {
+                    map.$onInit();
+                    expect(map.mapStyle).toEqual(jasmine.any(Array));
+                });
+
             });
 
         });

@@ -9,7 +9,8 @@
             "ngMap",
             "healthBam.templates",
             "healthBam.main",
-            "healthBam.createProgram"
+            "healthBam.createProgram",
+            "healthBam.program"
         ]
     );
 
