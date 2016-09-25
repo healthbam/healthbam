@@ -20,6 +20,7 @@ CREATE TABLE program (
     organization_id BIGINT REFERENCES organization(id),
     start_year INT NOT NULL,
     street_address TEXT NOT NULL,
+    city TEXT NOT NULL,
     state TEXT NOT NULL,
     zip_code TEXT NOT NULL,
     created_on DATE NOT NULL,
