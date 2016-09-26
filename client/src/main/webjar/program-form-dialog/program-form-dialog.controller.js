@@ -6,11 +6,17 @@
     /**
      * Controller for the program-form dialog.
      * @param $mdDialog
+     * @param $mdToast
+     * @param $q
+     * @param Organization
      * @param $log
      * @constructor
      */
     function ProgramFormDialogController(
         $mdDialog,
+        $mdToast,
+        $q,
+        Organization,
         $log
     ) {
         var programFormDialog = this;
@@ -33,6 +39,40 @@
         }
 
         /**
+         * Handles a successful save of the Program.
+         * @returns promise for hiding dialog.
+         */
+        function handleProgramSaveSuccess() {
+            return $mdDialog.hide(programFormDialog.program);
+        }
+
+        /**
+         * Handles an error saving the Program.
+         * @returns rejected promise of error input.
+         */
+        function handleProgramSaveError(error) {
+
+            var message,
+                toast;
+
+            $log.debug("program save error", error);
+
+            message = "Failed to save program.";
+
+            toast = $mdToast.simple().textContent(
+                message
+            ).position(
+                "top right"
+            );
+
+            $mdToast.show(
+                toast
+            );
+
+            return $q.reject(error);
+        }
+
+        /**
          * Saves form and closes the dialog.
          * @returns promise.
          */
@@ -46,11 +86,11 @@
                 delete programFormDialog.program.otherProgramAreaExplanation;
             }
 
-            /*
-             * TODO: call programFormDialog.program.$save()
-             * hide on success promise, show error toast on fail promise.
-             */
-            return $mdDialog.hide(programFormDialog.program);
+            return programFormDialog.program.$save().then(
+                handleProgramSaveSuccess
+            ).catch(
+                handleProgramSaveError
+            );
         }
 
         /**
@@ -152,16 +192,30 @@
         }
 
         /**
+         * Returns true iff the program is associated with a new organization.
+         * @returns {boolean} true if new organization.
+         */
+        function isNewOrganization() {
+            return angular.isObject(programFormDialog.program.organization) &&
+                !programFormDialog.program.organization.id;
+        }
+
+        /**
          * Initializes the controller.
          */
         function activate() {
 
             programFormDialog.otherProgramArea = false;
+            programFormDialog.programAreas = getProgramAreas();
+
+            /* TODO: handle query error and write tests for it. */
+            programFormDialog.organizations = Organization.query();
+            programFormDialog.newOrganization = new Organization();
 
             programFormDialog.cancel = cancel;
             programFormDialog.save = save;
             programFormDialog.getCurrentYear = getCurrentYear;
-            programFormDialog.programAreas = getProgramAreas();
+            programFormDialog.isNewOrganization = isNewOrganization;
 
             $log.debug("Program Form Dialog Controller loaded", programFormDialog);
         }
@@ -173,6 +227,9 @@
     /* Inject dependencies. */
     ProgramFormDialogController.$inject = [
         "$mdDialog",
+        "$mdToast",
+        "$q",
+        "Organization",
         "$log"
     ];
 
