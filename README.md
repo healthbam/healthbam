@@ -5,7 +5,7 @@ Making an **impact** on the health of Babies And Mothers
 
 ## How To Contribute
 
-TODO - describe various ways to help out the non-profit or maybe link the main site
+[See Contributing Guidelines](CONTRIBUTING.md).
 
 ## Getting Started
 
