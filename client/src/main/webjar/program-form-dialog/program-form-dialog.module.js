@@ -7,7 +7,8 @@
             "ngMaterial",
             "healthBam.templates",
             "healthBam.program",
-            "healthBam.organization"
+            "healthBam.organization",
+            "healthBam.countiesField"
         ]
     );
 
