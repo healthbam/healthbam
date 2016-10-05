@@ -80,7 +80,11 @@
                             escapeToClose: false,
                             bindToController: true,
                             locals: {
-                                program: new Program()
+                                program: new Program(
+                                    {
+                                        countiesServed: []
+                                    }
+                                )
                             }
                         };
                     }

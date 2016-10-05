@@ -1,0 +1,30 @@
+<md-chips ng-model="countiesField.counties"
+          md-require-match="true">
+
+    <md-autocomplete placeholder="Add a county served"
+                     md-selected-item="countiesField.selectedItem"
+                     md-search-text="countiesField.searchText"
+                     md-min-length="1"
+                     md-delay="500"
+                     md-items="county in countiesField.findMatches(countiesField.searchText)"
+                     md-item-text="county.name">
+
+        <md-item-template>
+            <span md-highlight-text="countiesField.searchText">
+                {{county.name}}
+            </span>
+        </md-item-template>
+
+        <md-not-found>
+            No matches found.
+        </md-not-found>
+
+    </md-autocomplete>
+
+    <md-chip-template>
+        <span>
+            {{$chip.name}}
+        </span>
+    </md-chip-template>
+
+</md-chips>

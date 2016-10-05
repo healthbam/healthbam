@@ -1,19 +1,19 @@
-(function (angular, jasmine, beforeEach, describe, it) {
+(function (angular, jasmine, beforeEach, describe, it, spyOn) {
     "use strict";
 
-    /* All of the healthBam.createProgram module's tests. */
-    describe("healthBam.createProgram module", function () {
+    /* All of the healthBam.countiesField module's tests. */
+    describe("healthBam.countiesField module", function () {
 
         beforeEach(
             function () {
                 /* Load the module to test. */
-                angular.mock.module("healthBam.createProgram");
+                angular.mock.module("healthBam.countiesField");
             }
         );
 
-        describe("CreateProgramController", function () {
+        describe("CountiesFieldController", function () {
 
-            var createProgram,
+            var countiesField,
                 $componentController,
                 locals,
                 bindings;
@@ -29,14 +29,17 @@
                     angular.mock.inject(
                         function ($injector) {
                             $componentController = $injector.get("$componentController");
-                            locals.programFormDialogService = $injector.get("programFormDialogService");
                             locals.$log = $injector.get("$log");
+                            locals.County = $injector.get("County");
                         }
                     );
 
-                    /* Get the controller for the createProgram component. */
-                    createProgram = $componentController(
-                        "healthBamCreateProgram",
+                    /* Set up bound properties. */
+                    bindings.counties = [];
+
+                    /* Get the controller for the countiesField component. */
+                    countiesField = $componentController(
+                        "healthBamCountiesField",
                         locals,
                         bindings
                     );
@@ -44,58 +47,57 @@
             );
 
             it("should exist", function () {
-                expect(createProgram).toEqual(jasmine.any(Object));
+                expect(countiesField).toEqual(jasmine.any(Object));
             });
 
             describe("$onInit", function () {
 
                 it("should log loading debug message", function () {
                     spyOn(locals.$log, "debug");
-                    createProgram.$onInit();
+                    countiesField.$onInit();
                     expect(locals.$log.debug).toHaveBeenCalledWith(
                         jasmine.any(String),
-                        createProgram
+                        countiesField
                     );
                 });
 
             });
 
-            describe("openProgramForm", function () {
+            describe("findMatches", function () {
 
                 beforeEach(
                     function () {
-                        createProgram.$onInit();
+                        countiesField.$onInit();
                     }
                 );
 
                 it("should be exposed", function () {
-                    expect(createProgram.openProgramForm).toEqual(jasmine.any(Function));
+                    expect(countiesField.findMatches).toEqual(jasmine.any(Function));
                 });
 
-                it("should open dialog and return its promise", function () {
+                it("should call the server for County suggestions and return the promise", function () {
 
                     var actual,
                         expected,
-                        event;
+                        mockCounties,
+                        searchText;
+
+                    searchText = "test-search";
 
                     expected = {
-                        fake: "promise"
+                        mock: "promise"
                     };
 
-                    event = {
-                        mock: "clickEvent"
+                    mockCounties = {
+                        $promise: expected
                     };
 
-                    spyOn(locals.programFormDialogService, "open");
-                    locals.programFormDialogService.open.and.returnValue(expected);
+                    spyOn(locals.County, "query");
+                    locals.County.query.and.returnValue(mockCounties);
 
-                    actual = createProgram.openProgramForm(event);
+                    actual = countiesField.findMatches(searchText);
 
                     expect(actual).toEqual(expected);
-
-                    expect(locals.programFormDialogService.open).toHaveBeenCalledWith(
-                        event
-                    );
                 });
 
             });
@@ -104,4 +106,4 @@
 
     });
 
-}(window.angular, window.jasmine, window.beforeEach, window.describe, window.it));
+}(window.angular, window.jasmine, window.beforeEach, window.describe, window.it, window.spyOn));

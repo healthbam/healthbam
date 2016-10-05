@@ -172,7 +172,10 @@
 
                 </div>
 
-                <div>
+                <health-bam-counties-field counties="programFormDialog.program.countiesServed">
+                </health-bam-counties-field>
+
+                <div class="health-bam-program-areas-container">
                     <fieldset md-colors="{borderColor: 'primary'}">
                         <legend md-colors="{color: 'primary'}">
                             Program areas (check all that apply)
@@ -207,15 +210,6 @@
                         </md-input-container>
                     </fieldset>
                 </div>
-
-                <md-input-container class="md-block">
-                    <label>
-                        Counties served
-                    </label>
-                    <input name="countiesServed"
-                           ng-model="programFormDialog.program.countiesServed"
-                           required>
-                </md-input-container>
 
                 <md-input-container class="md-block">
                     <label>
