@@ -56,6 +56,102 @@ INSERT INTO program (
     'initial data script'
 );
 
+INSERT INTO program_area (
+    name
+) VALUES (
+    'Infant Mortality'
+);
+
+INSERT INTO program_area (
+    name
+) VALUES (
+    'Low Birthweight'
+);
+
+INSERT INTO program_area (
+    name
+) VALUES (
+    'Prematurity'
+);
+
+INSERT INTO program_area (
+    name
+) VALUES (
+    'Smoking Cessation'
+);
+
+INSERT INTO program_area (
+    name
+) VALUES (
+    'Maternal Mortality'
+);
+
+INSERT INTO program_area (
+    name
+) VALUES (
+    'Prenatal Care Access'
+);
+
+INSERT INTO program_area (
+    name
+) VALUES (
+    'Prenatal Education'
+);
+
+INSERT INTO program_area (
+    name
+) VALUES (
+    'Breastfeeding Initiation'
+);
+
+INSERT INTO program_area (
+    name
+) VALUES (
+    'Breastfeeding Duration'
+);
+
+INSERT INTO program_area (
+    name
+) VALUES (
+    'Obesity'
+);
+
+INSERT INTO program_area (
+    name
+) VALUES (
+    'Substance Abuse Prevention'
+);
+
+INSERT INTO program_area (
+    name
+) VALUES (
+    'Neonatal Care'
+);
+
+INSERT INTO program_area (
+    name
+) VALUES (
+    'Postpartum Visits'
+);
+
+INSERT INTO program_area (
+    name
+) VALUES (
+    'Child Safety'
+);
+
+INSERT INTO program_area (
+    name
+) VALUES (
+    'Pediatric Care Access'
+);
+
+INSERT INTO program_area (
+    name
+) VALUES (
+    'Perinatal Mood and Anxiety Disorders (Mental Health)'
+);
+
 INSERT INTO program (
     name,
     organization_id,
