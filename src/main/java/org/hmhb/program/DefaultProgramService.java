@@ -64,6 +64,16 @@ public class DefaultProgramService implements ProgramService {
 
     @Timed
     @Override
+    public List<Program> getByIds(
+            @Nonnull List<Long> ids
+    ) {
+        LOGGER.debug("getByIds called: ids={}", ids);
+        requireNonNull(ids, "ids cannot be null");
+        return dao.findByIdIn(ids);
+    }
+
+    @Timed
+    @Override
     public List<Program> getAll() {
         LOGGER.debug("getAll called");
         List<Program> target = new ArrayList<>();

@@ -104,6 +104,31 @@ public class DefaultProgramServiceTest {
     }
 
     @Test
+    public void testGetByIds() throws Exception {
+        List<Long> input = Collections.singletonList(PROGRAM_ID);
+
+        Program program = createFilledInProgram();
+        program.setId(PROGRAM_ID);
+
+        List<Program> expected = Collections.singletonList(program);
+
+        /* Train the mocks. */
+        when(dao.findByIdIn(input)).thenReturn(expected);
+
+        /* Make the call. */
+        List<Program> actual = toTest.getByIds(input);
+
+        /* Verify the results. */
+        assertEquals(expected, actual);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testGetByIdsNull() throws Exception {
+        /* Make the call. */
+        toTest.getByIds(null);
+    }
+
+    @Test
     public void testGetAll() throws Exception {
         List<Program> expected = Collections.singletonList(createFilledInProgram());
 

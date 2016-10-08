@@ -8,6 +8,8 @@ public interface ProgramService {
 
     Program getById(@Nonnull Long id);
 
+    List<Program> getByIds(@Nonnull List<Long> ids);
+
     List<Program> getAll();
 
     Program delete(@Nonnull Long id);
