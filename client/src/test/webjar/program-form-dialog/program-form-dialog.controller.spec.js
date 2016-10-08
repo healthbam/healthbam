@@ -17,7 +17,11 @@
                 locals,
                 bindings,
                 Program,
+                ProgramArea,
+                Organization,
                 programsEndpoint,
+                programAreasEndpoint,
+                programAreas,
                 organizationsEndpoint,
                 organizations,
                 $httpBackend,
@@ -39,47 +43,80 @@
                             Program = $injector.get("Program");
                             $httpBackend = $injector.get("$httpBackend");
                             $rootScope = $injector.get("$rootScope");
+                            ProgramArea = $injector.get("ProgramArea");
+                            Organization = $injector.get("Organization");
                         }
                     );
 
                     programsEndpoint = "api/programs";
-                    organizationsEndpoint = "";
+                    organizationsEndpoint = "api/organizations";
+                    programAreasEndpoint = "api/program-areas";
 
                     organizations = [
-                        {
-                            id: 100,
-                            name: "Org-1"
-                        }
+                        new Organization(
+                            {
+                                id: 100,
+                                name: "Org-1"
+                            }
+                        )
+                    ];
+
+                    programAreas = [
+                        new ProgramArea(
+                            {
+                                id: 1,
+                                name: "ProgramArea-1"
+                            }
+                        )
                     ];
 
                     /* Set bindings. */
                     bindings.program = new Program();
-
-                    /* Organizations fetched in activate() */
-                    $httpBackend.expectGET(
-                        organizationsEndpoint
-                    ).respond(
-                        angular.toJson(
-                            organizations
-                        )
-                    );
-
-                    /* Get the programFormDialog controller. */
-                    programFormDialog = $controller(
-                        "ProgramFormDialogController",
-                        locals,
-                        bindings
-                    );
-
-                    $httpBackend.flush();
                 }
             );
 
+            /**
+             * Creates controller and mocks request responses.
+             */
+            function initController() {
+
+                /* ProgramAreas fetched in activate() */
+                $httpBackend.expectGET(
+                    programAreasEndpoint
+                ).respond(
+                    angular.toJson(
+                        programAreas
+                    )
+                );
+
+                /* Organizations fetched in activate() */
+                $httpBackend.expectGET(
+                    organizationsEndpoint
+                ).respond(
+                    angular.toJson(
+                        organizations
+                    )
+                );
+
+                /* Get the programFormDialog controller. */
+                programFormDialog = $controller(
+                    "ProgramFormDialogController",
+                    locals,
+                    bindings
+                );
+
+                $httpBackend.flush();
+
+            }
+
             it("should exist", function () {
+                initController();
                 expect(programFormDialog).toEqual(jasmine.any(Object));
             });
 
             describe("programFormDialog.cancel", function () {
+
+                beforeEach(initController);
 
                 it("should exist", function () {
                     expect(programFormDialog.cancel).toEqual(jasmine.any(Function));
@@ -108,6 +145,8 @@
             });
 
             describe("programFormDialog.save", function () {
+
+                beforeEach(initController);
 
                 it("should exist", function () {
                     expect(programFormDialog.save).toEqual(jasmine.any(Function));
@@ -191,6 +230,8 @@
 
             describe("programFormDialog.getCurrentYear", function () {
 
+                beforeEach(initController);
+
                 it("should exist", function () {
                     expect(programFormDialog.getCurrentYear).toEqual(
                         jasmine.any(Function)
@@ -209,10 +250,82 @@
 
             describe("programFormDialog.programAreas", function () {
 
-                it("should exist", function () {
+                beforeEach(initController);
+
+                it("should equal program-areas response", function () {
                     expect(programFormDialog.programAreas).toEqual(
-                        jasmine.any(Array)
+                        jasmine.objectContaining(programAreas)
                     );
+                });
+
+            });
+
+            describe("load failure error handling", function () {
+
+                it("should show toast on ProgramAreas fetch failure", function () {
+
+                    spyOn(locals.$mdToast, "show");
+
+                    /* ProgramAreas fetched in activate() */
+                    $httpBackend.expectGET(
+                        programAreasEndpoint
+                    ).respond(
+                        418
+                    );
+
+                    /* Organizations fetched in activate() */
+                    $httpBackend.expectGET(
+                        organizationsEndpoint
+                    ).respond(
+                        angular.toJson(
+                            organizations
+                        )
+                    );
+
+                    /* Get the programFormDialog controller. */
+                    programFormDialog = $controller(
+                        "ProgramFormDialogController",
+                        locals,
+                        bindings
+                    );
+
+                    $httpBackend.flush();
+
+                    expect(locals.$mdToast.show).toHaveBeenCalled();
+
+                });
+
+                it("should show toast on Organization fetch failure", function () {
+
+                    spyOn(locals.$mdToast, "show");
+
+                    /* ProgramAreas fetched in activate() */
+                    $httpBackend.expectGET(
+                        programAreasEndpoint
+                    ).respond(
+                        angular.toJson(
+                            programAreas
+                        )
+                    );
+
+                    /* Organizations fetched in activate() */
+                    $httpBackend.expectGET(
+                        organizationsEndpoint
+                    ).respond(
+                        418
+                    );
+
+                    /* Get the programFormDialog controller. */
+                    programFormDialog = $controller(
+                        "ProgramFormDialogController",
+                        locals,
+                        bindings
+                    );
+
+                    $httpBackend.flush();
+
+                    expect(locals.$mdToast.show).toHaveBeenCalled();
+
                 });
 
             });

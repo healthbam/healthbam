@@ -9,6 +9,7 @@
      * @param $mdToast
      * @param $q
      * @param Organization
+     * @param ProgramArea
      * @param $log
      * @constructor
      */
@@ -17,6 +18,7 @@
         $mdToast,
         $q,
         Organization,
+        ProgramArea,
         $log
     ) {
         var programFormDialog = this;
@@ -47,17 +49,13 @@
         }
 
         /**
-         * Handles an error saving the Program.
-         * @returns rejected promise of error input.
+         * Handles an error by showing a toast.
+         * @param message {string} to show in toast.
+         * @returns {promise} of toast.
          */
-        function handleProgramSaveError(error) {
+        function handleError(message) {
 
-            var message,
-                toast;
-
-            $log.debug("program save error", error);
-
-            message = "Failed to save program.";
+            var toast;
 
             toast = $mdToast.simple().textContent(
                 message
@@ -65,10 +63,38 @@
                 "top right"
             );
 
-            $mdToast.show(
+            return $mdToast.show(
                 toast
             );
+        }
 
+        /**
+         * Handles an error saving the Program.
+         * @returns rejected promise of error input.
+         */
+        function handleProgramSaveError(error) {
+            $log.debug("program save error", error);
+            handleError("Failed to save program.");
+            return $q.reject(error);
+        }
+
+        /**
+         * Handles an error querying for the ProgramAreas.
+         * @returns rejected promise of error input.
+         */
+        function handleProgramAreaQueryError(error) {
+            $log.debug("program area query error", error);
+            handleError("Failed to retrieve Program Areas.");
+            return $q.reject(error);
+        }
+
+        /**
+         * Handles an error querying for the Organizations.
+         * @returns rejected promise of error input.
+         */
+        function handleOrganizationQueryError(error) {
+            $log.debug("organization query error", error);
+            handleError("Failed to retrieve Organizations.");
             return $q.reject(error);
         }
 
@@ -102,96 +128,6 @@
         }
 
         /**
-         * Returns the list of all program areas.
-         * @returns {Array} of program areas.
-         */
-        function getProgramAreas() {
-
-            return [
-                {
-                    id: 1,
-                    name: "Infant Mortality",
-                    value: false
-                },
-                {
-                    id: 2,
-                    name: "Low Birthweight",
-                    value: false
-                },
-                {
-                    id: 3,
-                    name: "Prematurity",
-                    value: false
-                },
-                {
-                    id: 4,
-                    name: "Smoking Cessation",
-                    value: false
-                },
-                {
-                    id: 5,
-                    name: "Maternal Mortality",
-                    value: false
-                },
-                {
-                    id: 6,
-                    name: "Prenatal Care Access",
-                    value: false
-                },
-                {
-                    id: 7,
-                    name: "Prenatal Education",
-                    value: false
-                },
-                {
-                    id: 8,
-                    name: "Breastfeeding Initiation",
-                    value: false
-                },
-                {
-                    id: 9,
-                    name: "Breastfeeding Duration",
-                    value: false
-                },
-                {
-                    id: 10,
-                    name: "Obesity",
-                    value: false
-                },
-                {
-                    id: 11,
-                    name: "Substance Abuse Prevention",
-                    value: false
-                },
-                {
-                    id: 12,
-                    name: "Neonatal Care",
-                    value: false
-                },
-                {
-                    id: 13,
-                    name: "Postpartum Visits",
-                    value: false
-                },
-                {
-                    id: 14,
-                    name: "Child Safety",
-                    value: false
-                },
-                {
-                    id: 15,
-                    name: "Pediatric Care Access",
-                    value: false
-                },
-                {
-                    id: 16,
-                    name: "Perinatal Mood and Anxiety Disorders (Mental Health)",
-                    value: false
-                }
-            ];
-        }
-
-        /**
          * Returns true iff the program is associated with a new organization.
          * @returns {boolean} true if new organization.
          */
@@ -206,10 +142,17 @@
         function activate() {
 
             programFormDialog.otherProgramArea = false;
-            programFormDialog.programAreas = getProgramAreas();
 
-            /* TODO: handle query error and write tests for it. */
+            programFormDialog.programAreas = ProgramArea.query();
+            programFormDialog.programAreas.$promise.catch(
+                handleProgramAreaQueryError
+            );
+
             programFormDialog.organizations = Organization.query();
+            programFormDialog.organizations.$promise.catch(
+                handleOrganizationQueryError
+            );
+
             programFormDialog.newOrganization = new Organization();
 
             programFormDialog.cancel = cancel;
@@ -230,6 +173,7 @@
         "$mdToast",
         "$q",
         "Organization",
+        "ProgramArea",
         "$log"
     ];
 
