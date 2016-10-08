@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS program;
+DROP TABLE IF EXISTS program_area;
 DROP TABLE IF EXISTS organization;
 DROP TABLE IF EXISTS county;
 
