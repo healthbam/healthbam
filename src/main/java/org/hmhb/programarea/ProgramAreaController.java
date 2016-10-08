@@ -1,4 +1,4 @@
-package org.hmhb.county;
+package org.hmhb.programarea;
 
 import java.util.List;
 
@@ -12,24 +12,23 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import static java.util.Objects.requireNonNull;
 
 /**
- * REST endpoint for {@link County} objects.
+ * REST endpoint for {@link ProgramArea} objects.
  */
 @RestController
-public class CountyController {
+public class ProgramAreaController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CountyController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProgramAreaController.class);
 
-    private CountyService service;
+    private ProgramAreaService service;
 
     @Autowired
-    public CountyController(
-            @Nonnull CountyService service
+    public ProgramAreaController(
+            @Nonnull ProgramAreaService service
     ) {
         LOGGER.debug("constructed");
         this.service = requireNonNull(service, "service cannot be null");
@@ -39,9 +38,9 @@ public class CountyController {
     @RequestMapping(
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE,
-            path = "/api/counties/{id}"
+            path = "/api/program-areas/{id}"
     )
-    public County getById(
+    public ProgramArea getById(
             @PathVariable long id
     ) {
         LOGGER.debug("getById called: id={}", id);
@@ -52,25 +51,11 @@ public class CountyController {
     @RequestMapping(
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE,
-            path = "/api/counties"
+            path = "/api/program-areas"
     )
-    public List<County> getAll() {
+    public List<ProgramArea> getAll() {
         LOGGER.debug("getAll called");
         return service.getAll();
-    }
-
-    @Timed
-    @RequestMapping(
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE,
-            path = "/api/counties",
-            params = {"name"}
-    )
-    public List<County> findByNameStartingWithIgnoreCase(
-            @RequestParam(value = "name") String namePart
-    ) {
-        LOGGER.debug("findByNameStartingWithIgnoreCase called: namePart={}", namePart);
-        return service.findByNameStartingWithIgnoreCase(namePart);
     }
 
 }

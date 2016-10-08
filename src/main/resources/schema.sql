@@ -15,6 +15,11 @@ CREATE TABLE organization (
     updated_by TEXT
 );
 
+CREATE TABLE program_area (
+    id BIGSERIAL PRIMARY KEY,
+    name TEXT NOT NULL
+);
+
 CREATE TABLE program (
     id BIGSERIAL PRIMARY KEY,
     name TEXT NOT NULL,
