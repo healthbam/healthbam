@@ -10,6 +10,7 @@
      * @param $q
      * @param Organization
      * @param ProgramArea
+     * @param errorHandlingService
      * @param $log
      * @constructor
      */
@@ -19,6 +20,7 @@
         $q,
         Organization,
         ProgramArea,
+        errorHandlingService,
         $log
     ) {
         var programFormDialog = this;
@@ -49,32 +51,12 @@
         }
 
         /**
-         * Handles an error by showing a toast.
-         * @param message {string} to show in toast.
-         * @returns {promise} of toast.
-         */
-        function handleError(message) {
-
-            var toast;
-
-            toast = $mdToast.simple().textContent(
-                message
-            ).position(
-                "top right"
-            );
-
-            return $mdToast.show(
-                toast
-            );
-        }
-
-        /**
          * Handles an error saving the Program.
          * @returns rejected promise of error input.
          */
         function handleProgramSaveError(error) {
             $log.debug("program save error", error);
-            handleError("Failed to save program.");
+            errorHandlingService.handleError("Failed to save program.");
             return $q.reject(error);
         }
 
@@ -84,7 +66,7 @@
          */
         function handleProgramAreaQueryError(error) {
             $log.debug("program area query error", error);
-            handleError("Failed to retrieve Program Areas.");
+            errorHandlingService.handleError("Failed to retrieve Program Areas.");
             return $q.reject(error);
         }
 
@@ -94,7 +76,7 @@
          */
         function handleOrganizationQueryError(error) {
             $log.debug("organization query error", error);
-            handleError("Failed to retrieve Organizations.");
+            errorHandlingService.handleError("Failed to retrieve Organizations.");
             return $q.reject(error);
         }
 
@@ -207,6 +189,7 @@
         "$q",
         "Organization",
         "ProgramArea",
+        "errorHandlingService",
         "$log"
     ];
 

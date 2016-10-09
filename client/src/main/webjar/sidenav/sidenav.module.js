@@ -5,7 +5,8 @@
         "healthBam.sidenav",
         [
             "ngMaterial",
-            "healthBam.templates"
+            "healthBam.templates",
+            "healthBam.mapQueryForm"
         ]
     );
 

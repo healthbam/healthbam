@@ -2,15 +2,17 @@
     "use strict";
 
     angular.module(
-        "healthBam.programFormDialog",
+        "healthBam.mapQueryForm",
         [
             "ngMaterial",
+            "ui.router",
             "healthBam.templates",
+            "healthBam.mapQuery",
             "healthBam.errorHandling",
+            "healthBam.county",
             "healthBam.program",
-            "healthBam.organization",
             "healthBam.programArea",
-            "healthBam.countiesField"
+            "healthBam.organization"
         ]
     );
 

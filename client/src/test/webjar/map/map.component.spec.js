@@ -62,11 +62,6 @@
                     expect(map.mapStyle).toEqual(jasmine.any(Array));
                 });
 
-                it("should expose kmlUrl", function () {
-                    map.$onInit();
-                    expect(map.kmlUrl).toEqual(jasmine.any(String));
-                });
-
             });
 
         });
