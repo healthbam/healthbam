@@ -1,3 +1,4 @@
+--TODO: DROP TABLE IF EXISTS program_county;
 DROP TABLE IF EXISTS program;
 DROP TABLE IF EXISTS program_area;
 DROP TABLE IF EXISTS organization;
@@ -16,11 +17,6 @@ CREATE TABLE organization (
     updated_by TEXT
 );
 
-CREATE TABLE program_area (
-    id BIGSERIAL PRIMARY KEY,
-    name TEXT NOT NULL
-);
-
 CREATE TABLE program (
     id BIGSERIAL PRIMARY KEY,
     name TEXT NOT NULL,
@@ -30,11 +26,17 @@ CREATE TABLE program (
     city TEXT NOT NULL,
     state TEXT NOT NULL,
     zip_code TEXT NOT NULL,
+    coordinates TEXT NOT NULL,
     created_on DATE NOT NULL,
     created_by TEXT NOT NULL,
     updated_on DATE,
     updated_by TEXT,
     UNIQUE (name, organization_id)
+);
+
+CREATE TABLE program_area (
+    id BIGSERIAL PRIMARY KEY,
+    name TEXT NOT NULL
 );
 
 CREATE TABLE county (
@@ -44,3 +46,5 @@ CREATE TABLE county (
     shape TEXT NOT NULL,
     UNIQUE (name, state)
 );
+
+--TODO: CREATE TABLE program_county

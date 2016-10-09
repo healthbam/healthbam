@@ -11,6 +11,7 @@ import org.hmhb.exception.program.ProgramOrganizationIdRequiredException;
 import org.hmhb.exception.program.ProgramStartYearRequiredException;
 import org.hmhb.exception.program.ProgramStateRequiredException;
 import org.hmhb.exception.program.ProgramZipCodeRequiredException;
+import org.hmhb.geocode.GeocodeService;
 import org.hmhb.organization.Organization;
 import org.hmhb.organization.OrganizationService;
 import org.junit.Before;
@@ -37,8 +38,10 @@ public class DefaultProgramServiceTest {
     private static final String CITY = "test-city";
     private static final String STATE = "test-state";
     private static final String ZIP_CODE = "test-zip-code";
+    private static final String GEO_CODE = "-1.00000000,1.00000000";
 
     private AuditHelper auditHelper;
+    private GeocodeService geocodeService;
     private OrganizationService organizationService;
     private ProgramDao dao;
     private DefaultProgramService toTest;
@@ -46,10 +49,11 @@ public class DefaultProgramServiceTest {
     @Before
     public void setUp() throws Exception {
         auditHelper = mock(AuditHelper.class);
+        geocodeService = mock(GeocodeService.class);
         organizationService = mock(OrganizationService.class);
         dao = mock(ProgramDao.class);
 
-        toTest = new DefaultProgramService(auditHelper, organizationService, dao);
+        toTest = new DefaultProgramService(auditHelper, geocodeService, organizationService, dao);
     }
 
     private Organization createOrg() {
@@ -273,6 +277,8 @@ public class DefaultProgramServiceTest {
         input.setCreatedOn(new Date(System.currentTimeMillis() + 60000));
         input.setUpdatedBy("input-from-rest-call");
         input.setUpdatedOn(new Date(System.currentTimeMillis() + 60000));
+        /* They also can't set the lat-long (google maps api will give us that. */
+        input.setCoordinates("-5.00000,5.00000");
 
         Program inputWithCreatedAuditFilledIn = createFilledInProgram();
         inputWithCreatedAuditFilledIn.setId(null);
@@ -280,11 +286,13 @@ public class DefaultProgramServiceTest {
         /* They can't set these. */
         inputWithCreatedAuditFilledIn.setCreatedBy(USERNAME_1);
         inputWithCreatedAuditFilledIn.setCreatedOn(CREATED_ON);
+        inputWithCreatedAuditFilledIn.setCoordinates(GEO_CODE);
 
         /* Train the mocks. */
         when(organizationService.getById(ORG_ID)).thenReturn(createOrg());
         when(auditHelper.getCurrentUser()).thenReturn(USERNAME_1);
         when(auditHelper.getCurrentTime()).thenReturn(CREATED_ON);
+        when(geocodeService.getLngLat(notNull(Program.class))).thenReturn(GEO_CODE);
         when(dao.save(inputWithCreatedAuditFilledIn)).thenReturn(inputWithCreatedAuditFilledIn);
 
         /* Make the call. */
@@ -310,6 +318,8 @@ public class DefaultProgramServiceTest {
         input.setCreatedOn(new Date(System.currentTimeMillis() + 60000));
         input.setUpdatedBy("input-from-rest-call");
         input.setUpdatedOn(new Date(System.currentTimeMillis() + 60000));
+        /* They also can't set the lat-long (google maps api will give us that. */
+        input.setCoordinates("-5.00000,5.00000");
 
         Program oldProgramInDb = createFilledInProgram();
         oldProgramInDb.setId(PROGRAM_ID);
@@ -326,12 +336,14 @@ public class DefaultProgramServiceTest {
         inputWithUpdatedAuditFilledIn.setCreatedOn(CREATED_ON);
         inputWithUpdatedAuditFilledIn.setUpdatedBy(USERNAME_2);
         inputWithUpdatedAuditFilledIn.setUpdatedOn(UPDATED_ON);
+        inputWithUpdatedAuditFilledIn.setCoordinates(GEO_CODE);
 
         /* Train the mocks. */
         when(organizationService.getById(ORG_ID)).thenReturn(createOrg());
         when(dao.findOne(PROGRAM_ID)).thenReturn(oldProgramInDb);
         when(auditHelper.getCurrentUser()).thenReturn(USERNAME_2);
         when(auditHelper.getCurrentTime()).thenReturn(UPDATED_ON);
+        when(geocodeService.getLngLat(notNull(Program.class))).thenReturn(GEO_CODE);
         when(dao.save(inputWithUpdatedAuditFilledIn)).thenReturn(inputWithUpdatedAuditFilledIn);
 
         /* Make the call. */

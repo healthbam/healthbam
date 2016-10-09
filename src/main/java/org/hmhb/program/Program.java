@@ -47,6 +47,9 @@ public class Program {
     private String zipCode;
 
     @NotNull
+    private String coordinates;
+
+    @NotNull
     private Date createdOn;
 
     @NotNull
@@ -133,6 +136,14 @@ public class Program {
 
     public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
+    }
+
+    public String getCoordinates() {
+        return coordinates;
+    }
+
+    public void setCoordinates(String coordinates) {
+        this.coordinates = coordinates;
     }
 
     public Date getCreatedOn() {
