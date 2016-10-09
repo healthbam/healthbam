@@ -12,13 +12,8 @@
             map-type-control="false"
             street-view-control="false">
 
-        <custom-marker ng-repeat="program in map.programs"
-                       position="{{program.streetAddress}}, {{program.city}}, {{program.state}} {{program.zipCode}}">
-            <md-icon md-font-library="material-icons"
-                     md-colors="{color: 'primary'}">
-                place
-            </md-icon>
-        </custom-marker>
+        <kml-layer url="{{map.kmlUrl}}">
+        </kml-layer>
 
     </ng-map>
 

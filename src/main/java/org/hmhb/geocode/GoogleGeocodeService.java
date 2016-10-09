@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 
 import java.util.Locale;
 
+import com.codahale.metrics.annotation.Timed;
 import com.google.maps.model.GeocodingResult;
 import org.hmhb.program.Program;
 import org.slf4j.Logger;
@@ -39,6 +40,7 @@ public class GoogleGeocodeService implements GeocodeService {
         );
     }
 
+    @Timed
     @Override
     public String getLngLat(
             @Nonnull Program program
