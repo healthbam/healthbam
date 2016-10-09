@@ -76,6 +76,9 @@ dependencies {
     /* adds in google's findbugs jar so @Nonnull and @Nullable can be used */
     compile("com.google.code.findbugs:jsr305:3.0.1")
 
+    /* client library to use google maps for geocoding */
+    compile("com.google.maps:google-maps-services:0.1.16")
+
     testCompile("junit:junit:4.12")
     testCompile("org.hamcrest:hamcrest-core:1.3")
     testCompile("org.mockito:mockito-all:1.10.19")

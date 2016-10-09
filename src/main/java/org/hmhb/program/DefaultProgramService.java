@@ -15,6 +15,7 @@ import org.hmhb.exception.program.ProgramOrganizationIdRequiredException;
 import org.hmhb.exception.program.ProgramStartYearRequiredException;
 import org.hmhb.exception.program.ProgramStateRequiredException;
 import org.hmhb.exception.program.ProgramZipCodeRequiredException;
+import org.hmhb.geocode.GeocodeService;
 import org.hmhb.organization.OrganizationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,17 +30,20 @@ public class DefaultProgramService implements ProgramService {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultProgramService.class);
 
     private final AuditHelper auditHelper;
+    private final GeocodeService geocodeService;
     private final OrganizationService organizationService;
     private final ProgramDao dao;
 
     @Autowired
     public DefaultProgramService(
             @Nonnull AuditHelper auditHelper,
+            @Nonnull GeocodeService geocodeService,
             @Nonnull OrganizationService organizationService,
             @Nonnull ProgramDao dao
     ) {
         LOGGER.debug("constructed");
         this.auditHelper = requireNonNull(auditHelper, "auditHelper cannot be null");
+        this.geocodeService = requireNonNull(geocodeService, "geocodeService cannot be null");
         this.organizationService = requireNonNull(organizationService, "organizationService cannot be null");
         this.dao = requireNonNull(dao, "dao cannot be null");
     }
@@ -130,8 +134,14 @@ public class DefaultProgramService implements ProgramService {
             program.setUpdatedOn(auditHelper.getCurrentTime());
         }
 
+        fillCoordinates(program);
+
         return dao.save(program);
 
+    }
+
+    private void fillCoordinates(Program program) {
+        program.setCoordinates(geocodeService.getLngLat(program));
     }
 
 }
