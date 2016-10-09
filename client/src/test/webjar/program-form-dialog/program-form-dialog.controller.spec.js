@@ -105,8 +105,11 @@
                     bindings
                 );
 
+                expect(programFormDialog.loading).toEqual(true);
+
                 $httpBackend.flush();
 
+                expect(programFormDialog.loading).toEqual(false);
             }
 
             it("should exist", function () {
@@ -174,7 +177,11 @@
 
                     actualPromise = programFormDialog.save();
 
+                    expect(programFormDialog.loading).toEqual(true);
+
                     $httpBackend.flush();
+
+                    expect(programFormDialog.loading).toEqual(false);
 
                     actualPromise.then(
                         function (actual) {
@@ -210,7 +217,11 @@
 
                     actualPromise = programFormDialog.save();
 
+                    expect(programFormDialog.loading).toEqual(true);
+
                     $httpBackend.flush();
+
+                    expect(programFormDialog.loading).toEqual(false);
 
                     actualPromise.catch(
                         function () {

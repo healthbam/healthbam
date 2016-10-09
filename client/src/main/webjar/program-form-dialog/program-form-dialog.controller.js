@@ -103,6 +103,11 @@
          * @returns promise.
          */
         function save() {
+
+            programFormDialog.loading = true;
+
+            $log.debug("Program Form Dialog saving to server");
+
             programFormDialog.program.programAreas = programFormDialog.programAreas.filter(
                 isProgramAreaSelected
             );
@@ -116,6 +121,11 @@
                 handleProgramSaveSuccess
             ).catch(
                 handleProgramSaveError
+            ).finally(
+                function () {
+                    programFormDialog.loading = false;
+                    $log.debug("Program Form Dialog done saving to server");
+                }
             );
         }
 
@@ -137,11 +147,13 @@
         }
 
         /**
-         * Initializes the controller.
+         * Fetch all initial information from the server.
          */
-        function activate() {
+        function load() {
 
-            programFormDialog.otherProgramArea = false;
+            programFormDialog.loading = true;
+
+            $log.debug("Program Form Dialog loading from server");
 
             programFormDialog.programAreas = ProgramArea.query();
             programFormDialog.programAreas.$promise.catch(
@@ -153,7 +165,28 @@
                 handleOrganizationQueryError
             );
 
+            $q.all(
+                [
+                    programFormDialog.programAreas.$promise,
+                    programFormDialog.organizations.$promise
+                ]
+            ).finally(
+                function () {
+                    programFormDialog.loading = false;
+                    $log.debug("Program Form Dialog done loading from server");
+                }
+            );
+        }
+
+        /**
+         * Initializes the controller.
+         */
+        function activate() {
+
+            programFormDialog.otherProgramArea = false;
             programFormDialog.newOrganization = new Organization();
+
+            load();
 
             programFormDialog.cancel = cancel;
             programFormDialog.save = save;
