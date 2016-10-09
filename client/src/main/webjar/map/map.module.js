@@ -10,7 +10,8 @@
             "healthBam.templates",
             "healthBam.main",
             "healthBam.createProgram",
-            "healthBam.program"
+            "healthBam.program",
+            "healthBam.mapQuery"
         ]
     );
 
