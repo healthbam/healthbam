@@ -6,14 +6,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hmhb.county.County;
 import org.hmhb.organization.Organization;
 
 @Entity
@@ -48,6 +52,20 @@ public class Program {
 
     @NotNull
     private String coordinates;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "program_county",
+            joinColumns = @JoinColumn(
+                    name = "program_id",
+                    referencedColumnName = "id"
+            ),
+            inverseJoinColumns = @JoinColumn(
+                    name = "county_id",
+                    referencedColumnName = "id"
+            )
+    )
+    private List<County> counties;
 
     @NotNull
     private Date createdOn;
@@ -144,6 +162,14 @@ public class Program {
 
     public void setCoordinates(String coordinates) {
         this.coordinates = coordinates;
+    }
+
+    public List<County> getCounties() {
+        return counties;
+    }
+
+    public void setCounties(List<County> counties) {
+        this.counties = counties;
     }
 
     public Date getCreatedOn() {

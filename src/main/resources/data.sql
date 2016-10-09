@@ -393,7 +393,53 @@ INSERT INTO county (
 /**********************************
  * Begin Program-Counties.
  **********************************/
--- TODO
+INSERT INTO program_county (
+    program_id,
+    county_id
+) VALUES (
+    1,
+    1
+);
+
+INSERT INTO program_county (
+    program_id,
+    county_id
+) VALUES (
+    1,
+    2
+);
+
+INSERT INTO program_county (
+    program_id,
+    county_id
+) VALUES (
+    1,
+    3
+);
+
+INSERT INTO program_county (
+    program_id,
+    county_id
+) VALUES (
+    2,
+    5
+);
+
+INSERT INTO program_county (
+    program_id,
+    county_id
+) VALUES (
+    2,
+    6
+);
+
+INSERT INTO program_county (
+    program_id,
+    county_id
+) VALUES (
+    2,
+    1
+);
 /**********************************
  * End Program-Counties.
  **********************************/
