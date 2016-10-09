@@ -25,7 +25,7 @@
             function createMapQuery() {
                 return new MapQuery(
                     {
-                        query: {
+                        search: {
                             programArea: {
                                 id: 12,
                                 name: "Neonatal Care"
@@ -78,7 +78,7 @@
                     mapQuery = createMapQuery();
 
                     expected = angular.copy(mapQuery);
-                    expected.results = {
+                    expected.result = {
                         programs: [],
                         mapLayerUrl: "some/url.kml"
                     };
