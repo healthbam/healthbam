@@ -9,7 +9,10 @@ import java.util.List;
 import com.codahale.metrics.annotation.Timed;
 import org.apache.commons.lang3.StringUtils;
 import org.hmhb.audit.AuditHelper;
+import org.hmhb.authorization.AuthorizationService;
 import org.hmhb.county.County;
+import org.hmhb.exception.program.OnlyAdminCanDeleteProgramException;
+import org.hmhb.exception.program.OnlyAdminCanSaveProgramException;
 import org.hmhb.exception.program.ProgramMeasurableOutcome1RequiredException;
 import org.hmhb.exception.program.ProgramNameRequiredException;
 import org.hmhb.exception.program.ProgramNotFoundException;
@@ -37,6 +40,7 @@ public class DefaultProgramService implements ProgramService {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultProgramService.class);
 
     private final AuditHelper auditHelper;
+    AuthorizationService authorizationService;
     private final GeocodeService geocodeService;
     private final OrganizationService organizationService;
     private final ProgramDao dao;
@@ -44,11 +48,13 @@ public class DefaultProgramService implements ProgramService {
     @Autowired
     public DefaultProgramService(
             @Nonnull AuditHelper auditHelper,
+            @Nonnull AuthorizationService authorizationService,
             @Nonnull GeocodeService geocodeService,
             @Nonnull OrganizationService organizationService,
             @Nonnull ProgramDao dao
     ) {
         LOGGER.debug("constructed");
+        this.authorizationService = requireNonNull(authorizationService, "authorizationService cannot be null");
         this.auditHelper = requireNonNull(auditHelper, "auditHelper cannot be null");
         this.geocodeService = requireNonNull(geocodeService, "geocodeService cannot be null");
         this.organizationService = requireNonNull(organizationService, "organizationService cannot be null");
@@ -249,9 +255,16 @@ public class DefaultProgramService implements ProgramService {
     ) {
         LOGGER.debug("delete called: id={}", id);
         requireNonNull(id, "id cannot be null");
+
+        if (!authorizationService.isAdmin()) {
+            throw new OnlyAdminCanDeleteProgramException();
+        }
+
         /* Verify it exists. */
         Program program = getById(id);
+
         dao.delete(id);
+
         return program;
     }
 
@@ -263,6 +276,10 @@ public class DefaultProgramService implements ProgramService {
     ) {
         LOGGER.debug("save called: program={}", program);
         requireNonNull(program, "program cannot be null");
+
+        if (!authorizationService.isAdmin()) {
+            throw new OnlyAdminCanSaveProgramException();
+        }
 
         if (StringUtils.isBlank(program.getName())) {
             throw new ProgramNameRequiredException();

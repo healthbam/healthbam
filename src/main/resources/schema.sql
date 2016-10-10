@@ -4,8 +4,15 @@ DROP TABLE IF EXISTS program_program_area;
 DROP TABLE IF EXISTS program_county;
 DROP TABLE IF EXISTS program;
 DROP TABLE IF EXISTS program_area;
-DROP TABLE IF EXISTS organization;
 DROP TABLE IF EXISTS county;
+DROP TABLE IF EXISTS organization;
+DROP TABLE IF EXISTS hmhb_user;
+
+CREATE TABLE hmhb_user (
+    id BIGSERIAL PRIMARY KEY,
+    email TEXT NOT NULL UNIQUE,
+    is_admin BOOLEAN NOT NULL
+);
 
 CREATE TABLE organization (
     id BIGSERIAL PRIMARY KEY,
@@ -18,6 +25,22 @@ CREATE TABLE organization (
     created_by TEXT NOT NULL,
     updated_on DATE,
     updated_by TEXT
+);
+
+CREATE TABLE county (
+    id BIGSERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    state TEXT NOT NULL,
+    outer_boundary1 TEXT NOT NULL,
+    inner_boundary1 TEXT,
+    outer_boundary2 TEXT,
+    outer_boundary3 TEXT,
+    UNIQUE (name, state)
+);
+
+CREATE TABLE program_area (
+    id BIGSERIAL PRIMARY KEY,
+    name TEXT NOT NULL
 );
 
 CREATE TABLE program (
@@ -43,22 +66,6 @@ CREATE TABLE program (
     updated_on DATE,
     updated_by TEXT,
     UNIQUE (name, organization_id)
-);
-
-CREATE TABLE program_area (
-    id BIGSERIAL PRIMARY KEY,
-    name TEXT NOT NULL
-);
-
-CREATE TABLE county (
-    id BIGSERIAL PRIMARY KEY,
-    name TEXT NOT NULL,
-    state TEXT NOT NULL,
-    outer_boundary1 TEXT NOT NULL,
-    inner_boundary1 TEXT,
-    outer_boundary2 TEXT,
-    outer_boundary3 TEXT,
-    UNIQUE (name, state)
 );
 
 CREATE TABLE program_county (

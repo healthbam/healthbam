@@ -1,6 +1,38 @@
 -- noinspection SqlNoDataSourceInspectionForFile
 
 /**********************************
+ * Begin Users.
+ **********************************/
+INSERT INTO hmhb_user (
+    email,
+    is_admin
+) VALUES (
+    'john.ryan.bard@gmail.com',
+    TRUE
+);
+
+INSERT INTO hmhb_user (
+    email,
+    is_admin
+) VALUES (
+    'mckoon@gmail.com',
+    TRUE
+);
+
+INSERT INTO hmhb_user (
+    email,
+    is_admin
+) VALUES (
+    'jlgett@gmail.com',
+    TRUE
+);
+/**********************************
+ * End Users.
+ **********************************/
+
+
+
+/**********************************
  * Begin Organizations.
  **********************************/
 INSERT INTO organization (

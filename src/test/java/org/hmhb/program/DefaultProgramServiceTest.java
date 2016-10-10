@@ -5,7 +5,10 @@ import java.util.Date;
 import java.util.List;
 
 import org.hmhb.audit.AuditHelper;
+import org.hmhb.authorization.AuthorizationService;
 import org.hmhb.county.County;
+import org.hmhb.exception.program.OnlyAdminCanDeleteProgramException;
+import org.hmhb.exception.program.OnlyAdminCanSaveProgramException;
 import org.hmhb.exception.program.ProgramMeasurableOutcome1RequiredException;
 import org.hmhb.exception.program.ProgramNameRequiredException;
 import org.hmhb.exception.program.ProgramNotFoundException;
@@ -53,6 +56,7 @@ public class DefaultProgramServiceTest {
     private static final String GEO_CODE = "-1.00000000,1.00000000";
 
     private AuditHelper auditHelper;
+    private AuthorizationService authorizationService;
     private GeocodeService geocodeService;
     private OrganizationService organizationService;
     private ProgramDao dao;
@@ -61,11 +65,18 @@ public class DefaultProgramServiceTest {
     @Before
     public void setUp() throws Exception {
         auditHelper = mock(AuditHelper.class);
+        authorizationService = mock(AuthorizationService.class);
         geocodeService = mock(GeocodeService.class);
         organizationService = mock(OrganizationService.class);
         dao = mock(ProgramDao.class);
 
-        toTest = new DefaultProgramService(auditHelper, geocodeService, organizationService, dao);
+        toTest = new DefaultProgramService(
+                auditHelper,
+                authorizationService,
+                geocodeService,
+                organizationService,
+                dao
+        );
     }
 
     private LocationInfo createLocationInfo() {
@@ -190,6 +201,7 @@ public class DefaultProgramServiceTest {
         Program programInDb = createFilledInProgram();
 
         /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
         when(dao.findOne(PROGRAM_ID)).thenReturn(programInDb);
 
         /* Make the call. */
@@ -203,7 +215,17 @@ public class DefaultProgramServiceTest {
     @Test(expected = ProgramNotFoundException.class)
     public void testDeleteNotFound() throws Exception {
         /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
         when(dao.findOne(PROGRAM_ID)).thenReturn(null);
+
+        /* Make the call. */
+        toTest.delete(PROGRAM_ID);
+    }
+
+    @Test(expected = OnlyAdminCanDeleteProgramException.class)
+    public void testDeleteNotAdmin() throws Exception {
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(false);
 
         /* Make the call. */
         toTest.delete(PROGRAM_ID);
@@ -215,6 +237,9 @@ public class DefaultProgramServiceTest {
         input.setId(null);
         input.setName(null);
 
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
+
         /* Make the call. */
         toTest.save(input);
     }
@@ -224,6 +249,9 @@ public class DefaultProgramServiceTest {
         Program input = createFilledInProgram();
         input.setId(null);
         input.setName("");
+
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
 
         /* Make the call. */
         toTest.save(input);
@@ -235,6 +263,9 @@ public class DefaultProgramServiceTest {
         input.setId(null);
         input.setName(" ");
 
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
+
         /* Make the call. */
         toTest.save(input);
     }
@@ -244,6 +275,9 @@ public class DefaultProgramServiceTest {
         Program input = createFilledInProgram();
         input.setId(null);
         input.setPrimaryGoal1(null);
+
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
 
         /* Make the call. */
         toTest.save(input);
@@ -255,6 +289,9 @@ public class DefaultProgramServiceTest {
         input.setId(null);
         input.setPrimaryGoal1("");
 
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
+
         /* Make the call. */
         toTest.save(input);
     }
@@ -264,6 +301,9 @@ public class DefaultProgramServiceTest {
         Program input = createFilledInProgram();
         input.setId(null);
         input.setPrimaryGoal1(" ");
+
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
 
         /* Make the call. */
         toTest.save(input);
@@ -275,6 +315,9 @@ public class DefaultProgramServiceTest {
         input.setId(null);
         input.setMeasurableOutcome1(null);
 
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
+
         /* Make the call. */
         toTest.save(input);
     }
@@ -284,6 +327,9 @@ public class DefaultProgramServiceTest {
         Program input = createFilledInProgram();
         input.setId(null);
         input.setMeasurableOutcome1("");
+
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
 
         /* Make the call. */
         toTest.save(input);
@@ -295,6 +341,9 @@ public class DefaultProgramServiceTest {
         input.setId(null);
         input.setMeasurableOutcome1(" ");
 
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
+
         /* Make the call. */
         toTest.save(input);
     }
@@ -304,6 +353,9 @@ public class DefaultProgramServiceTest {
         Program input = createFilledInProgram();
         input.setId(null);
         input.setOrganization(null);
+
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
 
         /* Make the call. */
         toTest.save(input);
@@ -315,6 +367,9 @@ public class DefaultProgramServiceTest {
         input.setId(null);
         input.setState(null);
 
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
+
         /* Make the call. */
         toTest.save(input);
     }
@@ -325,6 +380,9 @@ public class DefaultProgramServiceTest {
         input.setId(null);
         input.setState("");
 
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
+
         /* Make the call. */
         toTest.save(input);
     }
@@ -334,6 +392,9 @@ public class DefaultProgramServiceTest {
         Program input = createFilledInProgram();
         input.setId(null);
         input.setState(" ");
+
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
 
         /* Make the call. */
         toTest.save(input);
@@ -346,6 +407,7 @@ public class DefaultProgramServiceTest {
         input.setZipCode(null);
 
         /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
         when(organizationService.getById(ORG_ID)).thenReturn(createOrg());
         when(auditHelper.getCurrentUser()).thenReturn(USERNAME_1);
         when(auditHelper.getCurrentTime()).thenReturn(CREATED_ON);
@@ -367,6 +429,7 @@ public class DefaultProgramServiceTest {
         locationInfo.setZipCode(null);
 
         /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
         when(organizationService.getById(ORG_ID)).thenReturn(createOrg());
         when(auditHelper.getCurrentUser()).thenReturn(USERNAME_1);
         when(auditHelper.getCurrentTime()).thenReturn(CREATED_ON);
@@ -383,6 +446,7 @@ public class DefaultProgramServiceTest {
         input.setZipCode("");
 
         /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
         when(organizationService.getById(ORG_ID)).thenReturn(createOrg());
         when(auditHelper.getCurrentUser()).thenReturn(USERNAME_1);
         when(auditHelper.getCurrentTime()).thenReturn(CREATED_ON);
@@ -404,6 +468,7 @@ public class DefaultProgramServiceTest {
         locationInfo.setZipCode(null);
 
         /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
         when(organizationService.getById(ORG_ID)).thenReturn(createOrg());
         when(auditHelper.getCurrentUser()).thenReturn(USERNAME_1);
         when(auditHelper.getCurrentTime()).thenReturn(CREATED_ON);
@@ -420,6 +485,7 @@ public class DefaultProgramServiceTest {
         input.setZipCode(" ");
 
         /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
         when(organizationService.getById(ORG_ID)).thenReturn(createOrg());
         when(auditHelper.getCurrentUser()).thenReturn(USERNAME_1);
         when(auditHelper.getCurrentTime()).thenReturn(CREATED_ON);
@@ -441,6 +507,7 @@ public class DefaultProgramServiceTest {
         locationInfo.setZipCode(null);
 
         /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
         when(organizationService.getById(ORG_ID)).thenReturn(createOrg());
         when(auditHelper.getCurrentUser()).thenReturn(USERNAME_1);
         when(auditHelper.getCurrentTime()).thenReturn(CREATED_ON);
@@ -457,6 +524,7 @@ public class DefaultProgramServiceTest {
         input.setStartYear(null);
 
         /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
         when(organizationService.getById(ORG_ID)).thenReturn(createOrg());
         when(auditHelper.getCurrentUser()).thenReturn(USERNAME_1);
         when(auditHelper.getCurrentTime()).thenReturn(CREATED_ON);
@@ -496,6 +564,7 @@ public class DefaultProgramServiceTest {
         inputWithCreatedAuditFilledIn.setCoordinates(GEO_CODE);
 
         /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
         when(organizationService.getById(ORG_ID)).thenReturn(createOrg());
         when(auditHelper.getCurrentUser()).thenReturn(USERNAME_1);
         when(auditHelper.getCurrentTime()).thenReturn(CREATED_ON);
@@ -507,6 +576,19 @@ public class DefaultProgramServiceTest {
 
         /* Verify the results. */
         assertEquals(inputWithCreatedAuditFilledIn, actual);
+    }
+
+    @Test(expected = OnlyAdminCanSaveProgramException.class)
+    public void testSaveCreateNewNotAdmin() throws Exception {
+        Program input = createFilledInProgram();
+        input.setId(null);
+        input.setName(PROGRAM_NAME);
+
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(false);
+
+        /* Make the call. */
+        toTest.save(input);
     }
 
     @Test
@@ -537,6 +619,7 @@ public class DefaultProgramServiceTest {
         inputWithCreatedAuditFilledIn.setCoordinates(GEO_CODE);
 
         /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
         when(organizationService.save(inputOrg)).thenReturn(createOrg());
         when(auditHelper.getCurrentUser()).thenReturn(USERNAME_1);
         when(auditHelper.getCurrentTime()).thenReturn(CREATED_ON);
@@ -587,6 +670,7 @@ public class DefaultProgramServiceTest {
         inputWithUpdatedAuditFilledIn.setCoordinates(GEO_CODE);
 
         /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
         when(organizationService.getById(ORG_ID)).thenReturn(createOrg());
         when(dao.findOne(PROGRAM_ID)).thenReturn(oldProgramInDb);
         when(auditHelper.getCurrentUser()).thenReturn(USERNAME_2);
@@ -638,6 +722,7 @@ public class DefaultProgramServiceTest {
         inputWithUpdatedAuditFilledIn.setCoordinates(GEO_CODE);
 
         /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
         when(organizationService.save(inputOrg)).thenReturn(createOrg());
         when(dao.findOne(PROGRAM_ID)).thenReturn(oldProgramInDb);
         when(auditHelper.getCurrentUser()).thenReturn(USERNAME_2);
@@ -659,8 +744,22 @@ public class DefaultProgramServiceTest {
         input.setName(ORG_NAME);
 
         /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
         when(geocodeService.getLocationInfo(notNull(Program.class))).thenReturn(createLocationInfo());
         when(dao.findOne(PROGRAM_ID)).thenReturn(null);
+
+        /* Make the call. */
+        toTest.save(input);
+    }
+
+    @Test(expected = OnlyAdminCanSaveProgramException.class)
+    public void testSaveUpdateExistingProgramNotAdmin() throws Exception {
+        Program input = createFilledInProgram();
+        input.setId(PROGRAM_ID);
+        input.setName(ORG_NAME);
+
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(false);
 
         /* Make the call. */
         toTest.save(input);

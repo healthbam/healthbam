@@ -36,7 +36,10 @@ Create a .env file to the top level directory of this project with the PORT to s
 
 ~~~~shell
 PORT=8080
-JDBC_DATABASE_URL='jdbc:postgresql://localhost:5432/hmhb_db'
+JDBC_DATABASE_URL="jdbc:postgresql://localhost:5432/hmhb_db"
+GOOGLE_OAUTH_CLIENT_ID="259324353484-f8u4ltb5qko7fltub68dguhs16ae93nr.apps.googleusercontent.com"
+GOOGLE_OAUTH_CLIENT_SECRET="<secret>"
+HMHB_JWT_SECRET="<also secret>"
 ~~~~
 
 Now you can run the latest code you have built locally with:

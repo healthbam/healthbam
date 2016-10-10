@@ -64,6 +64,7 @@
             "ngMessages",
             "ngResource",
             "ui.router",
+            "healthBam.authentication",
             "healthBam.main",
             "healthBam.map",
             "healthBam.programDetails",

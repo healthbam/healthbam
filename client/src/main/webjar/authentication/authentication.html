@@ -1,0 +1,26 @@
+<div>
+    <div ng-if="!auth.isAuthenticated()">
+        <button ng-click="auth.authenticate()">
+            Login
+        </button>
+    </div>
+    <div ng-if="auth.isAuthenticated()">
+        <button ng-click="auth.logout()">
+            Logout
+        </button>
+    </div>
+    <div>
+        <span>
+            email:
+        </span>
+        <span ng-bind="auth.getEmail()">
+        </span>
+    </div>
+    <div>
+        <span>
+            admin:
+        </span>
+        <span ng-bind="auth.isAdmin()">
+        </span>
+    </div>
+</div>
