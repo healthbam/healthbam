@@ -1,8 +1,6 @@
 <md-content flex>
 
-    <ng-map ng-if="map.programs.$resolved"
-            center="[32.662111, -83.438306]"
-            zoom="7"
+    <ng-map ng-if="map.mapQuery.$resolved"
             default-style=""
             styles="{{map.mapStyle}}"
             zoom-control="true"
@@ -12,7 +10,7 @@
             map-type-control="false"
             street-view-control="false">
 
-        <kml-layer url="{{map.kmlUrl}}">
+        <kml-layer url="{{map.mapQuery.result.mapLayerUrl}}">
         </kml-layer>
 
     </ng-map>

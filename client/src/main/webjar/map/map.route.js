@@ -13,9 +13,12 @@
         $stateProvider.state(
             "map",
             {
-                url: "/map",
+                url: "/map?{time:int}",
                 component: "healthBamMap",
-                parent: "main"
+                parent: "main",
+                params: {
+                    mapQuery: null
+                }
             }
         );
     }

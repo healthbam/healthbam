@@ -1,0 +1,63 @@
+<md-content layout-padding>
+
+    <form name="mapQueryForm.searchForm"
+          ng-submit="mapQueryForm.search()">
+
+        <md-input-container class="md-block" flex>
+            <label>
+                Program area
+            </label>
+            <md-select ng-model="mapQueryForm.mapQuery.search.programArea">
+                <md-option ng-value="undefined">
+                    All program areas
+                </md-option>
+                <md-option ng-repeat="programArea in mapQueryForm.programAreas"
+                           ng-value="programArea"
+                           ng-bind="programArea.name">
+                </md-option>
+            </md-select>
+        </md-input-container>
+
+        <md-input-container class="md-block" flex>
+            <label>
+                Company/Organization
+            </label>
+            <md-select ng-model="mapQueryForm.mapQuery.search.organization">
+                <md-option ng-value="undefined">
+                    All organizations
+                </md-option>
+                <md-option ng-repeat="organization in mapQueryForm.organizations"
+                           ng-value="organization"
+                           ng-bind="organization.name">
+                </md-option>
+            </md-select>
+        </md-input-container>
+
+        <md-input-container class="md-block" flex>
+            <label>
+                County
+            </label>
+            <md-select ng-model="mapQueryForm.mapQuery.search.county">
+                <md-option ng-value="undefined">
+                    All counties
+                </md-option>
+                <md-option ng-repeat="county in mapQueryForm.counties"
+                           ng-value="county"
+                           ng-bind="county.name">
+                </md-option>
+            </md-select>
+        </md-input-container>
+
+        <div layout="row"
+             layout-align="end center">
+
+            <md-button type="submit"
+                       aria-label="Search">
+                Search
+            </md-button>
+
+        </div>
+
+    </form>
+
+</md-content>

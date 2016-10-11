@@ -25,7 +25,9 @@
     function configureUrlProvider(
         $urlRouterProvider
     ) {
-        $urlRouterProvider.otherwise("/views/map");
+        $urlRouterProvider.otherwise(
+            "/views/map?time=" + Date.now()
+        );
     }
 
     /* Inject dependencies. */
