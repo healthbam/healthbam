@@ -34,7 +34,8 @@
                 locals: {
                     program: new Program(
                         {
-                            countiesServed: []
+                            countiesServed: [],
+                            state: "GA"
                         }
                     )
                 }
