@@ -1,8 +1,10 @@
 package org.hmhb.mapquery;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
+import org.hmhb.organization.Organization;
 import org.hmhb.program.Program;
 import org.hmhb.program.ProgramService;
 import org.junit.Before;
@@ -16,6 +18,10 @@ import static org.mockito.Mockito.*;
  */
 public class DefaultMapQueryServiceTest {
 
+    private static final Long PROGRAM_ID_1 = 1001L;
+    private static final Long PROGRAM_ID_2 = 1002L;
+    private static final Long ORG_ID = 2001L;
+
     private DefaultMapQueryService toTest;
 
     private ProgramService service;
@@ -27,37 +33,100 @@ public class DefaultMapQueryServiceTest {
     }
 
     @Test
-    public void testSearch() throws Exception {
+    public void testSearch_ResultsFound() throws Exception {
+        Organization organization = new Organization();
+        organization.setId(ORG_ID);
 
-        MapQuery input;
-        MapQuery expected;
+        MapQuerySearch search = new MapQuerySearch();
+        search.setOrganization(organization);
 
-        input = new MapQuery();
-        input.setSearch(new MapQuerySearch());
+        MapQuery input = new MapQuery();
+        input.setSearch(search);
 
-        expected = new MapQuery();
+        MapQuery expected = new MapQuery();
         expected.setSearch(input.getSearch());
 
-        List<Long> programIds = new ArrayList<>();
-        programIds.add(1L);
-        programIds.add(2L);
+        Program program1 = new Program();
+        program1.setId(PROGRAM_ID_1);
 
-        List<Program> programs = new ArrayList<>();
+        Program program2 = new Program();
+        program2.setId(PROGRAM_ID_2);
+
+        List<Program> programs = Arrays.asList(
+                program1,
+                program2
+        );
 
         MapQueryResult result = new MapQueryResult();
         result.setPrograms(programs);
-        result.setMapLayerUrl("https://hmhb.herokuapp.com/api/kml?programIds=1,2");
 
         expected.setResult(result);
 
         /* Train the mocks. */
-        when(service.getByIds(programIds)).thenReturn(programs);
+        when(service.search(input)).thenReturn(programs);
 
         /* Make the call. */
         MapQuery actual = toTest.search(input);
 
         /* Verify the results. */
-        assertEquals(expected, actual);
+        assertEquals(
+                input.getSearch(),
+                actual.getSearch()
+        );
+        assertTrue(
+                "Didn't start with expected: " + actual.getResult().getMapLayerUrl(),
+                actual.getResult()
+                        .getMapLayerUrl()
+                        .startsWith("https://hmhb.herokuapp.com/api/kml?programIds=1001,1002&time=")
+        );
+        assertEquals(
+                programs,
+                actual.getResult().getPrograms()
+        );
+    }
+
+    @Test
+    public void testSearch_NoResultsFound() throws Exception {
+        Organization organization = new Organization();
+        organization.setId(ORG_ID);
+
+        MapQuerySearch search = new MapQuerySearch();
+        search.setOrganization(organization);
+
+        MapQuery input = new MapQuery();
+        input.setSearch(search);
+
+        MapQuery expected = new MapQuery();
+        expected.setSearch(input.getSearch());
+
+        List<Program> programs = Collections.emptyList();
+
+        MapQueryResult result = new MapQueryResult();
+        result.setPrograms(programs);
+
+        expected.setResult(result);
+
+        /* Train the mocks. */
+        when(service.search(input)).thenReturn(programs);
+
+        /* Make the call. */
+        MapQuery actual = toTest.search(input);
+
+        /* Verify the results. */
+        assertEquals(
+                input.getSearch(),
+                actual.getSearch()
+        );
+        assertTrue(
+                "Didn't start with expected: " + actual.getResult().getMapLayerUrl(),
+                actual.getResult()
+                        .getMapLayerUrl()
+                        .startsWith("https://hmhb.herokuapp.com/api/kml?programIds=&time=")
+        );
+        assertEquals(
+                programs,
+                actual.getResult().getPrograms()
+        );
     }
 
 }

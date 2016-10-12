@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.hmhb.audit.AuditHelper;
+import org.hmhb.county.County;
 import org.hmhb.exception.program.ProgramNameRequiredException;
 import org.hmhb.exception.program.ProgramNotFoundException;
 import org.hmhb.exception.program.ProgramOrganizationRequiredException;
@@ -12,8 +13,11 @@ import org.hmhb.exception.program.ProgramStartYearRequiredException;
 import org.hmhb.exception.program.ProgramStateRequiredException;
 import org.hmhb.exception.program.ProgramZipCodeRequiredException;
 import org.hmhb.geocode.GeocodeService;
+import org.hmhb.mapquery.MapQuery;
+import org.hmhb.mapquery.MapQuerySearch;
 import org.hmhb.organization.Organization;
 import org.hmhb.organization.OrganizationService;
+import org.hmhb.programarea.ProgramArea;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,12 +31,16 @@ public class DefaultProgramServiceTest {
 
     private static final long PROGRAM_ID = 123L;
     private static final long ORG_ID = 456L;
+    private static final long COUNTY_ID = 789L;
+    private static final long PROGRAM_AREA_ID = 999L;
     private static final Date CREATED_ON = new Date(123456L);
     private static final String USERNAME_1 = "somebody";
     private static final String USERNAME_2 = "somebody-else";
     private static final Date UPDATED_ON = new Date(654321L);
     private static final String PROGRAM_NAME = "test-program-name";
     private static final String ORG_NAME = "test-org-name";
+    private static final String COUNTY_NAME = "test-county-name";
+    private static final String PROGRAM_AREA_NAME = "test-program-area-name";
     private static final int START_YEAR = 1999;
     private static final String STREET_ADDRESS = "test-street-address";
     private static final String CITY = "test-city";
@@ -56,6 +64,24 @@ public class DefaultProgramServiceTest {
         toTest = new DefaultProgramService(auditHelper, geocodeService, organizationService, dao);
     }
 
+    private County createCounty() {
+        County county = new County();
+
+        county.setId(COUNTY_ID);
+        county.setName(COUNTY_NAME);
+
+        return county;
+    }
+
+    private ProgramArea createProgramArea() {
+        ProgramArea programArea = new ProgramArea();
+
+        programArea.setId(PROGRAM_AREA_ID);
+        programArea.setName(PROGRAM_AREA_NAME);
+
+        return programArea;
+    }
+
     private Organization createOrg() {
         Organization organization = new Organization();
 
@@ -76,6 +102,8 @@ public class DefaultProgramServiceTest {
         program.setCity(CITY);
         program.setState(STATE);
         program.setZipCode(ZIP_CODE);
+        program.setCountiesServed(Collections.singletonList(createCounty()));
+//        program.setProgramAreas(Collections.singletonList(createProgramArea()));
 
         return program;
     }
@@ -113,7 +141,7 @@ public class DefaultProgramServiceTest {
         List<Program> expected = Collections.singletonList(program);
 
         /* Train the mocks. */
-        when(dao.findByIdIn(input)).thenReturn(expected);
+        when(dao.findAll(input)).thenReturn(expected);
 
         /* Make the call. */
         List<Program> actual = toTest.getByIds(input);
@@ -133,7 +161,7 @@ public class DefaultProgramServiceTest {
         List<Program> expected = Collections.singletonList(createFilledInProgram());
 
         /* Train the mocks. */
-        when(dao.findAll()).thenReturn(expected);
+        when(dao.findAllByOrderByNameAsc()).thenReturn(expected);
 
         /* Make the call. */
         List<Program> actual = toTest.getAll();
@@ -471,6 +499,206 @@ public class DefaultProgramServiceTest {
 
         /* Make the call. */
         toTest.save(input);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testSearchNullQuerySpecified() throws Exception {
+        /* Make the call. */
+        toTest.search(null);
+    }
+
+    @Test
+    public void testSearchNullSearchSpecified() throws Exception {
+        MapQuery input = new MapQuery();
+        input.setSearch(null);
+
+        List<Program> expected = Collections.singletonList(createFilledInProgram());
+
+        /* Train the mocks. */
+        when(dao.findAllByOrderByNameAsc()).thenReturn(expected);
+
+        /* Make the call. */
+        List<Program> actual = toTest.search(input);
+
+        /* Verify the results. */
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testSearchEmptySearchSpecified() throws Exception {
+        MapQuerySearch search = new MapQuerySearch();
+        MapQuery input = new MapQuery();
+        input.setSearch(search);
+
+        List<Program> expected = Collections.singletonList(createFilledInProgram());
+
+        /* Train the mocks. */
+        when(dao.findAllByOrderByNameAsc()).thenReturn(expected);
+
+        /* Make the call. */
+        List<Program> actual = toTest.search(input);
+
+        /* Verify the results. */
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testSearchProgramSpecified() throws Exception {
+        MapQuerySearch search = new MapQuerySearch();
+        search.setProgram(createFilledInProgram());
+        MapQuery input = new MapQuery();
+        input.setSearch(search);
+
+        List<Program> expected = Collections.singletonList(createFilledInProgram());
+
+        /* Train the mocks. */
+        when(dao.findOne(PROGRAM_ID)).thenReturn(createFilledInProgram());
+
+        /* Make the call. */
+        List<Program> actual = toTest.search(input);
+
+        /* Verify the results. */
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testSearchOnlyOrgSpecified() throws Exception {
+        MapQuerySearch search = new MapQuerySearch();
+        search.setOrganization(createOrg());
+        MapQuery input = new MapQuery();
+        input.setSearch(search);
+
+        List<Program> expected = Collections.singletonList(createFilledInProgram());
+
+        /* Train the mocks. */
+        when(dao.findByOrganizationId(ORG_ID)).thenReturn(expected);
+
+        /* Make the call. */
+        List<Program> actual = toTest.search(input);
+
+        /* Verify the results. */
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testSearchOnlyCountySpecified() throws Exception {
+        MapQuerySearch search = new MapQuerySearch();
+        search.setCounty(createCounty());
+        MapQuery input = new MapQuery();
+        input.setSearch(search);
+
+        List<Program> expected = Collections.singletonList(createFilledInProgram());
+
+        /* Train the mocks. */
+        when(dao.findByCountiesServedId(COUNTY_ID)).thenReturn(expected);
+
+        /* Make the call. */
+        List<Program> actual = toTest.search(input);
+
+        /* Verify the results. */
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testSearchOnlyProgramAreaSpecified() throws Exception {
+        MapQuerySearch search = new MapQuerySearch();
+        search.setProgramArea(createProgramArea());
+        MapQuery input = new MapQuery();
+        input.setSearch(search);
+
+        List<Program> expected = Collections.singletonList(createFilledInProgram());
+
+        /* Train the mocks. */
+        when(dao.findByProgramAreasId(PROGRAM_AREA_ID)).thenReturn(expected);
+
+        /* Make the call. */
+        List<Program> actual = toTest.search(input);
+
+        /* Verify the results. */
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testSearchOrgAndCountySpecified() throws Exception {
+        MapQuerySearch search = new MapQuerySearch();
+        search.setOrganization(createOrg());
+        search.setCounty(createCounty());
+        MapQuery input = new MapQuery();
+        input.setSearch(search);
+
+        List<Program> expected = Collections.singletonList(createFilledInProgram());
+
+        /* Train the mocks. */
+        when(dao.findByOrganizationIdAndCountiesServedId(ORG_ID, COUNTY_ID)).thenReturn(expected);
+
+        /* Make the call. */
+        List<Program> actual = toTest.search(input);
+
+        /* Verify the results. */
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testSearchOrgAndProgramAreaSpecified() throws Exception {
+        MapQuerySearch search = new MapQuerySearch();
+        search.setOrganization(createOrg());
+        search.setProgramArea(createProgramArea());
+        MapQuery input = new MapQuery();
+        input.setSearch(search);
+
+        List<Program> expected = Collections.singletonList(createFilledInProgram());
+
+        /* Train the mocks. */
+        when(dao.findByOrganizationIdAndProgramAreasId(ORG_ID, PROGRAM_AREA_ID)).thenReturn(expected);
+
+        /* Make the call. */
+        List<Program> actual = toTest.search(input);
+
+        /* Verify the results. */
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testSearchCountyAndProgramAreaSpecified() throws Exception {
+        MapQuerySearch search = new MapQuerySearch();
+        search.setCounty(createCounty());
+        search.setProgramArea(createProgramArea());
+        MapQuery input = new MapQuery();
+        input.setSearch(search);
+
+        List<Program> expected = Collections.singletonList(createFilledInProgram());
+
+        /* Train the mocks. */
+        when(dao.findByCountiesServedIdAndProgramAreasId(COUNTY_ID, PROGRAM_AREA_ID)).thenReturn(expected);
+
+        /* Make the call. */
+        List<Program> actual = toTest.search(input);
+
+        /* Verify the results. */
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testSearchOrgAndCountyAndProgramAreaSpecified() throws Exception {
+        MapQuerySearch search = new MapQuerySearch();
+        search.setOrganization(createOrg());
+        search.setCounty(createCounty());
+        search.setProgramArea(createProgramArea());
+        MapQuery input = new MapQuery();
+        input.setSearch(search);
+
+        List<Program> expected = Collections.singletonList(createFilledInProgram());
+
+        /* Train the mocks. */
+        when(
+                dao.findByOrganizationIdAndCountiesServedIdAndProgramAreasId(ORG_ID, COUNTY_ID, PROGRAM_AREA_ID)
+        ).thenReturn(expected);
+
+        /* Make the call. */
+        List<Program> actual = toTest.search(input);
+
+        /* Verify the results. */
+        assertEquals(expected, actual);
     }
 
 }

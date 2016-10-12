@@ -87,7 +87,7 @@ public class DefaultOrganizationServiceTest {
         List<Organization> expected = Collections.singletonList(createFilledInOrg());
 
         /* Train the mocks. */
-        when(dao.findAll()).thenReturn(expected);
+        when(dao.findAllByOrderByNameAsc()).thenReturn(expected);
 
         /* Make the call. */
         List<Organization> actual = toTest.getAll();

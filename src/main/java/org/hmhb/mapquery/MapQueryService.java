@@ -1,5 +1,7 @@
 package org.hmhb.mapquery;
 
+import javax.annotation.Nonnull;
+
 /**
  * Logic layer for {@link MapQuery} objects.
  */
@@ -10,6 +12,6 @@ public interface MapQueryService {
      * @param mapQuery {@link MapQuery} containing {@link MapQuerySearch} criteria.
      * @return {@link MapQuery} with filled in {@link MapQueryResult} object.
      */
-    MapQuery search(MapQuery mapQuery);
+    MapQuery search(@Nonnull MapQuery mapQuery);
 
 }
