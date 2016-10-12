@@ -41,7 +41,12 @@ public class County {
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+        return new ToStringBuilder(this)
+                .append("id", id)
+                .append("name", name)
+                .append("state", state)
+                /* I'm leaving out "shape" because it is very spammy. */
+                .toString();
     }
 
     public Long getId() {
