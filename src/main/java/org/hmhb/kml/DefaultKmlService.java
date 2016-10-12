@@ -78,12 +78,6 @@ public class DefaultKmlService implements KmlService {
         );
     }
 
-    private String temporaryConvert(String shape) {
-        // TODO - after John submits the counties SQL, remove the xml from the shape data
-        return shape.replace("<Polygon><outerBoundaryIs><LinearRing><coordinates>", "")
-                .replace("</coordinates></LinearRing></outerBoundaryIs></Polygon>", "");
-    }
-
     private String getDescription(Program program) {
         return String.format(
                 "<p>Founded in %s.</p>",
@@ -98,7 +92,7 @@ public class DefaultKmlService implements KmlService {
 
         for (Program program : programs) {
 
-            counties.addAll(program.getCounties());
+            counties.addAll(program.getCountiesServed());
 
             programPlacemarks.add(
                     new KmlPlacemark(
@@ -123,7 +117,7 @@ public class DefaultKmlService implements KmlService {
                             new KmlPolygon(
                                     new KmlOuterBoundary(
                                             new KmlLinearRing(
-                                                    temporaryConvert(county.getShape())
+                                                    county.getShape()
                                             )
                                     )
                             )

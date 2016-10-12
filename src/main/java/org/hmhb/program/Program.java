@@ -65,7 +65,7 @@ public class Program {
                     referencedColumnName = "id"
             )
     )
-    private List<County> counties;
+    private List<County> countiesServed;
 
     @NotNull
     private Date createdOn;
@@ -164,12 +164,12 @@ public class Program {
         this.coordinates = coordinates;
     }
 
-    public List<County> getCounties() {
-        return counties;
+    public List<County> getCountiesServed() {
+        return countiesServed;
     }
 
-    public void setCounties(List<County> counties) {
-        this.counties = counties;
+    public void setCountiesServed(List<County> countiesServed) {
+        this.countiesServed = countiesServed;
     }
 
     public Date getCreatedOn() {
