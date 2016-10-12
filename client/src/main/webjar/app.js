@@ -65,7 +65,8 @@
             "ngResource",
             "ui.router",
             "healthBam.main",
-            "healthBam.map"
+            "healthBam.map",
+            "healthBam.programDetails"
         ]
     );
 

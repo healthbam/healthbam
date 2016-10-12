@@ -6,7 +6,6 @@
     /**
      * Controller for the program-form dialog.
      * @param $mdDialog
-     * @param $mdToast
      * @param $q
      * @param Organization
      * @param ProgramArea
@@ -16,7 +15,6 @@
      */
     function ProgramFormDialogController(
         $mdDialog,
-        $mdToast,
         $q,
         Organization,
         ProgramArea,
@@ -185,7 +183,6 @@
     /* Inject dependencies. */
     ProgramFormDialogController.$inject = [
         "$mdDialog",
-        "$mdToast",
         "$q",
         "Organization",
         "ProgramArea",
