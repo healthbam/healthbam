@@ -1,3 +1,5 @@
+-- noinspection SqlNoDataSourceInspectionForFile
+
 DROP TABLE IF EXISTS program_program_area;
 DROP TABLE IF EXISTS program_county;
 DROP TABLE IF EXISTS program;

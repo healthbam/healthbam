@@ -1,10 +1,9 @@
 package org.hmhb.mapquery;
 
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.annotation.Nonnull;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import com.codahale.metrics.annotation.Timed;
 import org.hmhb.program.Program;
@@ -38,31 +37,22 @@ public class DefaultMapQueryService implements MapQueryService {
     public MapQuery search(
             @Nonnull MapQuery mapQuery
     ) {
-
         LOGGER.debug("search called: mapQuery={}", mapQuery);
-
         requireNonNull(mapQuery, "mapQuery cannot be null");
 
-        /* Hardcoded for now. */
-        List<Long> programIds = new ArrayList<>();
+        List<Program> programs = programService.search(mapQuery);
 
-        if (mapQuery.getSearch() != null && mapQuery.getSearch().getProgram() != null) {
-            programIds.add(
-                    mapQuery.getSearch().getProgram().getId()
-            );
-
-        } else {
-            programIds.add(1L);
-            programIds.add(2L);
-        }
-
-        List<Program> programs = programService.getByIds(programIds);
+        String commaSeparatedProgramIds = programs.stream()
+                .map(Program::getId)
+                .map(Object::toString)
+                .collect(Collectors.joining(","));
 
         MapQueryResult result = new MapQueryResult();
         result.setPrograms(programs);
         result.setMapLayerUrl(
                 "https://hmhb.herokuapp.com/api/kml"
-                + "?programIds=1,2"
+                        + "?programIds=" + commaSeparatedProgramIds
+                        + "&time=" + System.currentTimeMillis()
         );
         mapQuery.setResult(result);
         return mapQuery;

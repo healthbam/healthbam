@@ -3,12 +3,13 @@ package org.hmhb.program;
 import javax.annotation.Nonnull;
 import javax.transaction.Transactional;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.codahale.metrics.annotation.Timed;
 import org.apache.commons.lang3.StringUtils;
 import org.hmhb.audit.AuditHelper;
+import org.hmhb.county.County;
 import org.hmhb.exception.program.ProgramNameRequiredException;
 import org.hmhb.exception.program.ProgramNotFoundException;
 import org.hmhb.exception.program.ProgramOrganizationRequiredException;
@@ -16,7 +17,11 @@ import org.hmhb.exception.program.ProgramStartYearRequiredException;
 import org.hmhb.exception.program.ProgramStateRequiredException;
 import org.hmhb.exception.program.ProgramZipCodeRequiredException;
 import org.hmhb.geocode.GeocodeService;
+import org.hmhb.mapquery.MapQuery;
+import org.hmhb.mapquery.MapQuerySearch;
+import org.hmhb.organization.Organization;
 import org.hmhb.organization.OrganizationService;
+import org.hmhb.programarea.ProgramArea;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,16 +74,169 @@ public class DefaultProgramService implements ProgramService {
     ) {
         LOGGER.debug("getByIds called: ids={}", ids);
         requireNonNull(ids, "ids cannot be null");
-        return dao.findByIdIn(ids);
+        return dao.findAll(ids);
     }
 
     @Timed
     @Override
     public List<Program> getAll() {
         LOGGER.debug("getAll called");
-        List<Program> target = new ArrayList<>();
-        dao.findAll().forEach(target::add);
-        return target;
+        return dao.findAllByOrderByNameAsc();
+    }
+
+    @Timed
+    @Override
+    public List<Program> search(
+            @Nonnull MapQuery query
+    ) {
+        LOGGER.debug("search called: query={}", query);
+        requireNonNull(query, "query cannot be null");
+
+        MapQuerySearch search = query.getSearch();
+
+        if (search == null) {
+            return getAll();
+        }
+
+        if (search.getProgram() != null) {
+
+            return Collections.singletonList(
+                    getById(search.getProgram().getId())
+            );
+
+        }
+
+        County county = search.getCounty();
+        Organization organization = search.getOrganization();
+        ProgramArea programArea = search.getProgramArea();
+
+        Long countyId = null;
+
+        if (county != null) {
+            countyId = county.getId();
+        }
+
+        Long organizationId = null;
+
+        if (organization != null) {
+            organizationId = organization.getId();
+        }
+
+        Long programAreaId = null;
+
+        if (programArea != null) {
+            programAreaId = programArea.getId();
+        }
+
+        /*
+         * Both of these potential implementations (nested ifs and flattened ifs) are really ugly,
+         * but using JPA Specification looks much more complicated.
+         *
+         * For now, with only 3 search params, I'm just going to have all permutations of
+         * searches in the DAO.  If anymore params are added and the permutations get worse,
+         * I'll have to use JPA Specification or figure something else out.
+         */
+//        return doSearchFlattenedIfs(organizationId, countyId, programAreaId);
+        return doSearchNestedIfs(organizationId, countyId, programAreaId);
+    }
+
+    private List<Program> doSearchFlattenedIfs(
+            Long organizationId,
+            Long countyId,
+            Long programAreaId
+    ) {
+
+        if (organizationId != null && countyId != null && programAreaId != null) {
+            return dao.findByOrganizationIdAndCountiesServedIdAndProgramAreasId(
+                    organizationId,
+                    countyId,
+                    programAreaId
+            );
+
+        } else if (organizationId != null && countyId == null && programAreaId != null) {
+            return dao.findByOrganizationIdAndProgramAreasId(organizationId, programAreaId);
+
+        } else if (organizationId != null && countyId != null /* && programAreaId == null */) {
+            return dao.findByOrganizationIdAndCountiesServedId(organizationId, countyId);
+
+        } else if (organizationId != null /* && countyId == null && programAreaId == null */) {
+            return dao.findByOrganizationId(organizationId);
+
+        } else if (/* organizationId == null && */ countyId != null && programAreaId != null) {
+            return dao.findByCountiesServedIdAndProgramAreasId(countyId, programAreaId);
+
+        } else if (/* organizationId == null && */ countyId != null /* && programAreaId == null */) {
+            return dao.findByCountiesServedId(countyId);
+
+        } else if (/* organizationId == null && countyId == null && */ programAreaId != null) {
+            return dao.findByProgramAreasId(programAreaId);
+
+        }
+
+        /* organizationId == null && countyId == null && programAreaId == null */
+        return getAll();
+    }
+
+    private List<Program> doSearchNestedIfs(
+            Long organizationId,
+            Long countyId,
+            Long programAreaId
+    ) {
+        if (organizationId != null) {
+
+            if (countyId != null) {
+
+                if (programAreaId != null) {
+                    return dao.findByOrganizationIdAndCountiesServedIdAndProgramAreasId(
+                            organizationId,
+                            countyId,
+                            programAreaId
+                    );
+
+                } else {
+                    return dao.findByOrganizationIdAndCountiesServedId(organizationId, countyId);
+
+                }
+
+            } else {
+
+                if (programAreaId != null) {
+                    return dao.findByOrganizationIdAndProgramAreasId(organizationId, programAreaId);
+
+                } else {
+                    return dao.findByOrganizationId(organizationId);
+
+                }
+
+            }
+        } else {
+
+            if (countyId != null) {
+
+                if (programAreaId != null) {
+                    return dao.findByCountiesServedIdAndProgramAreasId(
+                            countyId,
+                            programAreaId
+                    );
+
+                } else {
+                    return dao.findByCountiesServedId(countyId);
+
+                }
+
+            } else {
+
+                if (programAreaId != null) {
+                    return dao.findByProgramAreasId(programAreaId);
+
+                } else {
+                    return getAll();
+
+                }
+
+            }
+
+        }
     }
 
     @Transactional

@@ -1,10 +1,9 @@
 package org.hmhb.organization;
 
+import java.util.List;
+
 import javax.annotation.Nonnull;
 import javax.transaction.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import com.codahale.metrics.annotation.Timed;
 import org.apache.commons.lang3.StringUtils;
@@ -59,9 +58,7 @@ public class DefaultOrganizationService implements OrganizationService {
     @Override
     public List<Organization> getAll() {
         LOGGER.debug("getAll called");
-        List<Organization> target = new ArrayList<>();
-        dao.findAll().forEach(target::add);
-        return target;
+        return dao.findAllByOrderByNameAsc();
     }
 
     @Transactional
