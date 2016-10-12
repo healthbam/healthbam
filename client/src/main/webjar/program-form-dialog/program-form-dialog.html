@@ -35,7 +35,9 @@
                         <label>
                             Company/Organization
                         </label>
-                        <md-select ng-model="programFormDialog.program.organization">
+                        <md-select name="organization"
+                                   ng-model="programFormDialog.program.organization"
+                                   required>
                             <md-option ng-value="programFormDialog.newOrganization">
                                 Create new organization
                             </md-option>
@@ -169,9 +171,12 @@
                             <label>
                                 State
                             </label>
-                            <input name="programState"
-                                   ng-model="programFormDialog.program.state"
-                                   required>
+                            <md-select name="programState"
+                                       ng-model="programFormDialog.program.state">
+                                <md-option ng-value="'GA'">
+                                    GA
+                                </md-option>
+                            </md-select>
                         </md-input-container>
 
                         <md-input-container class="md-block" flex-gt-sm>
@@ -308,7 +313,8 @@
             </md-button>
 
             <md-button type="submit"
-                       aria-label="Save">
+                       aria-label="Save"
+                       ng-disabled="programFormDialog.programForm.$invalid && programFormDialog.programForm.$dirty">
                 Save
             </md-button>
 
