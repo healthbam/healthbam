@@ -45,7 +45,7 @@
         ).primaryPalette(
             "deep-purple"
         ).accentPalette(
-            "purple"
+            "amber"
         );
     }
 
