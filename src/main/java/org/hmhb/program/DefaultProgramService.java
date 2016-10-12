@@ -11,7 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.hmhb.audit.AuditHelper;
 import org.hmhb.exception.program.ProgramNameRequiredException;
 import org.hmhb.exception.program.ProgramNotFoundException;
-import org.hmhb.exception.program.ProgramOrganizationIdRequiredException;
+import org.hmhb.exception.program.ProgramOrganizationRequiredException;
 import org.hmhb.exception.program.ProgramStartYearRequiredException;
 import org.hmhb.exception.program.ProgramStateRequiredException;
 import org.hmhb.exception.program.ProgramZipCodeRequiredException;
@@ -108,8 +108,11 @@ public class DefaultProgramService implements ProgramService {
             throw new ProgramNameRequiredException();
         }
 
-        if (program.getOrganization() == null || program.getOrganization().getId() == null) {
-            throw new ProgramOrganizationIdRequiredException();
+        if (program.getOrganization() == null) {
+            throw new ProgramOrganizationRequiredException();
+        } else if (program.getOrganization().getId() == null) {
+            /* The user is submitting a new organization while submitting a program. */
+            program.setOrganization(organizationService.save(program.getOrganization()));
         } else {
             /* Verify the organization exists and get the updated organization info. */
             program.setOrganization(organizationService.getById(program.getOrganization().getId()));

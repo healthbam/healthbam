@@ -7,7 +7,7 @@ import java.util.List;
 import org.hmhb.audit.AuditHelper;
 import org.hmhb.exception.program.ProgramNameRequiredException;
 import org.hmhb.exception.program.ProgramNotFoundException;
-import org.hmhb.exception.program.ProgramOrganizationIdRequiredException;
+import org.hmhb.exception.program.ProgramOrganizationRequiredException;
 import org.hmhb.exception.program.ProgramStartYearRequiredException;
 import org.hmhb.exception.program.ProgramStateRequiredException;
 import org.hmhb.exception.program.ProgramZipCodeRequiredException;
@@ -196,21 +196,11 @@ public class DefaultProgramServiceTest {
         toTest.save(input);
     }
 
-    @Test(expected = ProgramOrganizationIdRequiredException.class)
+    @Test(expected = ProgramOrganizationRequiredException.class)
     public void testSaveCreateNewNullOrg() throws Exception {
         Program input = createFilledInProgram();
         input.setId(null);
         input.setOrganization(null);
-
-        /* Make the call. */
-        toTest.save(input);
-    }
-
-    @Test(expected = ProgramOrganizationIdRequiredException.class)
-    public void testSaveCreateNewNullOrgId() throws Exception {
-        Program input = createFilledInProgram();
-        input.setId(null);
-        input.getOrganization().setId(null);
 
         /* Make the call. */
         toTest.save(input);
@@ -328,6 +318,47 @@ public class DefaultProgramServiceTest {
     }
 
     @Test
+    public void testSaveCreateNewProgramWithNewOrg() throws Exception {
+        Program input = createFilledInProgram();
+        input.setId(null);
+        input.setName(PROGRAM_NAME);
+        /* I'm setting these fields to prove that they aren't respected. */
+        input.setCreatedBy("input-from-rest-call");
+        input.setCreatedOn(new Date(System.currentTimeMillis() + 60000));
+        input.setUpdatedBy("input-from-rest-call");
+        input.setUpdatedOn(new Date(System.currentTimeMillis() + 60000));
+        /* They also can't set the lat-long (google maps api will give us that. */
+        input.setCoordinates("-5.00000,5.00000");
+
+        Organization inputOrg = createOrg();
+        inputOrg.setId(null); /* This will be a new org. */
+
+        input.setOrganization(inputOrg);
+
+        Program inputWithCreatedAuditFilledIn = createFilledInProgram();
+        inputWithCreatedAuditFilledIn.setOrganization(createOrg());
+        inputWithCreatedAuditFilledIn.setId(null);
+        inputWithCreatedAuditFilledIn.setName(PROGRAM_NAME);
+        /* They can't set these. */
+        inputWithCreatedAuditFilledIn.setCreatedBy(USERNAME_1);
+        inputWithCreatedAuditFilledIn.setCreatedOn(CREATED_ON);
+        inputWithCreatedAuditFilledIn.setCoordinates(GEO_CODE);
+
+        /* Train the mocks. */
+        when(organizationService.save(inputOrg)).thenReturn(createOrg());
+        when(auditHelper.getCurrentUser()).thenReturn(USERNAME_1);
+        when(auditHelper.getCurrentTime()).thenReturn(CREATED_ON);
+        when(geocodeService.getLngLat(notNull(Program.class))).thenReturn(GEO_CODE);
+        when(dao.save(inputWithCreatedAuditFilledIn)).thenReturn(inputWithCreatedAuditFilledIn);
+
+        /* Make the call. */
+        Program actual = toTest.save(input);
+
+        /* Verify the results. */
+        assertEquals(inputWithCreatedAuditFilledIn, actual);
+    }
+
+    @Test
     public void testSaveUpdateExisting() throws Exception {
         Program input = createFilledInProgram();
         input.setId(PROGRAM_ID);
@@ -365,6 +396,57 @@ public class DefaultProgramServiceTest {
 
         /* Train the mocks. */
         when(organizationService.getById(ORG_ID)).thenReturn(createOrg());
+        when(dao.findOne(PROGRAM_ID)).thenReturn(oldProgramInDb);
+        when(auditHelper.getCurrentUser()).thenReturn(USERNAME_2);
+        when(auditHelper.getCurrentTime()).thenReturn(UPDATED_ON);
+        when(geocodeService.getLngLat(notNull(Program.class))).thenReturn(GEO_CODE);
+        when(dao.save(inputWithUpdatedAuditFilledIn)).thenReturn(inputWithUpdatedAuditFilledIn);
+
+        /* Make the call. */
+        Program actual = toTest.save(input);
+
+        /* Verify the results. */
+        assertEquals(inputWithUpdatedAuditFilledIn, actual);
+    }
+
+    @Test
+    public void testSaveUpdateExistingProgramWithNewOrg() throws Exception {
+        Program input = createFilledInProgram();
+        input.setId(PROGRAM_ID);
+        input.setName(PROGRAM_NAME);
+        /* I'm setting these fields to prove that they aren't respected. */
+        input.setCreatedBy("input-from-rest-call");
+        input.setCreatedOn(new Date(System.currentTimeMillis() + 60000));
+        input.setUpdatedBy("input-from-rest-call");
+        input.setUpdatedOn(new Date(System.currentTimeMillis() + 60000));
+        /* They also can't set the lat-long (google maps api will give us that. */
+        input.setCoordinates("-5.00000,5.00000");
+
+        Organization inputOrg = createOrg();
+        inputOrg.setId(null); /* This will be a new org. */
+
+        input.setOrganization(inputOrg);
+
+        Program oldProgramInDb = createFilledInProgram();
+        oldProgramInDb.setOrganization(createOrg());
+        oldProgramInDb.setId(PROGRAM_ID);
+        oldProgramInDb.setName("old-" + PROGRAM_NAME);
+        /* They can't change these. */
+        oldProgramInDb.setCreatedBy(USERNAME_1);
+        oldProgramInDb.setCreatedOn(CREATED_ON);
+
+        Program inputWithUpdatedAuditFilledIn = createFilledInProgram();
+        inputWithUpdatedAuditFilledIn.setId(PROGRAM_ID);
+        inputWithUpdatedAuditFilledIn.setName(PROGRAM_NAME);
+        /* They can't set these. */
+        inputWithUpdatedAuditFilledIn.setCreatedBy(USERNAME_1);
+        inputWithUpdatedAuditFilledIn.setCreatedOn(CREATED_ON);
+        inputWithUpdatedAuditFilledIn.setUpdatedBy(USERNAME_2);
+        inputWithUpdatedAuditFilledIn.setUpdatedOn(UPDATED_ON);
+        inputWithUpdatedAuditFilledIn.setCoordinates(GEO_CODE);
+
+        /* Train the mocks. */
+        when(organizationService.save(inputOrg)).thenReturn(createOrg());
         when(dao.findOne(PROGRAM_ID)).thenReturn(oldProgramInDb);
         when(auditHelper.getCurrentUser()).thenReturn(USERNAME_2);
         when(auditHelper.getCurrentTime()).thenReturn(UPDATED_ON);
