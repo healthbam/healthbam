@@ -31,7 +31,7 @@
          * A function for John to make a change to.
          */
         function john() {
-            $log.debug("TODO");
+            $log.debug("Crisp is up and running");
         }
 
         /**
