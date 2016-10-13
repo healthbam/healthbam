@@ -1,5 +1,7 @@
 package org.hmhb.programarea;
 
+import java.util.List;
+
 import org.springframework.data.repository.CrudRepository;
 
 /**
@@ -7,6 +9,6 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface ProgramAreaDao extends CrudRepository<ProgramArea, Long> {
 
-
+    List<ProgramArea> findAllByOrderByNameAsc();
 
 }

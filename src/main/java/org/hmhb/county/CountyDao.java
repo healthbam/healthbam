@@ -9,6 +9,8 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface CountyDao extends CrudRepository<County, Long> {
 
+    List<County> findAllByOrderByNameAsc();
+
     List<County> findByNameStartingWithIgnoreCase(String namePart);
 
 }

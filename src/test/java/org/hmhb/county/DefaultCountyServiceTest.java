@@ -68,7 +68,7 @@ public class DefaultCountyServiceTest {
         List<County> expected = Collections.singletonList(createFilledInCounty());
 
         /* Train the mocks. */
-        when(dao.findAll()).thenReturn(expected);
+        when(dao.findAllByOrderByNameAsc()).thenReturn(expected);
 
         /* Make the call. */
         List<County> actual = toTest.getAll();
