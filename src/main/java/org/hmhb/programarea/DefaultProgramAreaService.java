@@ -1,9 +1,8 @@
 package org.hmhb.programarea;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.annotation.Nonnull;
+
+import java.util.List;
 
 import com.codahale.metrics.annotation.Timed;
 import org.hmhb.exception.programarea.ProgramAreaNotFoundException;
@@ -50,9 +49,7 @@ public class DefaultProgramAreaService implements ProgramAreaService {
     @Override
     public List<ProgramArea> getAll() {
         LOGGER.debug("getAll called");
-        List<ProgramArea> target = new ArrayList<>();
-        dao.findAll().forEach(target::add);
-        return target;
+        return dao.findAllByOrderByNameAsc();
     }
 
 }

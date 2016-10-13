@@ -1,9 +1,8 @@
 package org.hmhb.county;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.annotation.Nonnull;
+
+import java.util.List;
 
 import com.codahale.metrics.annotation.Timed;
 import org.hmhb.exception.county.CountyNotFoundException;
@@ -50,9 +49,7 @@ public class DefaultCountyService implements CountyService {
     @Override
     public List<County> getAll() {
         LOGGER.debug("getAll called");
-        List<County> target = new ArrayList<>();
-        dao.findAll().forEach(target::add);
-        return target;
+        return dao.findAllByOrderByNameAsc();
     }
 
     @Timed
