@@ -64,7 +64,7 @@ public class DefaultProgramAreaServiceTest {
         List<ProgramArea> expected = Collections.singletonList(createFilledInProgramArea());
 
         /* Train the mocks. */
-        when(dao.findAll()).thenReturn(expected);
+        when(dao.findAllByOrderByNameAsc()).thenReturn(expected);
 
         /* Make the call. */
         List<ProgramArea> actual = toTest.getAll();
