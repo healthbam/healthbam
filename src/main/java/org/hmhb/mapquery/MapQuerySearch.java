@@ -5,6 +5,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hmhb.county.County;
 import org.hmhb.organization.Organization;
+import org.hmhb.program.Program;
 import org.hmhb.programarea.ProgramArea;
 
 /**
@@ -17,6 +18,8 @@ public class MapQuerySearch {
     private Organization organization;
 
     private ProgramArea programArea;
+
+    private Program program;
 
     @Override
     public boolean equals(Object o) {
@@ -55,6 +58,14 @@ public class MapQuerySearch {
 
     public void setProgramArea(ProgramArea programArea) {
         this.programArea = programArea;
+    }
+
+    public Program getProgram() {
+        return program;
+    }
+
+    public void setProgram(Program program) {
+        this.program = program;
     }
 
 }
