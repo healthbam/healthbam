@@ -45,8 +45,16 @@ public class DefaultMapQueryService implements MapQueryService {
 
         /* Hardcoded for now. */
         List<Long> programIds = new ArrayList<>();
-        programIds.add(1L);
-        programIds.add(2L);
+
+        if (mapQuery.getSearch() != null && mapQuery.getSearch().getProgram() != null) {
+            programIds.add(
+                    mapQuery.getSearch().getProgram().getId()
+            );
+
+        } else {
+            programIds.add(1L);
+            programIds.add(2L);
+        }
 
         List<Program> programs = programService.getByIds(programIds);
 
