@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.HandlerMapping;
 
 @Controller
 public class ViewsController {
@@ -18,12 +19,13 @@ public class ViewsController {
     @Timed
     @RequestMapping(
             method = RequestMethod.GET,
-            value = "/views/{subpath}"
+            value = "/views/**"
     )
-    public String handleViewsSubpaths(
-            @PathVariable String subpath
-    ) {
-        LOGGER.debug("handleViewsSubpaths called: subpath={}", subpath);
+    public String handleViewsSubpaths() {
+        LOGGER.debug(
+                "handleViewsSubpaths called: {}",
+                HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE
+        );
         return INDEX_HTML_PATH;
     }
 
