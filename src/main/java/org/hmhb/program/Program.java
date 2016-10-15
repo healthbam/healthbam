@@ -19,6 +19,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hmhb.county.County;
 import org.hmhb.organization.Organization;
+import org.hmhb.programarea.ProgramArea;
 
 @Entity
 public class Program {
@@ -66,6 +67,20 @@ public class Program {
             )
     )
     private List<County> countiesServed;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "program_program_area",
+            joinColumns = @JoinColumn(
+                    name = "program_id",
+                    referencedColumnName = "id"
+            ),
+            inverseJoinColumns = @JoinColumn(
+                    name = "program_area_id",
+                    referencedColumnName = "id"
+            )
+    )
+    private List<ProgramArea> programAreas;
 
     @NotNull
     private Date createdOn;
@@ -170,6 +185,14 @@ public class Program {
 
     public void setCountiesServed(List<County> countiesServed) {
         this.countiesServed = countiesServed;
+    }
+
+    public List<ProgramArea> getProgramAreas() {
+        return programAreas;
+    }
+
+    public void setProgramAreas(List<ProgramArea> programAreas) {
+        this.programAreas = programAreas;
     }
 
     public Date getCreatedOn() {

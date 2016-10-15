@@ -99,7 +99,7 @@ INSERT INTO program (
 
 
 /**********************************
- * Begin Program Areas.
+ * Begin ProgramAreas.
  **********************************/
 INSERT INTO program_area (
     name
@@ -197,7 +197,7 @@ INSERT INTO program_area (
     'Perinatal Mood and Anxiety Disorders (Mental Health)'
 );
 /**********************************
- * End Program Areas.
+ * End ProgramAreas.
  **********************************/
 
 
@@ -1852,4 +1852,60 @@ INSERT INTO program_county (
 );
 /**********************************
  * End Program-Counties.
+ **********************************/
+
+
+
+/**********************************
+ * Begin Program-ProgramAreas.
+ **********************************/
+INSERT INTO program_program_area (
+    program_id,
+    program_area_id
+) VALUES (
+    1,
+    1
+);
+
+INSERT INTO program_program_area (
+    program_id,
+    program_area_id
+) VALUES (
+    1,
+    2
+);
+
+INSERT INTO program_program_area (
+    program_id,
+    program_area_id
+) VALUES (
+    1,
+    3
+);
+
+INSERT INTO program_program_area (
+    program_id,
+    program_area_id
+) VALUES (
+    2,
+    5
+);
+
+INSERT INTO program_program_area (
+    program_id,
+    program_area_id
+) VALUES (
+    2,
+    6
+);
+
+INSERT INTO program_program_area (
+    program_id,
+    program_area_id
+) VALUES (
+    2,
+    1
+);
+/**********************************
+ * End Program-ProgramAreas.
  **********************************/
