@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS program_program_area;
 DROP TABLE IF EXISTS program_county;
 DROP TABLE IF EXISTS program;
 DROP TABLE IF EXISTS program_area;
@@ -51,4 +52,10 @@ CREATE TABLE program_county (
     program_id BIGINT REFERENCES program(id),
     county_id BIGINT REFERENCES county(id),
     PRIMARY KEY(program_id, county_id)
+);
+
+CREATE TABLE program_program_area (
+    program_id BIGINT REFERENCES program(id),
+    program_area_id BIGINT REFERENCES program_area(id),
+    PRIMARY KEY(program_id, program_area_id)
 );
