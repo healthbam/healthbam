@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import org.hmhb.county.CountyService;
 import org.hmhb.program.ProgramService;
+import org.hmhb.url.UrlService;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,7 +16,6 @@ import static org.mockito.Mockito.*;
  */
 public class DefaultKmlServiceTest {
 
-    private KmlPlacemarkService placemarkService;
     private CountyService countyService;
     private ProgramService programService;
 
@@ -23,10 +23,11 @@ public class DefaultKmlServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        placemarkService = mock(KmlPlacemarkService.class);
+        UrlService urlService = mock(UrlService.class);
+        KmlPlacemarkService placemarkService = mock(KmlPlacemarkService.class);
         countyService = mock(CountyService.class);
         programService = mock(ProgramService.class);
-        toTest = new DefaultKmlService(placemarkService, countyService, programService);
+        toTest = new DefaultKmlService(urlService, placemarkService, countyService, programService);
     }
 
     @Test

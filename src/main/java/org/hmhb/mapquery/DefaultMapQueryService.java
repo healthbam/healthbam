@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import com.codahale.metrics.annotation.Timed;
 import org.hmhb.program.Program;
 import org.hmhb.program.ProgramService;
+import org.hmhb.url.UrlService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +24,15 @@ public class DefaultMapQueryService implements MapQueryService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultMapQueryService.class);
 
+    private final UrlService urlService;
     private final ProgramService programService;
 
     @Autowired
     public DefaultMapQueryService(
+            @Nonnull UrlService urlService,
             @Nonnull ProgramService programService
     ) {
+        this.urlService = requireNonNull(urlService, "urlService cannot be null");
         this.programService = requireNonNull(programService, "programService cannot be null");
     }
 
@@ -50,8 +54,7 @@ public class DefaultMapQueryService implements MapQueryService {
         MapQueryResult result = new MapQueryResult();
         result.setPrograms(programs);
         result.setMapLayerUrl(
-                // TODO - extract this to config or something
-                "https://hmhb.herokuapp.com/api/kml"
+                urlService.getUrlPrefix() + "/api/kml"
                         + "?programIds=" + commaSeparatedProgramIds
                         + "&time=" + System.currentTimeMillis()
         );

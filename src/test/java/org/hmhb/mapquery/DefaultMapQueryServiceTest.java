@@ -7,6 +7,7 @@ import java.util.List;
 import org.hmhb.organization.Organization;
 import org.hmhb.program.Program;
 import org.hmhb.program.ProgramService;
+import org.hmhb.url.UrlService;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,15 +22,18 @@ public class DefaultMapQueryServiceTest {
     private static final Long PROGRAM_ID_1 = 1001L;
     private static final Long PROGRAM_ID_2 = 1002L;
     private static final Long ORG_ID = 2001L;
+    private static final String URL_PREFIX = "http://localhost:8080";
 
     private DefaultMapQueryService toTest;
 
-    private ProgramService service;
+    private UrlService urlService;
+    private ProgramService programService;
 
     @Before
     public void setUp() throws Exception {
-        service = mock(ProgramService.class);
-        toTest = new DefaultMapQueryService(service);
+        urlService = mock(UrlService.class);
+        programService = mock(ProgramService.class);
+        toTest = new DefaultMapQueryService(urlService, programService);
     }
 
     @Test
@@ -63,7 +67,8 @@ public class DefaultMapQueryServiceTest {
         expected.setResult(result);
 
         /* Train the mocks. */
-        when(service.search(input)).thenReturn(programs);
+        when(programService.search(input)).thenReturn(programs);
+        when(urlService.getUrlPrefix()).thenReturn(URL_PREFIX);
 
         /* Make the call. */
         MapQuery actual = toTest.search(input);
@@ -77,7 +82,7 @@ public class DefaultMapQueryServiceTest {
                 "Didn't start with expected: " + actual.getResult().getMapLayerUrl(),
                 actual.getResult()
                         .getMapLayerUrl()
-                        .startsWith("https://hmhb.herokuapp.com/api/kml?programIds=1001,1002&time=")
+                        .startsWith(URL_PREFIX + "/api/kml?programIds=1001,1002&time=")
         );
         assertEquals(
                 programs,
@@ -107,7 +112,8 @@ public class DefaultMapQueryServiceTest {
         expected.setResult(result);
 
         /* Train the mocks. */
-        when(service.search(input)).thenReturn(programs);
+        when(programService.search(input)).thenReturn(programs);
+        when(urlService.getUrlPrefix()).thenReturn(URL_PREFIX);
 
         /* Make the call. */
         MapQuery actual = toTest.search(input);
@@ -121,7 +127,7 @@ public class DefaultMapQueryServiceTest {
                 "Didn't start with expected: " + actual.getResult().getMapLayerUrl(),
                 actual.getResult()
                         .getMapLayerUrl()
-                        .startsWith("https://hmhb.herokuapp.com/api/kml?programIds=&time=")
+                        .startsWith(URL_PREFIX + "/api/kml?programIds=&time=")
         );
         assertEquals(
                 programs,
