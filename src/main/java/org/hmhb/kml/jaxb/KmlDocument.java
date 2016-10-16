@@ -20,6 +20,9 @@ public class KmlDocument {
     private final List<KmlStyle> styles;
     private final List<KmlPlacemark> placemarks;
 
+    /**
+     * Do not use this; it was only implemented to satisfy jaxb.
+     */
     public KmlDocument() {
         this.name = null;
         this.description = null;
@@ -44,6 +47,9 @@ public class KmlDocument {
         return name;
     }
 
+    /**
+     * Do not use this; it was only implemented to satisfy jaxb.
+     */
     public void setName(String name) {
         // empty
     }
@@ -53,6 +59,9 @@ public class KmlDocument {
         return description;
     }
 
+    /**
+     * Do not use this; it was only implemented to satisfy jaxb.
+     */
     public void setDescription(String description) {
         // empty
     }
@@ -62,6 +71,9 @@ public class KmlDocument {
         return styles;
     }
 
+    /**
+     * Do not use this; it was only implemented to satisfy jaxb.
+     */
     public void setStyles(List<KmlStyle> styles) {
         // empty
     }
@@ -71,6 +83,9 @@ public class KmlDocument {
         return placemarks;
     }
 
+    /**
+     * Do not use this; it was only implemented to satisfy jaxb.
+     */
     public void setPlacemarks(List<KmlPlacemark> placemarks) {
         // empty
     }

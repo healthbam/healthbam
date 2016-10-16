@@ -15,6 +15,9 @@ public class KmlPoint {
 
     private final String coordinates;
 
+    /**
+     * Do not use this; it was only implemented to satisfy jaxb.
+     */
     public KmlPoint() {
         this.coordinates = null;
     }
@@ -30,6 +33,9 @@ public class KmlPoint {
         return coordinates;
     }
 
+    /**
+     * Do not use this; it was only implemented to satisfy jaxb.
+     */
     public void setCoordinates(String coordinates) {
         // empty
     }

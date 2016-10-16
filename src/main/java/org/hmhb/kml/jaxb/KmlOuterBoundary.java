@@ -15,6 +15,9 @@ public class KmlOuterBoundary {
 
     private final KmlLinearRing linearRing;
 
+    /**
+     * Do not use this; it was only implemented to satisfy jaxb.
+     */
     public KmlOuterBoundary() {
         this.linearRing = null;
     }
@@ -30,6 +33,9 @@ public class KmlOuterBoundary {
         return linearRing;
     }
 
+    /**
+     * Do not use this; it was only implemented to satisfy jaxb.
+     */
     public void setLinearRing(KmlLinearRing linearRing) {
         // empty
     }

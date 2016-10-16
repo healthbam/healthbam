@@ -15,6 +15,9 @@ public class KmlIcon {
 
     private final String href;
 
+    /**
+     * Do not use this; it was only implemented to satisfy jaxb.
+     */
     public KmlIcon() {
         this.href = null;
     }
@@ -30,6 +33,9 @@ public class KmlIcon {
         return href;
     }
 
+    /**
+     * Do not use this; it was only implemented to satisfy jaxb.
+     */
     public void setHref(String href) {
         // empty
     }

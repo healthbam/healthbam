@@ -13,16 +13,30 @@ import static java.util.Objects.requireNonNull;
 @Immutable
 public class KmlPolygon {
 
+    private final KmlInnerBoundary innerBoundaryIs;
     private final KmlOuterBoundary outerBoundaryIs;
 
+    /**
+     * Do not use this; it was only implemented to satisfy jaxb.
+     */
     public KmlPolygon() {
         this.outerBoundaryIs = null;
+        this.innerBoundaryIs = null;
     }
 
     public KmlPolygon(
             @Nonnull KmlOuterBoundary outerBoundaryIs
     ) {
         this.outerBoundaryIs = requireNonNull(outerBoundaryIs, "outerBoundaryIs cannot be null");
+        this.innerBoundaryIs = null;
+    }
+
+    public KmlPolygon(
+            @Nonnull KmlOuterBoundary outerBoundaryIs,
+            @Nonnull KmlInnerBoundary innerBoundaryIs
+    ) {
+        this.outerBoundaryIs = requireNonNull(outerBoundaryIs, "outerBoundaryIs cannot be null");
+        this.innerBoundaryIs = requireNonNull(innerBoundaryIs, "innerBoundaryIs cannot be null");
     }
 
     @XmlElement
@@ -30,7 +44,22 @@ public class KmlPolygon {
         return outerBoundaryIs;
     }
 
+    /**
+     * Do not use this; it was only implemented to satisfy jaxb.
+     */
     public void setOuterBoundaryIs(KmlOuterBoundary outerBoundaryIs) {
+        // empty
+    }
+
+    @XmlElement
+    public KmlInnerBoundary getInnerBoundaryIs() {
+        return innerBoundaryIs;
+    }
+
+    /**
+     * Do not use this; it was only implemented to satisfy jaxb.
+     */
+    public void setInnerBoundaryIs(KmlInnerBoundary innerBoundaryIs) {
         // empty
     }
 

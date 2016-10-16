@@ -20,7 +20,7 @@ public class CountyTest {
         county.setId(ID);
         county.setName(NAME);
         county.setState(STATE);
-        county.setShape(GEO_SHAPE);
+        county.setOuterBoundary1(GEO_SHAPE);
 
         assertTrue(county.toString().contains(ID.toString()));
         assertTrue(county.toString().contains(NAME));

@@ -21,7 +21,11 @@ public class KmlPlacemark {
     private final String description;
     private final KmlPoint point;
     private final KmlPolygon polygon;
+    private final KmlMuliGeometry muliGeometry;
 
+    /**
+     * Do not use this; it was only implemented to satisfy jaxb.
+     */
     public KmlPlacemark() {
         this.id = null;
         this.name = null;
@@ -29,6 +33,7 @@ public class KmlPlacemark {
         this.description = null;
         this.point = null;
         this.polygon = null;
+        this.muliGeometry = null;
     }
 
     public KmlPlacemark(
@@ -43,6 +48,22 @@ public class KmlPlacemark {
         this.description = null;
         this.point = null;
         this.polygon = requireNonNull(polygon, "polygon cannot be null");
+        this.muliGeometry = null;
+    }
+
+    public KmlPlacemark(
+            @Nonnull String id,
+            @Nonnull String name,
+            @Nonnull String styleUrl,
+            @Nonnull KmlMuliGeometry muliGeometry
+    ) {
+        this.id = requireNonNull(id, "id cannot be null");
+        this.name = requireNonNull(name, "name cannot be null");
+        this.styleUrl = requireNonNull(styleUrl, "styleUrl cannot be null");
+        this.description = null;
+        this.point = null;
+        this.polygon = null;
+        this.muliGeometry = requireNonNull(muliGeometry, "multiGeometry cannot be null");
     }
 
     public KmlPlacemark(
@@ -58,6 +79,7 @@ public class KmlPlacemark {
         this.description = requireNonNull(description, "description cannot be null");
         this.point = requireNonNull(point, "point cannot be null");
         this.polygon = null;
+        this.muliGeometry = null;
     }
 
     @XmlAttribute
@@ -65,6 +87,9 @@ public class KmlPlacemark {
         return id;
     }
 
+    /**
+     * Do not use this; it was only implemented to satisfy jaxb.
+     */
     public void setId(String id) {
         // empty
     }
@@ -74,6 +99,9 @@ public class KmlPlacemark {
         return name;
     }
 
+    /**
+     * Do not use this; it was only implemented to satisfy jaxb.
+     */
     public void setName(String name) {
         // empty
     }
@@ -83,6 +111,9 @@ public class KmlPlacemark {
         return styleUrl;
     }
 
+    /**
+     * Do not use this; it was only implemented to satisfy jaxb.
+     */
     public void setStyleUrl(String styleUrl) {
         // empty
     }
@@ -93,6 +124,9 @@ public class KmlPlacemark {
         return description;
     }
 
+    /**
+     * Do not use this; it was only implemented to satisfy jaxb.
+     */
     public void setDescription(String description) {
         // empty
     }
@@ -102,9 +136,35 @@ public class KmlPlacemark {
         return point;
     }
 
+    /**
+     * Do not use this; it was only implemented to satisfy jaxb.
+     */
+    public void setPoint(KmlPoint point) {
+        // empty
+    }
+
     @XmlElement(name = "Polygon")
     public KmlPolygon getPolygon() {
         return polygon;
+    }
+
+    /**
+     * Do not use this; it was only implemented to satisfy jaxb.
+     */
+    public void setPolygon(KmlPolygon polygon) {
+        // empty
+    }
+
+    @XmlElement(name = "MultiGeometry")
+    public KmlMuliGeometry getMuliGeometry() {
+        return muliGeometry;
+    }
+
+    /**
+     * Do not use this; it was only implemented to satisfy jaxb.
+     */
+    public void setMuliGeometry(KmlMuliGeometry muliGeometry) {
+        // empty
     }
 
     @Override
