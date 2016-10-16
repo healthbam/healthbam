@@ -102,8 +102,8 @@ public class DefaultProgramServiceTest {
         program.setCity(CITY);
         program.setState(STATE);
         program.setZipCode(ZIP_CODE);
-        program.setCountiesServed(Collections.singletonList(createCounty()));
-//        program.setProgramAreas(Collections.singletonList(createProgramArea()));
+        program.setCountiesServed(Collections.singleton(createCounty()));
+        program.setProgramAreas(Collections.singleton(createProgramArea()));
 
         return program;
     }

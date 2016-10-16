@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -66,7 +66,7 @@ public class Program {
                     referencedColumnName = "id"
             )
     )
-    private List<County> countiesServed;
+    private Set<County> countiesServed;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -80,7 +80,7 @@ public class Program {
                     referencedColumnName = "id"
             )
     )
-    private List<ProgramArea> programAreas;
+    private Set<ProgramArea> programAreas;
 
     @NotNull
     private Date createdOn;
@@ -179,19 +179,19 @@ public class Program {
         this.coordinates = coordinates;
     }
 
-    public List<County> getCountiesServed() {
+    public Set<County> getCountiesServed() {
         return countiesServed;
     }
 
-    public void setCountiesServed(List<County> countiesServed) {
+    public void setCountiesServed(Set<County> countiesServed) {
         this.countiesServed = countiesServed;
     }
 
-    public List<ProgramArea> getProgramAreas() {
+    public Set<ProgramArea> getProgramAreas() {
         return programAreas;
     }
 
-    public void setProgramAreas(List<ProgramArea> programAreas) {
+    public void setProgramAreas(Set<ProgramArea> programAreas) {
         this.programAreas = programAreas;
     }
 
