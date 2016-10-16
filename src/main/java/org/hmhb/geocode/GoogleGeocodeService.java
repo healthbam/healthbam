@@ -2,9 +2,12 @@ package org.hmhb.geocode;
 
 import javax.annotation.Nonnull;
 
+import java.util.Arrays;
 import java.util.Locale;
 
 import com.codahale.metrics.annotation.Timed;
+import com.google.maps.model.AddressComponent;
+import com.google.maps.model.AddressComponentType;
 import com.google.maps.model.GeocodingResult;
 import org.hmhb.program.Program;
 import org.slf4j.Logger;
@@ -31,18 +34,24 @@ public class GoogleGeocodeService implements GeocodeService {
     private String formatAddress(
             Program program
     ) {
+        String zipCode = program.getZipCode();
+
+        if (zipCode == null) {
+            zipCode = "";
+        }
+
         return String.format(
                 "%s %s, %s %s",
                 program.getStreetAddress(),
                 program.getCity(),
                 program.getState(),
-                program.getZipCode()
+                zipCode
         );
     }
 
     @Timed
     @Override
-    public String getLngLat(
+    public LocationInfo getLocationInfo(
             @Nonnull Program program
     ) {
         LOGGER.debug("getLngLat called: program={}", program);
@@ -60,13 +69,27 @@ public class GoogleGeocodeService implements GeocodeService {
             throw new RuntimeException("Failed to geocode address: " + address, e);
         }
 
+        LocationInfo info = new LocationInfo();
+
+        for (AddressComponent component : results[0].addressComponents) {
+            for (AddressComponentType type : component.types) {
+                if (AddressComponentType.POSTAL_CODE.equals(type)) {
+                    info.setZipCode(component.longName);
+                }
+            }
+        }
+
         /* I have to do this instead of using toUrlValue() because the map expects "lng,lat" instead of "lat,lng". */
-        return String.format(
-                Locale.ENGLISH,
-                "%.8f,%.8f",
-                results[0].geometry.location.lng,
-                results[0].geometry.location.lat
+        info.setLngLat(
+                String.format(
+                        Locale.ENGLISH,
+                        "%.8f,%.8f",
+                        results[0].geometry.location.lng,
+                        results[0].geometry.location.lat
+                )
         );
+
+        return info;
     }
 
 }

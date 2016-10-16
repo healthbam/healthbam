@@ -1,5 +1,7 @@
 package org.hmhb.geocode;
 
+import com.google.maps.model.AddressComponent;
+import com.google.maps.model.AddressComponentType;
 import com.google.maps.model.GeocodingResult;
 import com.google.maps.model.Geometry;
 import com.google.maps.model.LatLng;
@@ -26,32 +28,76 @@ public class GoogleGeocodeServiceTest {
     }
 
     @Test
-    public void testGetLngLat() throws Exception {
+    public void testGetLocationInfo() throws Exception {
+        String zipCode = "30332";
+
         Program program = new Program();
         program.setCity("Atlanta");
         program.setState("GA");
         program.setStreetAddress("123 Peachtree St.");
-        program.setZipCode("30332");
+        program.setZipCode(zipCode);
 
         String expectedFormattedAddress = "123 Peachtree St. Atlanta, GA 30332";
 
-        String expectedLngLat = "-1.23456789,9.87654321";
+        LocationInfo expected = new LocationInfo();
+        expected.setLngLat("-1.23456789,9.87654321");
+        expected.setZipCode(zipCode);
 
+        AddressComponent addressComponent = new AddressComponent();
+        addressComponent.longName = zipCode;
+        addressComponent.types = new AddressComponentType[] {AddressComponentType.POSTAL_CODE};
         LatLng latLng = new LatLng(9.87654321, -1.23456789);
         Geometry geometry = new Geometry();
         geometry.location = latLng;
         GeocodingResult geocodingResult = new GeocodingResult();
         geocodingResult.geometry = geometry;
+        geocodingResult.addressComponents = new AddressComponent[] {addressComponent};
         GeocodingResult[] expectedGeocodingResult = new GeocodingResult[] {geocodingResult};
 
         /* Train the mocks. */
         when(googleGeocodeClient.geocode(expectedFormattedAddress)).thenReturn(expectedGeocodingResult);
 
         /* Make the call. */
-        String actual = toTest.getLngLat(program);
+        LocationInfo actual = toTest.getLocationInfo(program);
 
         /* Verify the results. */
-        assertEquals(expectedLngLat, actual);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testGetLocationInfoFillZipAlso() throws Exception {
+        String zipCode = "30332";
+
+        Program program = new Program();
+        program.setCity("Atlanta");
+        program.setState("GA");
+        program.setStreetAddress("123 Peachtree St.");
+
+        String expectedFormattedAddress = "123 Peachtree St. Atlanta, GA ";
+
+        LocationInfo expected = new LocationInfo();
+        expected.setLngLat("-1.23456789,9.87654321");
+        expected.setZipCode(zipCode);
+
+        AddressComponent addressComponent = new AddressComponent();
+        addressComponent.longName = zipCode;
+        addressComponent.types = new AddressComponentType[] {AddressComponentType.POSTAL_CODE};
+        LatLng latLng = new LatLng(9.87654321, -1.23456789);
+        Geometry geometry = new Geometry();
+        geometry.location = latLng;
+        GeocodingResult geocodingResult = new GeocodingResult();
+        geocodingResult.geometry = geometry;
+        geocodingResult.addressComponents = new AddressComponent[] {addressComponent};
+        GeocodingResult[] expectedGeocodingResult = new GeocodingResult[] {geocodingResult};
+
+        /* Train the mocks. */
+        when(googleGeocodeClient.geocode(expectedFormattedAddress)).thenReturn(expectedGeocodingResult);
+
+        /* Make the call. */
+        LocationInfo actual = toTest.getLocationInfo(program);
+
+        /* Verify the results. */
+        assertEquals(expected, actual);
     }
 
 }

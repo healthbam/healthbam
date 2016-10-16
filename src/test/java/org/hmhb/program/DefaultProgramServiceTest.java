@@ -12,6 +12,7 @@ import org.hmhb.exception.program.ProgramOrganizationRequiredException;
 import org.hmhb.exception.program.ProgramStateRequiredException;
 import org.hmhb.exception.program.ProgramZipCodeRequiredException;
 import org.hmhb.geocode.GeocodeService;
+import org.hmhb.geocode.LocationInfo;
 import org.hmhb.mapquery.MapQuery;
 import org.hmhb.mapquery.MapQuerySearch;
 import org.hmhb.organization.Organization;
@@ -61,6 +62,15 @@ public class DefaultProgramServiceTest {
         dao = mock(ProgramDao.class);
 
         toTest = new DefaultProgramService(auditHelper, geocodeService, organizationService, dao);
+    }
+
+    private LocationInfo createLocationInfo() {
+        LocationInfo info = new LocationInfo();
+
+        info.setLngLat(GEO_CODE);
+        info.setZipCode(ZIP_CODE);
+
+        return info;
     }
 
     private County createCounty() {
@@ -233,18 +243,6 @@ public class DefaultProgramServiceTest {
         toTest.save(input);
     }
 
-    @Test
-    public void testSaveCreateNewNullStartYear() throws Exception {
-        Program input = createFilledInProgram();
-        input.setId(null);
-        input.setStartYear(null);
-
-        /* Make the call. */
-        toTest.save(input);
-
-        /* Should not blow up.  After receiving some customer data, we discovered that this should be allowed. */
-    }
-
     @Test(expected = ProgramStateRequiredException.class)
     public void testSaveCreateNewNullState() throws Exception {
         Program input = createFilledInProgram();
@@ -275,14 +273,59 @@ public class DefaultProgramServiceTest {
         toTest.save(input);
     }
 
+    @Test
+    public void testSaveCreateNewNullZipCodeButGoogleFoundIt() throws Exception {
+        Program input = createFilledInProgram();
+        input.setId(null);
+        input.setZipCode(null);
+
+        /* Train the mocks. */
+        when(organizationService.getById(ORG_ID)).thenReturn(createOrg());
+        when(auditHelper.getCurrentUser()).thenReturn(USERNAME_1);
+        when(auditHelper.getCurrentTime()).thenReturn(CREATED_ON);
+        when(geocodeService.getLocationInfo(notNull(Program.class))).thenReturn(createLocationInfo());
+
+        /* Make the call. */
+        toTest.save(input);
+
+        /* Should not blow up because google found the zipcode for us. */
+    }
+
     @Test(expected = ProgramZipCodeRequiredException.class)
     public void testSaveCreateNewNullZipCode() throws Exception {
         Program input = createFilledInProgram();
         input.setId(null);
         input.setZipCode(null);
 
+        LocationInfo locationInfo = createLocationInfo();
+        locationInfo.setZipCode(null);
+
+        /* Train the mocks. */
+        when(organizationService.getById(ORG_ID)).thenReturn(createOrg());
+        when(auditHelper.getCurrentUser()).thenReturn(USERNAME_1);
+        when(auditHelper.getCurrentTime()).thenReturn(CREATED_ON);
+        when(geocodeService.getLocationInfo(notNull(Program.class))).thenReturn(locationInfo);
+
         /* Make the call. */
         toTest.save(input);
+    }
+
+    @Test
+    public void testSaveCreateNewEmptyZipCodeButGoogleFoundIt() throws Exception {
+        Program input = createFilledInProgram();
+        input.setId(null);
+        input.setZipCode("");
+
+        /* Train the mocks. */
+        when(organizationService.getById(ORG_ID)).thenReturn(createOrg());
+        when(auditHelper.getCurrentUser()).thenReturn(USERNAME_1);
+        when(auditHelper.getCurrentTime()).thenReturn(CREATED_ON);
+        when(geocodeService.getLocationInfo(notNull(Program.class))).thenReturn(createLocationInfo());
+
+        /* Make the call. */
+        toTest.save(input);
+
+        /* Should not blow up because google found the zipcode for us. */
     }
 
     @Test(expected = ProgramZipCodeRequiredException.class)
@@ -291,8 +334,35 @@ public class DefaultProgramServiceTest {
         input.setId(null);
         input.setZipCode("");
 
+        LocationInfo locationInfo = createLocationInfo();
+        locationInfo.setZipCode(null);
+
+        /* Train the mocks. */
+        when(organizationService.getById(ORG_ID)).thenReturn(createOrg());
+        when(auditHelper.getCurrentUser()).thenReturn(USERNAME_1);
+        when(auditHelper.getCurrentTime()).thenReturn(CREATED_ON);
+        when(geocodeService.getLocationInfo(notNull(Program.class))).thenReturn(locationInfo);
+
         /* Make the call. */
         toTest.save(input);
+    }
+
+    @Test
+    public void testSaveCreateNewOnlyWhitespaceZipCodeButGoogleFoundIt() throws Exception {
+        Program input = createFilledInProgram();
+        input.setId(null);
+        input.setZipCode(" ");
+
+        /* Train the mocks. */
+        when(organizationService.getById(ORG_ID)).thenReturn(createOrg());
+        when(auditHelper.getCurrentUser()).thenReturn(USERNAME_1);
+        when(auditHelper.getCurrentTime()).thenReturn(CREATED_ON);
+        when(geocodeService.getLocationInfo(notNull(Program.class))).thenReturn(createLocationInfo());
+
+        /* Make the call. */
+        toTest.save(input);
+
+        /* Should not blow up because google found the zipcode for us. */
     }
 
     @Test(expected = ProgramZipCodeRequiredException.class)
@@ -301,8 +371,35 @@ public class DefaultProgramServiceTest {
         input.setId(null);
         input.setZipCode(" ");
 
+        LocationInfo locationInfo = createLocationInfo();
+        locationInfo.setZipCode(null);
+
+        /* Train the mocks. */
+        when(organizationService.getById(ORG_ID)).thenReturn(createOrg());
+        when(auditHelper.getCurrentUser()).thenReturn(USERNAME_1);
+        when(auditHelper.getCurrentTime()).thenReturn(CREATED_ON);
+        when(geocodeService.getLocationInfo(notNull(Program.class))).thenReturn(locationInfo);
+
         /* Make the call. */
         toTest.save(input);
+    }
+
+    @Test
+    public void testSaveCreateNewNullStartYear() throws Exception {
+        Program input = createFilledInProgram();
+        input.setId(null);
+        input.setStartYear(null);
+
+        /* Train the mocks. */
+        when(organizationService.getById(ORG_ID)).thenReturn(createOrg());
+        when(auditHelper.getCurrentUser()).thenReturn(USERNAME_1);
+        when(auditHelper.getCurrentTime()).thenReturn(CREATED_ON);
+        when(geocodeService.getLocationInfo(notNull(Program.class))).thenReturn(createLocationInfo());
+
+        /* Make the call. */
+        toTest.save(input);
+
+        /* Should not blow up.  After receiving some customer data, we discovered that this should be allowed. */
     }
 
     @Test
@@ -336,7 +433,7 @@ public class DefaultProgramServiceTest {
         when(organizationService.getById(ORG_ID)).thenReturn(createOrg());
         when(auditHelper.getCurrentUser()).thenReturn(USERNAME_1);
         when(auditHelper.getCurrentTime()).thenReturn(CREATED_ON);
-        when(geocodeService.getLngLat(notNull(Program.class))).thenReturn(GEO_CODE);
+        when(geocodeService.getLocationInfo(notNull(Program.class))).thenReturn(createLocationInfo());
         when(dao.save(inputWithCreatedAuditFilledIn)).thenReturn(inputWithCreatedAuditFilledIn);
 
         /* Make the call. */
@@ -377,7 +474,7 @@ public class DefaultProgramServiceTest {
         when(organizationService.save(inputOrg)).thenReturn(createOrg());
         when(auditHelper.getCurrentUser()).thenReturn(USERNAME_1);
         when(auditHelper.getCurrentTime()).thenReturn(CREATED_ON);
-        when(geocodeService.getLngLat(notNull(Program.class))).thenReturn(GEO_CODE);
+        when(geocodeService.getLocationInfo(notNull(Program.class))).thenReturn(createLocationInfo());
         when(dao.save(inputWithCreatedAuditFilledIn)).thenReturn(inputWithCreatedAuditFilledIn);
 
         /* Make the call. */
@@ -428,7 +525,7 @@ public class DefaultProgramServiceTest {
         when(dao.findOne(PROGRAM_ID)).thenReturn(oldProgramInDb);
         when(auditHelper.getCurrentUser()).thenReturn(USERNAME_2);
         when(auditHelper.getCurrentTime()).thenReturn(UPDATED_ON);
-        when(geocodeService.getLngLat(notNull(Program.class))).thenReturn(GEO_CODE);
+        when(geocodeService.getLocationInfo(notNull(Program.class))).thenReturn(createLocationInfo());
         when(dao.save(inputWithUpdatedAuditFilledIn)).thenReturn(inputWithUpdatedAuditFilledIn);
 
         /* Make the call. */
@@ -479,7 +576,7 @@ public class DefaultProgramServiceTest {
         when(dao.findOne(PROGRAM_ID)).thenReturn(oldProgramInDb);
         when(auditHelper.getCurrentUser()).thenReturn(USERNAME_2);
         when(auditHelper.getCurrentTime()).thenReturn(UPDATED_ON);
-        when(geocodeService.getLngLat(notNull(Program.class))).thenReturn(GEO_CODE);
+        when(geocodeService.getLocationInfo(notNull(Program.class))).thenReturn(createLocationInfo());
         when(dao.save(inputWithUpdatedAuditFilledIn)).thenReturn(inputWithUpdatedAuditFilledIn);
 
         /* Make the call. */
@@ -496,6 +593,7 @@ public class DefaultProgramServiceTest {
         input.setName(ORG_NAME);
 
         /* Train the mocks. */
+        when(geocodeService.getLocationInfo(notNull(Program.class))).thenReturn(createLocationInfo());
         when(dao.findOne(PROGRAM_ID)).thenReturn(null);
 
         /* Make the call. */
