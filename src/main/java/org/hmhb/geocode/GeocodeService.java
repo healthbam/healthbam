@@ -6,7 +6,7 @@ import org.hmhb.program.Program;
 
 public interface GeocodeService {
 
-    String getLngLat(
+    LocationInfo getLocationInfo(
             @Nonnull Program program
     );
 

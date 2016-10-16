@@ -16,6 +16,7 @@ import org.hmhb.exception.program.ProgramOrganizationRequiredException;
 import org.hmhb.exception.program.ProgramStateRequiredException;
 import org.hmhb.exception.program.ProgramZipCodeRequiredException;
 import org.hmhb.geocode.GeocodeService;
+import org.hmhb.geocode.LocationInfo;
 import org.hmhb.mapquery.MapQuery;
 import org.hmhb.mapquery.MapQuerySearch;
 import org.hmhb.organization.Organization;
@@ -279,6 +280,8 @@ public class DefaultProgramService implements ProgramService {
             throw new ProgramStateRequiredException();
         }
 
+        fillCoordinatesAndZip(program);
+
         if (StringUtils.isBlank(program.getZipCode())) {
             throw new ProgramZipCodeRequiredException();
         }
@@ -300,14 +303,14 @@ public class DefaultProgramService implements ProgramService {
             program.setUpdatedOn(auditHelper.getCurrentTime());
         }
 
-        fillCoordinates(program);
-
         return dao.save(program);
 
     }
 
-    private void fillCoordinates(Program program) {
-        program.setCoordinates(geocodeService.getLngLat(program));
+    private void fillCoordinatesAndZip(Program program) {
+        LocationInfo locationInfo = geocodeService.getLocationInfo(program);
+        program.setZipCode(locationInfo.getZipCode());
+        program.setCoordinates(locationInfo.getLngLat());
     }
 
 }
