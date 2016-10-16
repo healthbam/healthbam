@@ -46,7 +46,10 @@ CREATE TABLE county (
     id BIGSERIAL PRIMARY KEY,
     name TEXT NOT NULL,
     state TEXT NOT NULL,
-    shape TEXT NOT NULL,
+    outer_boundary1 TEXT NOT NULL,
+    inner_boundary1 TEXT,
+    outer_boundary2 TEXT,
+    outer_boundary3 TEXT,
     UNIQUE (name, state)
 );
 

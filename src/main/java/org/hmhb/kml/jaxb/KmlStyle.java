@@ -18,6 +18,9 @@ public class KmlStyle {
     private final KmlPolyStyle polyStyle;
     private final KmlIconStyle iconStyle;
 
+    /**
+     * Do not use this; it was only implemented to satisfy jaxb.
+     */
     public KmlStyle() {
         this.id = null;
         this.polyStyle = null;
@@ -47,6 +50,9 @@ public class KmlStyle {
         return id;
     }
 
+    /**
+     * Do not use this; it was only implemented to satisfy jaxb.
+     */
     public void setId(String id) {
         // empty
     }
@@ -56,6 +62,9 @@ public class KmlStyle {
         return polyStyle;
     }
 
+    /**
+     * Do not use this; it was only implemented to satisfy jaxb.
+     */
     public void setPolyStyle(KmlPolyStyle polyStyle) {
         // empty
     }
@@ -65,6 +74,9 @@ public class KmlStyle {
         return iconStyle;
     }
 
+    /**
+     * Do not use this; it was only implemented to satisfy jaxb.
+     */
     public void setIconStyle(KmlIconStyle iconStyle) {
         // empty
     }

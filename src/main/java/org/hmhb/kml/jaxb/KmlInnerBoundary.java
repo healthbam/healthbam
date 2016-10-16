@@ -11,32 +11,32 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import static java.util.Objects.requireNonNull;
 
 @Immutable
-public class KmlLinearRing {
+public class KmlInnerBoundary {
 
-    private final String coordinates;
+    private final KmlLinearRing linearRing;
 
     /**
      * Do not use this; it was only implemented to satisfy jaxb.
      */
-    public KmlLinearRing() {
-        this.coordinates = null;
+    public KmlInnerBoundary() {
+        this.linearRing = null;
     }
 
-    public KmlLinearRing(
-            @Nonnull String coordinates
+    public KmlInnerBoundary(
+            @Nonnull KmlLinearRing linearRing
     ) {
-        this.coordinates = requireNonNull(coordinates, "coordinates cannot be null");
+        this.linearRing = requireNonNull(linearRing, "linearRing cannot be null");
     }
 
-    @XmlElement
-    public String getCoordinates() {
-        return coordinates;
+    @XmlElement(name = "LinearRing")
+    public KmlLinearRing getLinearRing() {
+        return linearRing;
     }
 
     /**
      * Do not use this; it was only implemented to satisfy jaxb.
      */
-    public void setCoordinates(String coordinates) {
+    public void setLinearRing(KmlLinearRing linearRing) {
         // empty
     }
 

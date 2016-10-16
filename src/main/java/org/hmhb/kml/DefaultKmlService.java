@@ -18,12 +18,8 @@ import org.hmhb.county.CountyService;
 import org.hmhb.kml.jaxb.KmlDocument;
 import org.hmhb.kml.jaxb.KmlIcon;
 import org.hmhb.kml.jaxb.KmlIconStyle;
-import org.hmhb.kml.jaxb.KmlLinearRing;
-import org.hmhb.kml.jaxb.KmlOuterBoundary;
 import org.hmhb.kml.jaxb.KmlPlacemark;
-import org.hmhb.kml.jaxb.KmlPoint;
 import org.hmhb.kml.jaxb.KmlPolyStyle;
-import org.hmhb.kml.jaxb.KmlPolygon;
 import org.hmhb.kml.jaxb.KmlRoot;
 import org.hmhb.kml.jaxb.KmlStyle;
 import org.hmhb.program.Program;
@@ -38,31 +34,34 @@ import static java.util.Objects.requireNonNull;
 @Service
 public class DefaultKmlService implements KmlService {
 
-    private static final String COVERED_COUNTY = "coveredCounty";
-    private static final String UNCOVERED_COUNTY = "uncoveredCounty";
-    private static final String PROGRAM = "program";
+    private static final String COVERED_COUNTY_STYLE = "coveredCounty";
+    private static final String UNCOVERED_COUNTY_STYLE = "uncoveredCounty";
+    private static final String PROGRAM_STYLE = "program";
 
     // You can validate the KML with:
     // http://www.feedvalidator.org/check.cgi?url=https%3A%2F%2Fhmhb.herokuapp.com%2Fapi%2Fkml%3FprogramIds%3D999
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultKmlService.class);
 
+    private final KmlPlacemarkService placemarkService;
     private final CountyService countyService;
     private final ProgramService programService;
 
     @Autowired
     public DefaultKmlService(
+            @Nonnull KmlPlacemarkService placemarkService,
             @Nonnull CountyService countyService,
             @Nonnull ProgramService programService
     ) {
         LOGGER.debug("constructed");
+        this.placemarkService = requireNonNull(placemarkService, "placemarkService cannot be null");
         this.countyService = requireNonNull(countyService, "countyService cannot be null");
         this.programService = requireNonNull(programService, "programService cannot be null");
     }
 
     private List<KmlStyle> getStyles() {
         KmlStyle covered = new KmlStyle(
-                COVERED_COUNTY,
+                COVERED_COUNTY_STYLE,
                 new KmlPolyStyle(
                         "88b73a67",
                         "normal",
@@ -72,7 +71,7 @@ public class DefaultKmlService implements KmlService {
         );
 
         KmlStyle uncovered = new KmlStyle(
-                UNCOVERED_COUNTY,
+                UNCOVERED_COUNTY_STYLE,
                 new KmlPolyStyle(
                         "449e9e9e",
                         "normal",
@@ -82,7 +81,7 @@ public class DefaultKmlService implements KmlService {
         );
 
         KmlStyle pin = new KmlStyle(
-                PROGRAM,
+                PROGRAM_STYLE,
                 new KmlIconStyle(
                         new KmlIcon(
                                 // TODO - push this into a config or something
@@ -95,17 +94,6 @@ public class DefaultKmlService implements KmlService {
                 covered,
                 uncovered,
                 pin
-        );
-    }
-
-    private String getDescription(
-            @Nonnull Program program
-    ) {
-        requireNonNull(program, "program cannot be null");
-
-        return String.format(
-                "<p>Founded in %s.</p>",
-                program.getStartYear()
         );
     }
 
@@ -126,15 +114,7 @@ public class DefaultKmlService implements KmlService {
             shadedCounties.addAll(program.getCountiesServed());
 
             programPlacemarks.add(
-                    new KmlPlacemark(
-                            "program-" + program.getId(),
-                            program.getName(),
-                            "#" + PROGRAM,
-                            getDescription(program),
-                            new KmlPoint(
-                                    program.getCoordinates()
-                            )
-                    )
+                    placemarkService.createProgramPlacemark(program, "#" + PROGRAM_STYLE)
             );
 
         }
@@ -145,23 +125,15 @@ public class DefaultKmlService implements KmlService {
             String countyStyle;
 
             if (shadedCounties.contains(county)) {
-                countyStyle = "#" + COVERED_COUNTY;
+                countyStyle = "#" + COVERED_COUNTY_STYLE;
             } else {
-                countyStyle = "#" + UNCOVERED_COUNTY;
+                countyStyle = "#" + UNCOVERED_COUNTY_STYLE;
             }
 
             countyPlacemarks.add(
-                    new KmlPlacemark(
-                            "county-" + county.getId(),
-                            county.getName(),
+                    placemarkService.createCountyPlacemark(
                             countyStyle,
-                            new KmlPolygon(
-                                    new KmlOuterBoundary(
-                                            new KmlLinearRing(
-                                                    county.getShape()
-                                            )
-                                    )
-                            )
+                            county
                     )
             );
 

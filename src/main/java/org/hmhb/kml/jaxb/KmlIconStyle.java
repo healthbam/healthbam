@@ -15,6 +15,9 @@ public class KmlIconStyle {
 
     private final KmlIcon icon;
 
+    /**
+     * Do not use this; it was only implemented to satisfy jaxb.
+     */
     public KmlIconStyle() {
         this.icon = null;
     }
@@ -30,6 +33,9 @@ public class KmlIconStyle {
         return icon;
     }
 
+    /**
+     * Do not use this; it was only implemented to satisfy jaxb.
+     */
     public void setIcon(KmlIcon icon) {
         // empty
     }

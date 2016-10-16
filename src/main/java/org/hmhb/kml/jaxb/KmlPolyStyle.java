@@ -18,6 +18,9 @@ public class KmlPolyStyle {
     private final String fill;
     private final String outline;
 
+    /**
+     * Do not use this; it was only implemented to satisfy jaxb.
+     */
     public KmlPolyStyle() {
         this.color = null;
         this.colorMode = null;
@@ -42,6 +45,9 @@ public class KmlPolyStyle {
         return color;
     }
 
+    /**
+     * Do not use this; it was only implemented to satisfy jaxb.
+     */
     public void setColor(String color) {
         // empty
     }
@@ -51,6 +57,9 @@ public class KmlPolyStyle {
         return colorMode;
     }
 
+    /**
+     * Do not use this; it was only implemented to satisfy jaxb.
+     */
     public void setColorMode(String colorMode) {
         // empty
     }
@@ -60,6 +69,9 @@ public class KmlPolyStyle {
         return fill;
     }
 
+    /**
+     * Do not use this; it was only implemented to satisfy jaxb.
+     */
     public void setFill(String fill) {
         // empty
     }
@@ -69,6 +81,9 @@ public class KmlPolyStyle {
         return outline;
     }
 
+    /**
+     * Do not use this; it was only implemented to satisfy jaxb.
+     */
     public void setOutline(String outline) {
         // empty
     }

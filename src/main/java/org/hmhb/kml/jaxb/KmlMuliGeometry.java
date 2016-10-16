@@ -4,6 +4,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
 import javax.xml.bind.annotation.XmlElement;
 
+import java.util.List;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -11,32 +13,32 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import static java.util.Objects.requireNonNull;
 
 @Immutable
-public class KmlLinearRing {
+public class KmlMuliGeometry {
 
-    private final String coordinates;
+    private final List<KmlPolygon> polygons;
 
     /**
      * Do not use this; it was only implemented to satisfy jaxb.
      */
-    public KmlLinearRing() {
-        this.coordinates = null;
+    public KmlMuliGeometry() {
+        this.polygons = null;
     }
 
-    public KmlLinearRing(
-            @Nonnull String coordinates
+    public KmlMuliGeometry(
+            @Nonnull List<KmlPolygon> polygons
     ) {
-        this.coordinates = requireNonNull(coordinates, "coordinates cannot be null");
+        this.polygons = requireNonNull(polygons, "polygons cannot be null");
     }
 
-    @XmlElement
-    public String getCoordinates() {
-        return coordinates;
+    @XmlElement(name = "Polygon")
+    public List<KmlPolygon> getPolygons() {
+        return polygons;
     }
 
     /**
      * Do not use this; it was only implemented to satisfy jaxb.
      */
-    public void setCoordinates(String coordinates) {
+    public void setPolygons(List<KmlPolygon> polygons) {
         // empty
     }
 

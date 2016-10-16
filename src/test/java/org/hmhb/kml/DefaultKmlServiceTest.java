@@ -15,6 +15,7 @@ import static org.mockito.Mockito.*;
  */
 public class DefaultKmlServiceTest {
 
+    private KmlPlacemarkService placemarkService;
     private CountyService countyService;
     private ProgramService programService;
 
@@ -22,9 +23,10 @@ public class DefaultKmlServiceTest {
 
     @Before
     public void setUp() throws Exception {
+        placemarkService = mock(KmlPlacemarkService.class);
         countyService = mock(CountyService.class);
         programService = mock(ProgramService.class);
-        toTest = new DefaultKmlService(countyService, programService);
+        toTest = new DefaultKmlService(placemarkService, countyService, programService);
     }
 
     @Test

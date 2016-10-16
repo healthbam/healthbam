@@ -35,7 +35,7 @@ public class DefaultCountyServiceTest {
         county.setId(ID);
         county.setName(NAME);
         county.setState(STATE);
-        county.setShape(SHAPE);
+        county.setOuterBoundary1(SHAPE);
 
         return county;
     }

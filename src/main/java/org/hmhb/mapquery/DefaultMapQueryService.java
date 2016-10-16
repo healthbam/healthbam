@@ -50,6 +50,7 @@ public class DefaultMapQueryService implements MapQueryService {
         MapQueryResult result = new MapQueryResult();
         result.setPrograms(programs);
         result.setMapLayerUrl(
+                // TODO - extract this to config or something
                 "https://hmhb.herokuapp.com/api/kml"
                         + "?programIds=" + commaSeparatedProgramIds
                         + "&time=" + System.currentTimeMillis()

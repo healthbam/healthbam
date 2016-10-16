@@ -12,15 +12,15 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import static java.util.Objects.requireNonNull;
 
 
-@XmlRootElement(
-//        namespace = "http://www.opengis.net/kml/2.2",
-        name = "kml"
-)
+@XmlRootElement(name = "kml")
 @Immutable
 public class KmlRoot {
 
     private final KmlDocument document;
 
+    /**
+     * Do not use this; it was only implemented to satisfy jaxb.
+     */
     public KmlRoot() {
         this.document = null;
     }
@@ -36,6 +36,9 @@ public class KmlRoot {
         return document;
     }
 
+    /**
+     * Do not use this; it was only implemented to satisfy jaxb.
+     */
     public void setDocument(KmlDocument document) {
         // empty
     }
