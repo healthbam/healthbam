@@ -13,7 +13,6 @@ import org.hmhb.county.County;
 import org.hmhb.exception.program.ProgramNameRequiredException;
 import org.hmhb.exception.program.ProgramNotFoundException;
 import org.hmhb.exception.program.ProgramOrganizationRequiredException;
-import org.hmhb.exception.program.ProgramStartYearRequiredException;
 import org.hmhb.exception.program.ProgramStateRequiredException;
 import org.hmhb.exception.program.ProgramZipCodeRequiredException;
 import org.hmhb.geocode.GeocodeService;
@@ -274,10 +273,6 @@ public class DefaultProgramService implements ProgramService {
         } else {
             /* Verify the organization exists and get the updated organization info. */
             program.setOrganization(organizationService.getById(program.getOrganization().getId()));
-        }
-
-        if (program.getStartYear() == null || program.getStartYear().equals(0)) {
-            throw new ProgramStartYearRequiredException();
         }
 
         if (StringUtils.isBlank(program.getState())) {

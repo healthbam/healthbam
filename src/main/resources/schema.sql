@@ -24,7 +24,7 @@ CREATE TABLE program (
     id BIGSERIAL PRIMARY KEY,
     name TEXT NOT NULL,
     organization_id BIGINT REFERENCES organization(id),
-    start_year INT NOT NULL,
+    start_year INT,
     street_address TEXT NOT NULL,
     city TEXT NOT NULL,
     state TEXT NOT NULL,

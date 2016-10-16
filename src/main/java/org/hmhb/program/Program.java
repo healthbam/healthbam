@@ -36,7 +36,6 @@ public class Program {
     @JoinColumn(name = "organization_id")
     private Organization organization;
 
-    @NotNull
     private Integer startYear;
 
     @NotNull

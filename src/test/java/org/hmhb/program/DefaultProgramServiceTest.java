@@ -9,7 +9,6 @@ import org.hmhb.county.County;
 import org.hmhb.exception.program.ProgramNameRequiredException;
 import org.hmhb.exception.program.ProgramNotFoundException;
 import org.hmhb.exception.program.ProgramOrganizationRequiredException;
-import org.hmhb.exception.program.ProgramStartYearRequiredException;
 import org.hmhb.exception.program.ProgramStateRequiredException;
 import org.hmhb.exception.program.ProgramZipCodeRequiredException;
 import org.hmhb.geocode.GeocodeService;
@@ -234,7 +233,7 @@ public class DefaultProgramServiceTest {
         toTest.save(input);
     }
 
-    @Test(expected = ProgramStartYearRequiredException.class)
+    @Test
     public void testSaveCreateNewNullStartYear() throws Exception {
         Program input = createFilledInProgram();
         input.setId(null);
@@ -242,6 +241,8 @@ public class DefaultProgramServiceTest {
 
         /* Make the call. */
         toTest.save(input);
+
+        /* Should not blow up.  After receiving some customer data, we discovered that this should be allowed. */
     }
 
     @Test(expected = ProgramStateRequiredException.class)
