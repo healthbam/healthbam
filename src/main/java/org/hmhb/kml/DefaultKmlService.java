@@ -24,6 +24,7 @@ import org.hmhb.kml.jaxb.KmlRoot;
 import org.hmhb.kml.jaxb.KmlStyle;
 import org.hmhb.program.Program;
 import org.hmhb.program.ProgramService;
+import org.hmhb.url.UrlService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,17 +44,20 @@ public class DefaultKmlService implements KmlService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultKmlService.class);
 
+    private final UrlService urlService;
     private final KmlPlacemarkService placemarkService;
     private final CountyService countyService;
     private final ProgramService programService;
 
     @Autowired
     public DefaultKmlService(
+            @Nonnull UrlService urlService,
             @Nonnull KmlPlacemarkService placemarkService,
             @Nonnull CountyService countyService,
             @Nonnull ProgramService programService
     ) {
         LOGGER.debug("constructed");
+        this.urlService = requireNonNull(urlService, "urlService cannot be null");
         this.placemarkService = requireNonNull(placemarkService, "placemarkService cannot be null");
         this.countyService = requireNonNull(countyService, "countyService cannot be null");
         this.programService = requireNonNull(programService, "programService cannot be null");
@@ -84,8 +88,7 @@ public class DefaultKmlService implements KmlService {
                 PROGRAM_STYLE,
                 new KmlIconStyle(
                         new KmlIcon(
-                                // TODO - push this into a config or something
-                                "https://hmhb.herokuapp.com/images/place.png"
+                                urlService.getUrlPrefix() + "/images/place.png"
                         )
                 )
         );
