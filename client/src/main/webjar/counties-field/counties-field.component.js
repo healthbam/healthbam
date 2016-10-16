@@ -55,7 +55,8 @@
             controller: CountiesFieldController,
             controllerAs: "countiesField",
             bindings: {
-                counties: "<"
+                counties: "<",
+                readonly: "<?"
             }
         }
     );

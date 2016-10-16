@@ -11,7 +11,8 @@
             "healthBam.main",
             "healthBam.createProgram",
             "healthBam.program",
-            "healthBam.mapQuery"
+            "healthBam.mapQuery",
+            "healthBam.mapConfig"
         ]
     );
 

@@ -57,9 +57,9 @@
                     );
                 });
 
-                it("should expose mapStyle", function () {
+                it("should expose mapStyles", function () {
                     map.$onInit();
-                    expect(map.mapStyle).toEqual(jasmine.any(Array));
+                    expect(map.mapStyles).toEqual(jasmine.any(Array));
                 });
 
             });

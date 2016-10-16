@@ -5,30 +5,55 @@
 
     /**
      * Controller for the healthBamProgramDetails component.
-     * @param Program
+     * @param MapQuery
      * @param $stateParams
      * @param $q
      * @param errorHandlingService
+     * @param mapConfig
      * @param $log
      * @constructor
      */
     function ProgramDetailsController(
-        Program,
+        MapQuery,
         $stateParams,
         $q,
         errorHandlingService,
+        mapConfig,
         $log
     ) {
         var programDetails = this;
 
         /**
-         * Handles an error loading the Program.
+         * Handles success loading the MapQuery for the program.
+         * @param mapQuery response.
+         * @returns mapQuery input or rejected promise on error.
+         */
+        function handleMapQuerySearchSuccess(mapQuery) {
+
+            if (mapQuery.result && angular.isArray(mapQuery.result.programs) && mapQuery.result.programs.length === 1) {
+                programDetails.program = mapQuery.result.programs[0];
+
+                return mapQuery;
+            }
+
+            return $q.reject("MapQuery for program invalid");
+        }
+
+        /**
+         * Handles an error loading the MapQuery for the program.
          * @returns rejected promise of error input.
          */
-        function handleProgramLoadError(error) {
-            $log.debug("program load error", error);
+        function handleMapQuerySearchError(error) {
+            $log.debug("mapQuery for program load error", error);
             errorHandlingService.handleError("Failed to load program.");
             return $q.reject(error);
+        }
+
+        /**
+         * Toggles the visibility of the served counties list.
+         */
+        function toggleCounties() {
+            programDetails.countiesHidden = !programDetails.countiesHidden;
         }
 
         /**
@@ -36,13 +61,39 @@
          */
         function activate() {
 
-            programDetails.program = Program.get(
+            var mapQueryPromise;
+
+            programDetails.countiesHidden = true;
+            programDetails.toggleCounties = toggleCounties;
+
+            programDetails.mapStyles = mapConfig.styles;
+
+            /* Build MapQuery to send to server. */
+            programDetails.mapQuery = new MapQuery(
                 {
-                    id: $stateParams.programId
+                    search: {
+                        program: {
+                            id: $stateParams.programId
+                        }
+                    }
                 }
             );
 
-            programDetails.program.$promise.catch(handleProgramLoadError);
+            /* Load program and map URL from server. */
+            programDetails.loading = true;
+            mapQueryPromise = programDetails.mapQuery.$save();
+
+            /* Handle successful or failure server response. */
+            mapQueryPromise.then(
+                handleMapQuerySearchSuccess
+            ).catch(
+                handleMapQuerySearchError
+            ).finally(
+                function () {
+                    programDetails.loading = false;
+                    $log.debug("Program Form Dialog done loading from server");
+                }
+            );
 
             $log.debug("ProgramDetails Controller loaded", programDetails);
         }
@@ -53,10 +104,11 @@
 
     /* Inject dependencies. */
     ProgramDetailsController.$inject = [
-        "Program",
+        "MapQuery",
         "$stateParams",
         "$q",
         "errorHandlingService",
+        "mapConfig",
         "$log"
     ];
 
