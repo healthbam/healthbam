@@ -1,8 +1,9 @@
 <md-content flex>
 
     <ng-map ng-if="map.mapQuery.$resolved"
+            class="health-bam-main-map"
             default-style=""
-            styles="{{map.mapStyle}}"
+            styles="{{map.mapStyles}}"
             zoom-control="true"
             zoom-control-options="{style:'LARGE', position:'LEFT_TOP'}"
             pan-control="false"

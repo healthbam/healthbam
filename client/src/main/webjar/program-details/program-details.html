@@ -1,8 +1,343 @@
-<md-content flex>
+<div ng-if="programDetails.loading"
+     layout="row"
+     layout-sm="column"
+     layout-align="space-around">
+    <md-progress-circular md-mode="indeterminate">
+    </md-progress-circular>
+</div>
 
-    <p>
-        Program data:
-        <pre ng-bind="programDetails.program | json: 4"></pre>
-    </p>
+<div ng-if="programDetails.program"
+     layout="column"
+     layout="fill">
 
-</md-content>
+    <!-- Toolbar with program actions. -->
+    <md-toolbar class="md-hue-2">
+        <div class="md-toolbar-tools">
+
+            <md-button class="md-icon-button"
+                       aria-label="Back to map"
+                       ui-sref="map">
+                <md-icon md-font-library="material-icons">
+                    arrow_back
+                </md-icon>
+                <md-tooltip md-direction="bottom">
+                    <span>
+                        Back to map
+                    </span>
+                </md-tooltip>
+            </md-button>
+
+            <h2>
+                <span ng-bind="programDetails.program.name">
+                </span>
+            </h2>
+
+            <span flex></span>
+
+            <md-button class="md-icon-button"
+                       aria-label="Delete program"
+                       ng-click="programDetails.delete()">
+                <md-icon md-font-library="material-icons">
+                    delete
+                </md-icon>
+                <md-tooltip md-direction="bottom">
+                    <span>
+                        Delete program
+                    </span>
+                </md-tooltip>
+            </md-button>
+
+            <md-button class="md-icon-button"
+                       aria-label="Edit program"
+                       ng-click="programDetails.edit()">
+                <md-icon md-font-library="material-icons">
+                    edit
+                </md-icon>
+                <md-tooltip md-direction="bottom">
+                    <span>
+                        Edit program
+                    </span>
+                </md-tooltip>
+            </md-button>
+
+        </div>
+    </md-toolbar>
+
+    <md-content flex>
+
+        <!-- Basic information card -->
+        <md-card>
+
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline"
+                          md-colors="{color: 'primary'}"
+                          ng-bind="programDetails.program.name">
+                    </span>
+                    <span class="md-subhead"
+                          ng-if="programDetails.program.startYear"
+                          ng-bind-template="Since {{programDetails.program.startYear}}">
+                    </span>
+                </md-card-title-text>
+            </md-card-title>
+
+            <md-card-content layout="column">
+
+                <h3>
+                    Program Areas
+                </h3>
+
+                <div class="md-padding">
+
+                    <div layout="column"
+                         layout-gt-sm="row"
+                         layout-wrap>
+                        <div ng-repeat="programArea in programDetails.program.programAreas"
+                             flex-gt-sm="50">
+                            <span ng-bind="programArea.name">
+                            </span>
+                        </div>
+                    </div>
+
+                    <div ng-if="programDetails.program.otherProgramAreaExplanation">
+                        <span>
+                            Other:
+                        </span>
+                        <span ng-bind="programDetails.program.otherProgramAreaExplanation">
+                        </span>
+                    </div>
+
+                </div>
+
+            </md-card-content>
+
+        </md-card>
+
+        <!-- Program goals card -->
+        <md-card>
+
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline"
+                          md-colors="{color: 'primary'}">
+                        Program goals
+                    </span>
+                </md-card-title-text>
+            </md-card-title>
+
+            <md-card-content layout="column">
+
+                <p ng-bind="programDetails.program.primaryGoal1">
+                </p>
+
+                <p ng-if="programDetails.program.primaryGoal2"
+                   ng-bind="programDetails.program.primaryGoal2">
+                </p>
+
+                <p ng-if="programDetails.program.primaryGoal3"
+                   ng-bind="programDetails.program.primaryGoal3">
+                </p>
+
+            </md-card-content>
+
+        </md-card>
+
+        <!-- Measurable program outcomes card -->
+        <md-card>
+
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline"
+                          md-colors="{color: 'primary'}">
+                        Measurable program outcomes
+                    </span>
+                </md-card-title-text>
+            </md-card-title>
+
+            <md-card-content layout="column">
+
+                <p ng-bind="programDetails.program.measurableOutcome1">
+                </p>
+
+                <p ng-if="programDetails.program.measurableOutcome2"
+                   ng-bind="programDetails.program.measurableOutcome2">
+                </p>
+
+                <p ng-if="programDetails.program.measurableOutcome3"
+                   ng-bind="programDetails.program.measurableOutcome3">
+                </p>
+
+            </md-card-content>
+
+        </md-card>
+
+        <!-- Location card -->
+        <md-card>
+
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline"
+                          md-colors="{color: 'primary'}">
+                        Location
+                    </span>
+                </md-card-title-text>
+            </md-card-title>
+
+            <md-card-content layout-gt-sm="row" layout="column" layout-align="space-between">
+
+                <md-list flex flex-order="2" flex-order-gt-sm="1">
+
+                    <md-list-item class="md-2-line">
+                        <md-icon md-font-library="material-icons">
+                            place
+                        </md-icon>
+                        <div class="md-list-item-text"
+                             layout="column"
+                             flex>
+                            <p ng-bind-template="{{programDetails.program.streetAddress}}"></p>
+                            <p>
+                                <span ng-bind-template="{{programDetails.program.city}},"></span>
+                                <span ng-bind="programDetails.program.state"></span>
+                                <span ng-bind="programDetails.program.zipCode"></span>
+                            </p>
+                        </div>
+                    </md-list-item>
+
+                    <md-list-item ng-click="programDetails.toggleCounties()">
+                        <md-icon ng-if="programDetails.countiesHidden"
+                                 md-font-library="material-icons">
+                            expand_more
+                        </md-icon>
+                        <md-icon ng-if="!programDetails.countiesHidden"
+                                 md-font-library="material-icons">
+                            expand_less
+                        </md-icon>
+                        <div class="md-list-item-text"
+                             flex>
+                            <span ng-if="programDetails.countiesHidden">
+                                Show
+                            </span>
+                            <span ng-if="!programDetails.countiesHidden">
+                                Hide
+                            </span>
+                            <span>
+                                counties served
+                            </span>
+                            <span ng-bind-template="({{programDetails.program.countiesServed.length}})">
+                            </span>
+                        </div>
+                    </md-list-item>
+
+                    <md-list-item ng-if="!programDetails.countiesHidden">
+                        <div class="md-list-item-text md-offset"
+                             flex>
+                            <health-bam-counties-field counties="programDetails.program.countiesServed"
+                                                       readonly="true">
+                            </health-bam-counties-field>
+                        </div>
+                    </md-list-item>
+
+                </md-list>
+
+                <div class="md-media-xl card-media" flex-order="1" flex-order-gt-sm="2">
+                    <ng-map ng-if="programDetails.mapQuery.$resolved"
+                            class="health-bam-mini-map"
+                            default-style=""
+                            styles="{{programDetails.mapStyles}}"
+                            zoom-control="true"
+                            zoom-control-options="{style:'LARGE', position:'LEFT_TOP'}"
+                            pan-control="false"
+                            rotate-control="false"
+                            map-type-control="false"
+                            street-view-control="false">
+
+                        <kml-layer url="{{programDetails.mapQuery.result.mapLayerUrl}}">
+                        </kml-layer>
+
+                    </ng-map>
+                </div>
+
+            </md-card-content>
+
+        </md-card>
+
+        <!-- Organization card -->
+        <md-card>
+
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline"
+                          md-colors="{color: 'primary'}"
+                          ng-bind="programDetails.program.organization.name">
+                    </span>
+                    <span class="md-subhead">
+                        Organization
+                    </span>
+                </md-card-title-text>
+            </md-card-title>
+
+            <md-card-content layout="column">
+
+                <md-list>
+
+                    <md-list-item ng-if="programDetails.program.organization.websiteUrl"
+                                  ng-href="{{programDetails.program.organization.websiteUrl}}"
+                                  target="_blank"
+                                  rel="noopener noreferrer">
+                        <md-icon md-font-library="material-icons">
+                            public
+                        </md-icon>
+                        <div class="md-list-item-text"
+                             flex>
+                            <p ng-bind="programDetails.program.organization.websiteUrl">
+                            </p>
+                        </div>
+                    </md-list-item>
+
+                    <md-list-item ng-if="programDetails.program.organization.facebookUrl"
+                                  ng-href="{{programDetails.program.organization.facebookUrl}}"
+                                  target="_blank"
+                                  rel="noopener noreferrer">
+                        <md-icon md-font-library="material-icons">
+                            share
+                        </md-icon>
+                        <div class="md-list-item-text"
+                             flex>
+                            <p ng-bind="programDetails.program.organization.facebookUrl">
+                            </p>
+                        </div>
+                    </md-list-item>
+
+                    <md-list-item ng-if="programDetails.program.organization.contactEmail"
+                                  ng-href="mailto:{{programDetails.program.organization.contactEmail}}">
+                        <md-icon md-font-library="material-icons">
+                            mail
+                        </md-icon>
+                        <div class="md-list-item-text"
+                             flex>
+                            <p ng-bind="programDetails.program.organization.contactEmail">
+                            </p>
+                        </div>
+                    </md-list-item>
+
+                    <md-list-item ng-if="programDetails.program.organization.contactPhone"
+                                  ng-href="tel:{{programDetails.program.organization.contactPhone}}">
+                        <md-icon md-font-library="material-icons">
+                            phone
+                        </md-icon>
+                        <div class="md-list-item-text"
+                             flex>
+                            <p ng-bind="programDetails.program.organization.contactPhone">
+                            </p>
+                        </div>
+                    </md-list-item>
+
+                </md-list>
+
+            </md-card-content>
+
+        </md-card>
+
+    </md-content>
+
+</div>

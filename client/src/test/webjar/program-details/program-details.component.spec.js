@@ -16,7 +16,12 @@
             var programDetails,
                 $componentController,
                 locals,
-                bindings;
+                bindings,
+                $httpBackend,
+                mapQueryEndpoint,
+                mapQuery,
+                program,
+                programId;
 
             beforeEach(
                 function () {
@@ -29,8 +34,115 @@
                     angular.mock.inject(
                         function ($injector) {
                             $componentController = $injector.get("$componentController");
+                            $httpBackend = $injector.get("$httpBackend");
+                            locals.MapQuery = $injector.get("MapQuery");
+                            locals.$stateParams = $injector.get("$stateParams");
+                            locals.$q = $injector.get("$q");
+                            locals.errorHandlingService = $injector.get("errorHandlingService");
+                            locals.mapConfig = $injector.get("mapConfig");
                             locals.$log = $injector.get("$log");
                         }
+                    );
+
+                    mapQueryEndpoint = "api/map-queries";
+
+                    programId = 1234;
+                    locals.$stateParams.programId = programId;
+
+                    program = {
+                        id: programId
+                    };
+
+                    mapQuery = new locals.MapQuery(
+                        {
+                            search: {
+                                program: {
+                                    id: programId
+                                }
+                            },
+                            result: {
+                                mapLayerUrl: "foo/bar",
+                                programs: [
+                                    program
+                                ]
+                            }
+                        }
+                    );
+
+                    spyOn(locals.$log, "debug");
+                    spyOn(locals.errorHandlingService, "handleError");
+                }
+            );
+
+            /**
+             * Creates controller and mocks request responses.
+             */
+            function initController() {
+
+                $httpBackend.expectPOST(
+                    mapQueryEndpoint
+                ).respond(
+                    angular.toJson(mapQuery)
+                );
+
+                /* Get the controller for the programDetails component. */
+                programDetails = $componentController(
+                    "healthBamProgramDetails",
+                    locals,
+                    bindings
+                );
+
+                programDetails.$onInit();
+
+                expect(programDetails.loading).toEqual(true);
+
+                $httpBackend.flush();
+
+                expect(programDetails.loading).toEqual(false);
+            }
+
+            it("should exist", function () {
+                initController();
+                expect(programDetails).toEqual(jasmine.any(Object));
+            });
+
+            describe("$onInit success", function () {
+
+                beforeEach(initController);
+
+                it("should expose mapQuery", function () {
+                    expect(programDetails.mapQuery).toEqual(jasmine.objectContaining(mapQuery));
+                });
+
+                it("should expose program", function () {
+                    expect(programDetails.program).toEqual(program);
+                });
+
+                it("should expose mapStyles", function () {
+                    expect(programDetails.mapStyles).toEqual(locals.mapConfig.styles);
+                });
+
+                it("should default countiesHidden to true", function () {
+                    expect(programDetails.countiesHidden).toEqual(true);
+                });
+
+                it("should log loading debug message", function () {
+                    expect(locals.$log.debug).toHaveBeenCalledWith(
+                        jasmine.any(String),
+                        programDetails
+                    );
+                });
+
+            });
+
+            describe("$onInit failure", function () {
+
+                it("should handle MapQuery error response", function () {
+
+                    $httpBackend.expectPOST(
+                        mapQueryEndpoint
+                    ).respond(
+                        418
                     );
 
                     /* Get the controller for the programDetails component. */
@@ -39,27 +151,94 @@
                         locals,
                         bindings
                     );
-                }
-            );
 
-            it("should exist", function () {
-                expect(programDetails).toEqual(jasmine.any(Object));
-            });
-
-            describe("$onInit", function () {
-
-                it("should log loading debug message", function () {
-                    spyOn(locals.$log, "debug");
                     programDetails.$onInit();
-                    expect(locals.$log.debug).toHaveBeenCalledWith(
-                        jasmine.any(String),
-                        programDetails
-                    );
+
+                    expect(programDetails.loading).toEqual(true);
+
+                    $httpBackend.flush();
+
+                    expect(programDetails.loading).toEqual(false);
+
+                    expect(locals.errorHandlingService.handleError).toHaveBeenCalledWith(jasmine.any(String));
                 });
 
-                it("should expose program", function () {
+                it("should handle MapQuery response with no programs", function () {
+
+                    mapQuery.result.programs = [];
+
+                    $httpBackend.expectPOST(
+                        mapQueryEndpoint
+                    ).respond(
+                        angular.toJson(mapQuery)
+                    );
+
+                    /* Get the controller for the programDetails component. */
+                    programDetails = $componentController(
+                        "healthBamProgramDetails",
+                        locals,
+                        bindings
+                    );
+
                     programDetails.$onInit();
-                    expect(programDetails.program).toEqual(jasmine.any(Object));
+
+                    expect(programDetails.loading).toEqual(true);
+
+                    $httpBackend.flush();
+
+                    expect(programDetails.loading).toEqual(false);
+
+                    expect(locals.errorHandlingService.handleError).toHaveBeenCalledWith(jasmine.any(String));
+                });
+
+                it("should handle MapQuery response with multiple programs", function () {
+
+                    mapQuery.result.programs.push(
+                        {
+                            id: 99999
+                        }
+                    );
+
+                    $httpBackend.expectPOST(
+                        mapQueryEndpoint
+                    ).respond(
+                        angular.toJson(mapQuery)
+                    );
+
+                    /* Get the controller for the programDetails component. */
+                    programDetails = $componentController(
+                        "healthBamProgramDetails",
+                        locals,
+                        bindings
+                    );
+
+                    programDetails.$onInit();
+
+                    expect(programDetails.loading).toEqual(true);
+
+                    $httpBackend.flush();
+
+                    expect(programDetails.loading).toEqual(false);
+
+                    expect(locals.errorHandlingService.handleError).toHaveBeenCalledWith(jasmine.any(String));
+                });
+
+            });
+
+            describe("toggleCounties", function () {
+
+                beforeEach(initController);
+
+                it("should be exposed", function () {
+                    expect(programDetails.toggleCounties).toEqual(jasmine.any(Function));
+                });
+
+                it("should toggle countiesHidden", function () {
+                    expect(programDetails.countiesHidden).toEqual(true);
+                    programDetails.toggleCounties();
+                    expect(programDetails.countiesHidden).toEqual(false);
+                    programDetails.toggleCounties();
+                    expect(programDetails.countiesHidden).toEqual(true);
                 });
 
             });

@@ -6,10 +6,13 @@
         [
             "ngMaterial",
             "ui.router",
+            "ngMap",
             "healthBam.templates",
             "healthBam.main",
-            "healthBam.program",
-            "healthBam.errorHandling"
+            "healthBam.mapQuery",
+            "healthBam.errorHandling",
+            "healthBam.countiesField",
+            "healthBam.mapConfig"
         ]
     );
 
