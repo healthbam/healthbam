@@ -103,8 +103,9 @@ public class DefaultKmlPlacemarkService implements KmlPlacemarkService {
         requireNonNull(program, "program cannot be null");
 
         return String.format(
-                "<p>Founded in %s.</p>",
-                program.getStartYear()
+                "<p>%s</p><p><a href=\"views/program-details/%d\">More details</a></p>",
+                program.getOrganization().getName(),
+                program.getId()
         );
     }
 
