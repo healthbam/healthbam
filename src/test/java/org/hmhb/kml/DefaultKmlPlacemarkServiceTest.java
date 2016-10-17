@@ -2,6 +2,7 @@ package org.hmhb.kml;
 
 import org.hmhb.county.County;
 import org.hmhb.kml.jaxb.KmlPlacemark;
+import org.hmhb.organization.Organization;
 import org.hmhb.program.Program;
 import org.junit.Before;
 import org.junit.Test;
@@ -184,11 +185,16 @@ public class DefaultKmlPlacemarkServiceTest {
         Integer startYear = 1999;
         String coordinates = "1.000,-1.000";
 
+        Organization organization = new Organization();
+        organization.setId(12345L);
+        organization.setName("test-organization");
+
         Program program = new Program();
         program.setId(id);
         program.setName(name);
         program.setStartYear(startYear);
         program.setCoordinates(coordinates);
+        program.setOrganization(organization);
 
         /* Make the call. */
         KmlPlacemark actual = toTest.createProgramPlacemark(program, style);
@@ -212,7 +218,7 @@ public class DefaultKmlPlacemarkServiceTest {
         );
         assertTrue(
                 "description didn't contain startYear: " + program,
-                actual.getDescription().contains(startYear.toString())
+                actual.getDescription().contains(organization.getName())
         );
     }
 
