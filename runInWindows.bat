@@ -1,4 +1,4 @@
-set JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005
+set JAVA_OPTS=-Dhmhb.url.prefix=https://hmhb.herokuapp.com -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005
 set PORT=8080
 set JDBC_DATABASE_URL=jdbc:postgresql://localhost:5432/hmhb_db
 

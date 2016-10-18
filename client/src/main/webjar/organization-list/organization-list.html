@@ -1,0 +1,13 @@
+</md-content>
+<md-content>
+    <md-list flex>
+        <md-subheader class="md-no-sticky">Existing Organizations</md-subheader>
+        <md-list-item ng-repeat="organization in organizationList.list" ng-click="null">
+           <div class="md-list-item-text" layout="column">
+                <h3>{{ organization.name }}</h3>
+               <md-button class="md-secondary" ng-click="editOrganization()">Edit</md-button>
+               <md-divider ></md-divider>
+            </div>
+        </md-list-item>
+    </md-list>
+</md-content>
