@@ -127,6 +127,27 @@
         }
 
         /**
+         * Sets value to true for all programAreas already applied to an existing program.
+         * @returns input to support promise chaining.
+         */
+        function setAppliedProgramAreas(input) {
+
+            programFormDialog.programAreas.forEach(
+                function (programAreaChoice) {
+                    /* Set value to true if the programAreaChoice is assigned to the program. */
+                    programAreaChoice.value = programFormDialog.program.programAreas.some(
+                        function (programArea) {
+                            /* Return true if programArea on program matches choice. */
+                            return programArea.id === programAreaChoice.id;
+                        }
+                    );
+                }
+            );
+
+            return input;
+        }
+
+        /**
          * Fetch all initial information from the server.
          */
         function load() {
@@ -138,6 +159,10 @@
             programFormDialog.programAreas = ProgramArea.query();
             programFormDialog.programAreas.$promise.catch(
                 handleProgramAreaQueryError
+            );
+
+            programFormDialog.programAreas.$promise.then(
+                setAppliedProgramAreas
             );
 
             programFormDialog.organizations = Organization.query();

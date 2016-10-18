@@ -37,6 +37,7 @@
                         </label>
                         <md-select name="organization"
                                    ng-model="programFormDialog.program.organization"
+                                   ng-model-options="{trackBy: '$value.id'}"
                                    required>
                             <md-option ng-value="programFormDialog.newOrganization">
                                 Create new organization

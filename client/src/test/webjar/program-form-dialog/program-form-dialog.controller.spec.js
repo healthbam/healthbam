@@ -71,7 +71,13 @@
                     ];
 
                     /* Set bindings. */
-                    bindings.program = new Program();
+                    bindings.program = new Program(
+                        {
+                            countiesServed: [],
+                            programAreas: [],
+                            state: "GA"
+                        }
+                    );
                 }
             );
 
@@ -261,9 +267,33 @@
 
             describe("programFormDialog.programAreas", function () {
 
-                beforeEach(initController);
+                it("should equal program-areas response with value:false for all programAreas", function () {
 
-                it("should equal program-areas response", function () {
+                    initController();
+
+                    programAreas.forEach(
+                        function (programArea) {
+                            programArea.value = false;
+                        }
+                    );
+
+                    expect(programFormDialog.programAreas).toEqual(
+                        jasmine.objectContaining(programAreas)
+                    );
+                });
+
+                it("should equal program-areas response with value:true for all programAreas", function () {
+
+                    bindings.program.programAreas = angular.copy(programAreas);
+
+                    initController();
+
+                    programAreas.forEach(
+                        function (programArea) {
+                            programArea.value = true;
+                        }
+                    );
+
                     expect(programFormDialog.programAreas).toEqual(
                         jasmine.objectContaining(programAreas)
                     );
