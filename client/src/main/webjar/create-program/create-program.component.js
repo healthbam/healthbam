@@ -21,7 +21,7 @@
          * @returns promise that resolves when dialog is closed.
          */
         function openProgramForm($event) {
-            return programFormDialogService.open($event);
+            return programFormDialogService.create($event);
         }
 
         /**

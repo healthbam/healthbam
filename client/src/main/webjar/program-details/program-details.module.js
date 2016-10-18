@@ -12,7 +12,8 @@
             "healthBam.mapQuery",
             "healthBam.errorHandling",
             "healthBam.countiesField",
-            "healthBam.mapConfig"
+            "healthBam.mapConfig",
+            "healthBam.programFormDialog"
         ]
     );
 

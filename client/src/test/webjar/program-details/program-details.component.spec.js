@@ -36,6 +36,7 @@
                             $componentController = $injector.get("$componentController");
                             $httpBackend = $injector.get("$httpBackend");
                             locals.MapQuery = $injector.get("MapQuery");
+                            locals.Program = $injector.get("Program");
                             locals.$stateParams = $injector.get("$stateParams");
                             locals.$q = $injector.get("$q");
                             locals.errorHandlingService = $injector.get("errorHandlingService");
@@ -115,7 +116,7 @@
                 });
 
                 it("should expose program", function () {
-                    expect(programDetails.program).toEqual(program);
+                    expect(programDetails.program).toEqual(new locals.Program(program));
                 });
 
                 it("should expose mapStyles", function () {

@@ -6,8 +6,11 @@
     /**
      * Controller for the healthBamProgramDetails component.
      * @param MapQuery
+     * @param Program
+     * @param $state
      * @param $stateParams
      * @param $q
+     * @param programFormDialogService
      * @param errorHandlingService
      * @param mapConfig
      * @param $log
@@ -15,13 +18,33 @@
      */
     function ProgramDetailsController(
         MapQuery,
+        Program,
+        $state,
         $stateParams,
         $q,
+        programFormDialogService,
         errorHandlingService,
         mapConfig,
         $log
     ) {
         var programDetails = this;
+
+        /**
+         * Opens a dialog for editing the Program.
+         * @param $event
+         * @returns {promise} resolved when dialog is closed.
+         */
+        function edit($event) {
+            return programFormDialogService.edit(
+                $event,
+                programDetails.program
+            ).then(
+                function (data) {
+                    $state.reload();
+                    return data;
+                }
+            );
+        }
 
         /**
          * Handles success loading the MapQuery for the program.
@@ -31,7 +54,9 @@
         function handleMapQuerySearchSuccess(mapQuery) {
 
             if (mapQuery.result && angular.isArray(mapQuery.result.programs) && mapQuery.result.programs.length === 1) {
-                programDetails.program = mapQuery.result.programs[0];
+                programDetails.program = new Program(
+                    angular.copy(mapQuery.result.programs[0])
+                );
 
                 return mapQuery;
             }
@@ -65,6 +90,7 @@
 
             programDetails.countiesHidden = true;
             programDetails.toggleCounties = toggleCounties;
+            programDetails.edit = edit;
 
             programDetails.mapStyles = mapConfig.styles;
 
@@ -105,8 +131,11 @@
     /* Inject dependencies. */
     ProgramDetailsController.$inject = [
         "MapQuery",
+        "Program",
+        "$state",
         "$stateParams",
         "$q",
+        "programFormDialogService",
         "errorHandlingService",
         "mapConfig",
         "$log"

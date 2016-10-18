@@ -86,14 +86,14 @@
                         mock: "clickEvent"
                     };
 
-                    spyOn(locals.programFormDialogService, "open");
-                    locals.programFormDialogService.open.and.returnValue(expected);
+                    spyOn(locals.programFormDialogService, "create");
+                    locals.programFormDialogService.create.and.returnValue(expected);
 
                     actual = createProgram.openProgramForm(event);
 
                     expect(actual).toEqual(expected);
 
-                    expect(locals.programFormDialogService.open).toHaveBeenCalledWith(
+                    expect(locals.programFormDialogService.create).toHaveBeenCalledWith(
                         event
                     );
                 });
