@@ -4,6 +4,9 @@ import javax.annotation.Nonnull;
 
 public interface KmlService {
 
-    String getKml(@Nonnull String programIdsString);
+    String getKml(
+            @Nonnull String countyId,
+            @Nonnull String programIdsString
+    );
 
 }

@@ -37,13 +37,17 @@ public class KmlController {
             method = RequestMethod.GET,
             produces = MediaType.TEXT_PLAIN_VALUE,
             path = "/api/kml",
-            params = {"programIds"}
+            params = {
+                    "countyId",
+                    "programIds"
+            }
     )
     public String getKml(
+            @RequestParam("countyId") String countyId,
             @RequestParam("programIds") String programIds
     ) {
-        LOGGER.debug("getKml called: programIds={}", programIds);
-        return service.getKml(programIds);
+        LOGGER.debug("getKml called: countyId={}, programIds={}", countyId, programIds);
+        return service.getKml(countyId, programIds);
     }
 
 }
