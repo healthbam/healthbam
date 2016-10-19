@@ -53,6 +53,13 @@ public class Program {
     @NotNull
     private String coordinates;
 
+    @NotNull
+    private String primaryGoal1;
+
+    private String primaryGoal2;
+
+    private String primaryGoal3;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "program_county",
@@ -176,6 +183,30 @@ public class Program {
 
     public void setCoordinates(String coordinates) {
         this.coordinates = coordinates;
+    }
+
+    public String getPrimaryGoal1() {
+        return primaryGoal1;
+    }
+
+    public void setPrimaryGoal1(String primaryGoal1) {
+        this.primaryGoal1 = primaryGoal1;
+    }
+
+    public String getPrimaryGoal2() {
+        return primaryGoal2;
+    }
+
+    public void setPrimaryGoal2(String primaryGoal2) {
+        this.primaryGoal2 = primaryGoal2;
+    }
+
+    public String getPrimaryGoal3() {
+        return primaryGoal3;
+    }
+
+    public void setPrimaryGoal3(String primaryGoal3) {
+        this.primaryGoal3 = primaryGoal3;
     }
 
     public Set<County> getCountiesServed() {
