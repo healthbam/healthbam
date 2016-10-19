@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.hmhb.audit.AuditHelper;
 import org.hmhb.county.County;
+import org.hmhb.exception.program.ProgramMeasurableOutcome1RequiredException;
 import org.hmhb.exception.program.ProgramNameRequiredException;
 import org.hmhb.exception.program.ProgramNotFoundException;
 import org.hmhb.exception.program.ProgramOrganizationRequiredException;
@@ -48,6 +49,7 @@ public class DefaultProgramServiceTest {
     private static final String STATE = "test-state";
     private static final String ZIP_CODE = "test-zip-code";
     private static final String PRIMARY_GOAL = "test-primary-goal-1";
+    private static final String MEASURABLE_OUTCOME = "test-measurable-outcome-1";
     private static final String GEO_CODE = "-1.00000000,1.00000000";
 
     private AuditHelper auditHelper;
@@ -114,6 +116,7 @@ public class DefaultProgramServiceTest {
         program.setState(STATE);
         program.setZipCode(ZIP_CODE);
         program.setPrimaryGoal1(PRIMARY_GOAL);
+        program.setMeasurableOutcome1(MEASURABLE_OUTCOME);
         program.setCountiesServed(Collections.singleton(createCounty()));
         program.setProgramAreas(Collections.singleton(createProgramArea()));
 
@@ -261,6 +264,36 @@ public class DefaultProgramServiceTest {
         Program input = createFilledInProgram();
         input.setId(null);
         input.setPrimaryGoal1(" ");
+
+        /* Make the call. */
+        toTest.save(input);
+    }
+
+    @Test(expected = ProgramMeasurableOutcome1RequiredException.class)
+    public void testSaveCreateNewNullOutcome() throws Exception {
+        Program input = createFilledInProgram();
+        input.setId(null);
+        input.setMeasurableOutcome1(null);
+
+        /* Make the call. */
+        toTest.save(input);
+    }
+
+    @Test(expected = ProgramMeasurableOutcome1RequiredException.class)
+    public void testSaveCreateNewEmptyOutcome() throws Exception {
+        Program input = createFilledInProgram();
+        input.setId(null);
+        input.setMeasurableOutcome1("");
+
+        /* Make the call. */
+        toTest.save(input);
+    }
+
+    @Test(expected = ProgramMeasurableOutcome1RequiredException.class)
+    public void testSaveCreateNewOnlyWhitespaceOutcome() throws Exception {
+        Program input = createFilledInProgram();
+        input.setId(null);
+        input.setMeasurableOutcome1(" ");
 
         /* Make the call. */
         toTest.save(input);

@@ -57,6 +57,7 @@ INSERT INTO program (
     zip_code,
     coordinates,
     primary_goal1,
+    measurable_outcome1,
     created_on,
     created_by
 ) VALUES (
@@ -69,6 +70,7 @@ INSERT INTO program (
     '30306',
     '-84.35457490,33.78202630',
     'To test that a program shows on the map 1.1',
+    'Increased our testing of programs named Program 1.1 by 100%',
     TIMESTAMP '2016-09-05 11:59:29',
     'initial data script'
 );
@@ -83,6 +85,7 @@ INSERT INTO program (
     zip_code,
     coordinates,
     primary_goal1,
+    measurable_outcome1,
     created_on,
     created_by
 ) VALUES (
@@ -95,6 +98,7 @@ INSERT INTO program (
     '30144',
     '-84.56828080,34.03744520',
     'To test that a program shows on the map 1.2',
+    'Increased our testing of programs named Program 1.2 by 100%',
     TIMESTAMP '2016-09-06 10:30:29',
     'initial data script'
 );
@@ -109,6 +113,7 @@ INSERT INTO program (
     zip_code,
     coordinates,
     primary_goal1,
+    measurable_outcome1,
     created_on,
     created_by
 ) VALUES (
@@ -121,6 +126,7 @@ INSERT INTO program (
     '31830', /* http://gastateparks.org/LittleWhiteHouse */
     '-84.685721,32.881566',
     'To better test oddly shaped counties that have a polygon outside of their main polygon',
+    'Increased our testing of counties with more an extra polygon by 100%',
     TIMESTAMP '2016-09-06 10:30:29',
     'initial data script'
 );
@@ -135,6 +141,7 @@ INSERT INTO program (
     zip_code,
     coordinates,
     primary_goal1,
+    measurable_outcome1,
     created_on,
     created_by
 ) VALUES (
@@ -147,6 +154,7 @@ INSERT INTO program (
     '30634', /* https://en.wikipedia.org/wiki/Georgia_Guidestones */
     '-82.894390,34.232358',
     'To better test oddly shaped counties that have more than 1 polygon outside of their main polygon',
+    'Increased our testing of counties with more than 1 extra polygon by 100%',
     TIMESTAMP '2016-09-06 10:30:29',
     'initial data script'
 );
@@ -161,6 +169,7 @@ INSERT INTO program (
     zip_code,
     coordinates,
     primary_goal1,
+    measurable_outcome1,
     created_on,
     created_by
 ) VALUES (
@@ -173,6 +182,7 @@ INSERT INTO program (
     '32034', /* https://www.nps.gov/cuis/index.htm */
     '-81.468750,30.779726',
     'To better test oddly shaped counties that have a hole in their polygon',
+    'Increased our testing of counties with a hole by 100%',
     TIMESTAMP '2016-09-06 10:30:29',
     'initial data script'
 );

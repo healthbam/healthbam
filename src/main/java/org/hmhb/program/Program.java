@@ -60,6 +60,13 @@ public class Program {
 
     private String primaryGoal3;
 
+    @NotNull
+    private String measurableOutcome1;
+
+    private String measurableOutcome2;
+
+    private String measurableOutcome3;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "program_county",
@@ -207,6 +214,30 @@ public class Program {
 
     public void setPrimaryGoal3(String primaryGoal3) {
         this.primaryGoal3 = primaryGoal3;
+    }
+
+    public String getMeasurableOutcome1() {
+        return measurableOutcome1;
+    }
+
+    public void setMeasurableOutcome1(String measurableOutcome1) {
+        this.measurableOutcome1 = measurableOutcome1;
+    }
+
+    public String getMeasurableOutcome2() {
+        return measurableOutcome2;
+    }
+
+    public void setMeasurableOutcome2(String measurableOutcome2) {
+        this.measurableOutcome2 = measurableOutcome2;
+    }
+
+    public String getMeasurableOutcome3() {
+        return measurableOutcome3;
+    }
+
+    public void setMeasurableOutcome3(String measurableOutcome3) {
+        this.measurableOutcome3 = measurableOutcome3;
     }
 
     public Set<County> getCountiesServed() {
