@@ -67,6 +67,8 @@ public class Program {
 
     private String measurableOutcome3;
 
+    private boolean servesAllCounties;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "program_county",
@@ -238,6 +240,14 @@ public class Program {
 
     public void setMeasurableOutcome3(String measurableOutcome3) {
         this.measurableOutcome3 = measurableOutcome3;
+    }
+
+    public boolean isServesAllCounties() {
+        return servesAllCounties;
+    }
+
+    public void setServesAllCounties(boolean servesAllCounties) {
+        this.servesAllCounties = servesAllCounties;
     }
 
     public Set<County> getCountiesServed() {

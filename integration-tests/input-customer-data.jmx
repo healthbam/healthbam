@@ -1764,6 +1764,140 @@ vars.put(&quot;programId&quot;, responseData.id);
           </DebugSampler>
           <hashTree/>
         </hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Create Serves All Counties Program" enabled="true"/>
+        <hashTree>
+          <DebugSampler guiclass="TestBeanGUI" testclass="DebugSampler" testname="-- End Ryan Org Data --" enabled="true">
+            <boolProp name="displayJMeterProperties">false</boolProp>
+            <boolProp name="displayJMeterVariables">true</boolProp>
+            <boolProp name="displaySystemProperties">false</boolProp>
+          </DebugSampler>
+          <hashTree/>
+          <UserParameters guiclass="UserParametersGui" testclass="UserParameters" testname="Set Params" enabled="true">
+            <collectionProp name="UserParameters.names">
+              <stringProp name="-1205040241">orgName</stringProp>
+              <stringProp name="1300516074">orgPhone</stringProp>
+              <stringProp name="1780285719">orgWebsite</stringProp>
+              <stringProp name="551717322">orgFacebook</stringProp>
+              <stringProp name="1290492696">orgEmail</stringProp>
+            </collectionProp>
+            <collectionProp name="UserParameters.thread_values">
+              <collectionProp name="-320609150">
+                <stringProp name="-225029768">Ryan Org</stringProp>
+                <stringProp name="1416099669">770-555-9999</stringProp>
+                <stringProp name="1244095381">http://www.google.com</stringProp>
+                <stringProp name="0"></stringProp>
+                <stringProp name="0"></stringProp>
+              </collectionProp>
+            </collectionProp>
+            <boolProp name="UserParameters.per_iteration">false</boolProp>
+          </UserParameters>
+          <hashTree/>
+          <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="Call Create Org" enabled="true">
+            <collectionProp name="ModuleController.node_path">
+              <stringProp name="-1227702913">WorkBench</stringProp>
+              <stringProp name="764597751">Test Plan</stringProp>
+              <stringProp name="-1948168983">Thread Group</stringProp>
+              <stringProp name="-933862976">Create Org</stringProp>
+            </collectionProp>
+          </ModuleController>
+          <hashTree/>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="createServesAllCountiesProgram" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+	&quot;name&quot;: &quot;Serves All Counties Program&quot;,&#xd;
+	&quot;organization&quot;: {&#xd;
+		&quot;id&quot;: ${orgId}&#xd;
+	},&#xd;
+	&quot;startYear&quot;: 1999,&#xd;
+	&quot;streetAddress&quot;: &quot;2306 Robin Ln.&quot;,&#xd;
+	&quot;city&quot;: &quot;Smyrna&quot;,&#xd;
+	&quot;state&quot;: &quot;GA&quot;,&#xd;
+	&quot;zipCode&quot;: &quot;30080&quot;,&#xd;
+	&quot;servesAllCounties&quot;: true,&#xd;
+	&quot;countiesServed&quot;: [&#xd;
+	],&#xd;
+	&quot;programAreas&quot;: [&#xd;
+	],&#xd;
+	&quot;otherProgramArea&quot;: false,&#xd;
+	&quot;otherProgramAreaExplanation&quot;: null,&#xd;
+	&quot;primaryGoal1&quot;: &quot;goal 1&quot;,&#xd;
+	&quot;measurableOutcome1&quot;: &quot;outcome 1&quot;&#xd;
+}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">api/programs</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <boolProp name="HTTPSampler.monitor">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="49586">200</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">8</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="JSR223 Assertion" enabled="true">
+              <stringProp name="cacheKey"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">function setFailure(message) {
+	prev.setSuccessful(false);
+	prev.setResponseMessage(prev.getResponseMessage() + message);
+}
+
+function assert(success, message) {
+	if (!success) {
+		setFailure(message);
+	}
+}
+
+function assertEquals(actual, expected) {
+	var actualStr = JSON.stringify(actual),
+	    expectedStr = JSON.stringify(expected);
+	assert(
+		actualStr === expectedStr,
+		&quot;\n\nNOT EQUAL: actual = &quot; + actualStr + &quot;\n               expected = &quot; + expectedStr
+	);
+}
+
+var responseString = SampleResult.getResponseDataAsString();
+var responseData = JSON.parse(responseString);
+
+assert(responseData.id, &quot;id was not set!&quot;);
+
+vars.put(&quot;programId&quot;, responseData.id);
+</stringProp>
+              <stringProp name="scriptLanguage">javascript</stringProp>
+            </JSR223Assertion>
+            <hashTree/>
+          </hashTree>
+          <DebugSampler guiclass="TestBeanGUI" testclass="DebugSampler" testname="-- End Ryan Org Data --" enabled="true">
+            <boolProp name="displayJMeterProperties">false</boolProp>
+            <boolProp name="displayJMeterVariables">true</boolProp>
+            <boolProp name="displaySystemProperties">false</boolProp>
+          </DebugSampler>
+          <hashTree/>
+        </hashTree>
       </hashTree>
       <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
         <boolProp name="ResultCollector.error_logging">false</boolProp>
