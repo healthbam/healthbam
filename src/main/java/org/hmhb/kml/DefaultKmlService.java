@@ -114,7 +114,11 @@ public class DefaultKmlService implements KmlService {
 
         for (Program program : programs) {
 
-            shadedCounties.addAll(program.getCountiesServed());
+            if (program.isServesAllCounties()) {
+                shadedCounties = allCounties;
+            } else {
+                shadedCounties.addAll(program.getCountiesServed());
+            }
 
             programPlacemarks.add(
                     placemarkService.createProgramPlacemark(program, "#" + PROGRAM_STYLE)
