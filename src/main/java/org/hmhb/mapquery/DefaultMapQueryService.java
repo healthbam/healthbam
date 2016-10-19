@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.codahale.metrics.annotation.Timed;
+import org.hmhb.county.County;
 import org.hmhb.program.Program;
 import org.hmhb.program.ProgramService;
 import org.hmhb.url.UrlService;
@@ -46,6 +47,17 @@ public class DefaultMapQueryService implements MapQueryService {
 
         List<Program> programs = programService.search(mapQuery);
 
+        String countyId = "";
+        County county = null;
+
+        if (mapQuery.getSearch() != null && mapQuery.getSearch().getCounty() != null) {
+            county = mapQuery.getSearch().getCounty();
+        }
+
+        if (county != null && county.getId() != null) {
+            countyId = county.getId().toString();
+        }
+
         String commaSeparatedProgramIds = programs.stream()
                 .map(Program::getId)
                 .map(Object::toString)
@@ -55,7 +67,8 @@ public class DefaultMapQueryService implements MapQueryService {
         result.setPrograms(programs);
         result.setMapLayerUrl(
                 urlService.getUrlPrefix() + "/api/kml"
-                        + "?programIds=" + commaSeparatedProgramIds
+                        + "?countyId=" + countyId
+                        + "&programIds=" + commaSeparatedProgramIds
                         + "&time=" + System.currentTimeMillis()
         );
         mapQuery.setResult(result);

@@ -23,14 +23,15 @@ public class KmlControllerTest {
 
     @Test
     public void testGetKml() throws Exception {
-        String input = "1,2,3";
+        String countyId = "999";
+        String programIds = "1,2,3";
         String expected = "<kml></kml>";
 
         /* Train the mocks. */
-        when(service.getKml(input)).thenReturn(expected);
+        when(service.getKml(countyId, programIds)).thenReturn(expected);
 
         /* Make the call. */
-        String actual = toTest.getKml(input);
+        String actual = toTest.getKml(countyId, programIds);
 
         /* Verify the results. */
         assertEquals(expected, actual);

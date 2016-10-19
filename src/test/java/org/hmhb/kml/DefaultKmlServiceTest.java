@@ -32,8 +32,11 @@ public class DefaultKmlServiceTest {
 
     @Test
     public void testGetKml() throws Exception {
+        String countyId = "999";
+        String programIds = "1,2,3";
+
         /* Make the call. */
-        assertNotNull(toTest.getKml("1,2,3"));
+        assertNotNull(toTest.getKml(countyId, programIds));
 
         /*
          * Verify the results.
@@ -46,14 +49,39 @@ public class DefaultKmlServiceTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void testGetKmlNull() throws Exception {
-        toTest.getKml(null);
+    public void testGetKmlNullCountyId() throws Exception {
+        String countyId = null;
+        String programIds = "1,2,3";
+
+        /* Make the call. */
+        toTest.getKml(countyId, programIds);
+    }
+
+    @Test(expected = NumberFormatException.class)
+    public void testGetKmlInvalidCountyId() throws Exception {
+        String countyId = "not-parsable";
+        String programIds = "1,2,3";
+
+        /* Make the call. */
+        toTest.getKml(countyId, programIds);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testGetKmlNullProgramIds() throws Exception {
+        String countyId = "999";
+        String programIds = null;
+
+        /* Make the call. */
+        toTest.getKml(countyId, programIds);
     }
 
     @Test
-    public void testGetKmlEmptyString() throws Exception {
+    public void testGetKmlEmptyStringCountyIdAndProgramIds() throws Exception {
+        String countyId = "";
+        String programIds = "";
+
         /* Make the call. */
-        assertNotNull(toTest.getKml(""));
+        assertNotNull(toTest.getKml(countyId, programIds));
 
         /*
          * Verify the results.
