@@ -1,6 +1,7 @@
 package org.hmhb.kml;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -101,6 +102,7 @@ public class DefaultKmlService implements KmlService {
     }
 
     private KmlRoot convertToKml(
+            @Nullable Long countyId,
             @Nonnull List<Program> programs
     ) {
         requireNonNull(programs, "programs cannot be null");
@@ -112,9 +114,23 @@ public class DefaultKmlService implements KmlService {
         );
         Set<County> shadedCounties = new HashSet<>();
 
+        if (countyId != null) {
+            for (County county : allCounties) {
+                if (countyId.equals(county.getId())) {
+                    shadedCounties.add(county);
+                }
+            }
+        }
+
         for (Program program : programs) {
 
-            shadedCounties.addAll(program.getCountiesServed());
+            if (countyId == null) {
+                if (program.isServesAllCounties()) {
+                    shadedCounties = allCounties;
+                } else {
+                    shadedCounties.addAll(program.getCountiesServed());
+                }
+            }
 
             programPlacemarks.add(
                     placemarkService.createProgramPlacemark(program, "#" + PROGRAM_STYLE)
@@ -156,25 +172,33 @@ public class DefaultKmlService implements KmlService {
         );
     }
 
-    private List<Long> getProgramIds(
-            @Nonnull String programIdsString
+    private List<Long> getIds(
+            @Nonnull String idsString
     ) {
-        requireNonNull(programIdsString, "programIdsString cannot be null");
+        requireNonNull(idsString, "idsString cannot be null");
 
-        List<String> programStringIds = Arrays.asList(programIdsString.split("[,]"));
-        List<Long> programIds = new ArrayList<>();
-        for (String progIdStr : programStringIds) {
-            programIds.add(Long.parseLong(progIdStr));
+        List<String> stringIds = Arrays.asList(idsString.split("[,]"));
+        List<Long> ids = new ArrayList<>();
+        for (String idStr : stringIds) {
+            ids.add(Long.parseLong(idStr));
         }
-        return programIds;
+        return ids;
     }
 
     @Override
     public String getKml(
+            @Nonnull String countyIdString,
             @Nonnull String programIdsString
     ) {
-        LOGGER.debug("getKml called: programIdsString={}", programIdsString);
+        LOGGER.debug("getKml called: countyIdString={}, programIdsString={}", countyIdString, programIdsString);
+        requireNonNull(countyIdString, "countyIdString cannot be null");
         requireNonNull(programIdsString, "programIdsString cannot be null");
+
+        Long countyId = null;
+
+        if (!countyIdString.isEmpty()) {
+            countyId = Long.parseLong(countyIdString);
+        }
 
         List<Program> programs;
 
@@ -182,14 +206,14 @@ public class DefaultKmlService implements KmlService {
             programs = Collections.emptyList();
 
         } else {
-            List<Long> programIds = getProgramIds(programIdsString);
+            List<Long> programIds = getIds(programIdsString);
             programs = programService.getByIds(programIds);
 
         }
 
         LOGGER.debug("programs found: {}", programs);
 
-        KmlRoot kml = convertToKml(programs);
+        KmlRoot kml = convertToKml(countyId, programs);
 
         try {
 
