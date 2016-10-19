@@ -10,6 +10,7 @@ import com.codahale.metrics.annotation.Timed;
 import org.apache.commons.lang3.StringUtils;
 import org.hmhb.audit.AuditHelper;
 import org.hmhb.county.County;
+import org.hmhb.exception.program.ProgramMeasurableOutcome1RequiredException;
 import org.hmhb.exception.program.ProgramNameRequiredException;
 import org.hmhb.exception.program.ProgramNotFoundException;
 import org.hmhb.exception.program.ProgramOrganizationRequiredException;
@@ -273,6 +274,10 @@ public class DefaultProgramService implements ProgramService {
 
         if (StringUtils.isBlank(program.getPrimaryGoal1())) {
             throw new ProgramPrimaryGoal1RequiredException();
+        }
+
+        if (StringUtils.isBlank(program.getMeasurableOutcome1())) {
+            throw new ProgramMeasurableOutcome1RequiredException();
         }
 
         if (program.getOrganization() == null) {

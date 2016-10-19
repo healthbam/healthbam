@@ -162,9 +162,9 @@ vars.put(&quot;orgId&quot;, responseData.id);
 	&quot;primaryGoal1&quot;: &quot;${progPrimaryGoal1}&quot;,&#xd;
 	&quot;primaryGoal2&quot;: &quot;${progPrimaryGoal2}&quot;,&#xd;
 	&quot;primaryGoal3&quot;: &quot;${progPrimaryGoal3}&quot;,&#xd;
-	&quot;primaryGoal1&quot;: &quot;${progMeasurableOutcome1}&quot;,&#xd;
-	&quot;primaryGoal2&quot;: &quot;${progMeasurableOutcome2}&quot;,&#xd;
-	&quot;primaryGoal3&quot;: &quot;${progMeasurableOutcome3}&quot;&#xd;
+	&quot;measurableOutcome1&quot;: &quot;${progMeasurableOutcome1}&quot;,&#xd;
+	&quot;measurableOutcome2&quot;: &quot;${progMeasurableOutcome2}&quot;,&#xd;
+	&quot;measurableOutcome3&quot;: &quot;${progMeasurableOutcome3}&quot;&#xd;
 }</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                 </elementProp>
@@ -287,7 +287,7 @@ vars.put(&quot;programId&quot;, responseData.id);
               <stringProp name="-1002474523">progCity</stringProp>
             </collectionProp>
             <collectionProp name="UserParameters.thread_values">
-              <collectionProp name="1741109398">
+              <collectionProp name="358673807">
                 <stringProp name="-1464664619">Prenatal Education Program</stringProp>
                 <stringProp name="1516351">1990</stringProp>
                 <stringProp name="-74556041">2300 Henderson Mill Road</stringProp>
@@ -437,7 +437,7 @@ vars.put(&quot;programId&quot;, responseData.id);
                 <stringProp name="-1002474523">progCity</stringProp>
               </collectionProp>
               <collectionProp name="UserParameters.thread_values">
-                <collectionProp name="-637740502">
+                <collectionProp name="1456290280">
                   <stringProp name="-1149898655">The Einstein Bagel Shop - Sandy Springs</stringProp>
                   <stringProp name="3392903">null</stringProp>
                   <stringProp name="845037287">1100 Hammond Dr. #600</stringProp>
@@ -1321,7 +1321,7 @@ vars.put(&quot;programId&quot;, responseData.id);
                 <stringProp name="-1002474523">progCity</stringProp>
               </collectionProp>
               <collectionProp name="UserParameters.thread_values">
-                <collectionProp name="-928926627">
+                <collectionProp name="-153414140">
                   <stringProp name="957637220">La Calavera Bakery</stringProp>
                   <stringProp name="3392903">null</stringProp>
                   <stringProp name="-271383236">747-C E College Ave</stringProp>
@@ -1373,7 +1373,7 @@ vars.put(&quot;programId&quot;, responseData.id);
                 <stringProp name="-1002474523">progCity</stringProp>
               </collectionProp>
               <collectionProp name="UserParameters.thread_values">
-                <collectionProp name="-294411090">
+                <collectionProp name="1261645017">
                   <stringProp name="620053543">Revolution Donuts - Decatur</stringProp>
                   <stringProp name="3392903">null</stringProp>
                   <stringProp name="23613535">908 W College Ave</stringProp>
@@ -1425,7 +1425,7 @@ vars.put(&quot;programId&quot;, responseData.id);
                 <stringProp name="-1002474523">progCity</stringProp>
               </collectionProp>
               <collectionProp name="UserParameters.thread_values">
-                <collectionProp name="-2014466662">
+                <collectionProp name="2146140116">
                   <stringProp name="74106788">Makan</stringProp>
                   <stringProp name="3392903">null</stringProp>
                   <stringProp name="154712311">130 Clairemont Ave Suite 100</stringProp>
@@ -1477,7 +1477,7 @@ vars.put(&quot;programId&quot;, responseData.id);
                 <stringProp name="-1002474523">progCity</stringProp>
               </collectionProp>
               <collectionProp name="UserParameters.thread_values">
-                <collectionProp name="438243816">
+                <collectionProp name="-1219268127">
                   <stringProp name="-711985152">Revolution Donuts - Inman Park</stringProp>
                   <stringProp name="3392903">null</stringProp>
                   <stringProp name="1265744322">745 Edgewood Ave</stringProp>
@@ -1529,7 +1529,7 @@ vars.put(&quot;programId&quot;, responseData.id);
                 <stringProp name="-1002474523">progCity</stringProp>
               </collectionProp>
               <collectionProp name="UserParameters.thread_values">
-                <collectionProp name="838103514">
+                <collectionProp name="-526908099">
                   <stringProp name="1270361970">Taziki’s Mediterranean Cafe</stringProp>
                   <stringProp name="3392903">null</stringProp>
                   <stringProp name="1820405993">319 W Ponce de Leon Ave #40</stringProp>
