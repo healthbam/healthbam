@@ -12,7 +12,9 @@
      * @param $q
      * @param programFormDialogService
      * @param errorHandlingService
+     * @param $mdToast
      * @param mapConfig
+     * @param $mdDialog
      * @param $log
      * @constructor
      */
@@ -24,10 +26,114 @@
         $q,
         programFormDialogService,
         errorHandlingService,
+        $mdToast,
         mapConfig,
+        $mdDialog,
         $log
     ) {
         var programDetails = this;
+
+        /**
+         * Reloads the current state.
+         * @param input
+         * @returns {*} input for promise chaining.
+         */
+        function reloadState(input) {
+            $state.reload();
+            return input;
+        }
+
+        /**
+         * Navigates to the map view.
+         */
+        function goToMap() {
+            $state.go(
+                "map"
+            );
+        }
+
+        /**
+         * Handles an successful deletion the program.
+         * @returns rejected promise of error input.
+         */
+        function handleDeleteSuccess() {
+
+            var toast;
+
+            toast = $mdToast.simple().textContent(
+                "Program deleted."
+            ).position(
+                "top right"
+            );
+
+            $mdToast.show(
+                toast
+            );
+
+            goToMap();
+        }
+
+        /**
+         * Handles an error deleting the program.
+         * @returns rejected promise of error input.
+         */
+        function handleDeleteFailure(error) {
+            $log.debug("delete program error", error);
+            errorHandlingService.handleError("Failed to delete program.");
+            return $q.reject(error);
+        }
+
+        /**
+         * Actually deletes the program.
+         * @param input
+         * @returns {*} input to maintain promise chain.
+         */
+        function doDelete(input) {
+            programDetails.program.$delete().then(
+                handleDeleteSuccess
+            ).catch(
+                handleDeleteFailure
+            );
+            return input;
+        }
+
+        /**
+         * Return the program's name.
+         * @returns {String}
+         */
+        function getProgramName() {
+            if (programDetails.program && programDetails.program.name) {
+                return programDetails.program.name;
+            }
+            return "the program";
+        }
+
+        /**
+         * Prompts for confirmation and deletes the Program.
+         * @param $event - click event that triggered the operation.
+         */
+        function deleteProgram($event) {
+
+            var dialogOptions = $mdDialog.confirm().title(
+                "Delete program?"
+            ).textContent(
+                "This will permanently delete '" + getProgramName() + "'."
+            ).ariaLabel(
+                "Delete program confirmation"
+            ).targetEvent(
+                $event
+            ).ok(
+                "Delete program"
+            ).cancel(
+                "Cancel"
+            );
+
+            $mdDialog.show(
+                dialogOptions
+            ).then(
+                doDelete
+            );
+        }
 
         /**
          * Opens a dialog for editing the Program.
@@ -39,10 +145,7 @@
                 $event,
                 programDetails.program
             ).then(
-                function (data) {
-                    $state.reload();
-                    return data;
-                }
+                reloadState
             );
         }
 
@@ -91,6 +194,7 @@
             programDetails.countiesHidden = true;
             programDetails.toggleCounties = toggleCounties;
             programDetails.edit = edit;
+            programDetails.deleteProgram = deleteProgram;
 
             programDetails.mapStyles = mapConfig.styles;
 
@@ -137,7 +241,9 @@
         "$q",
         "programFormDialogService",
         "errorHandlingService",
+        "$mdToast",
         "mapConfig",
+        "$mdDialog",
         "$log"
     ];
 
