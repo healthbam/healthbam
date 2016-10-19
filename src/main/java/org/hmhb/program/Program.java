@@ -97,6 +97,8 @@ public class Program {
     )
     private Set<ProgramArea> programAreas;
 
+    private String otherProgramAreaExplanation;
+
     @NotNull
     private Date createdOn;
 
@@ -264,6 +266,14 @@ public class Program {
 
     public void setProgramAreas(Set<ProgramArea> programAreas) {
         this.programAreas = programAreas;
+    }
+
+    public String getOtherProgramAreaExplanation() {
+        return otherProgramAreaExplanation;
+    }
+
+    public void setOtherProgramAreaExplanation(String otherProgramAreaExplanation) {
+        this.otherProgramAreaExplanation = otherProgramAreaExplanation;
     }
 
     public Date getCreatedOn() {

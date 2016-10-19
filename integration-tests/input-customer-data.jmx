@@ -157,7 +157,6 @@ vars.put(&quot;orgId&quot;, responseData.id);
 	&quot;programAreas&quot;: [&#xd;
 		${progProgramAreasString}&#xd;
 	],&#xd;
-	&quot;otherProgramArea&quot;: false,&#xd;
 	&quot;otherProgramAreaExplanation&quot;: null,&#xd;
 	&quot;primaryGoal1&quot;: &quot;${progPrimaryGoal1}&quot;,&#xd;
 	&quot;primaryGoal2&quot;: &quot;${progPrimaryGoal2}&quot;,&#xd;
@@ -1822,8 +1821,7 @@ vars.put(&quot;programId&quot;, responseData.id);
 	],&#xd;
 	&quot;programAreas&quot;: [&#xd;
 	],&#xd;
-	&quot;otherProgramArea&quot;: false,&#xd;
-	&quot;otherProgramAreaExplanation&quot;: null,&#xd;
+	&quot;otherProgramAreaExplanation&quot;: &quot;Ryan Program Area&quot;,&#xd;
 	&quot;primaryGoal1&quot;: &quot;goal 1&quot;,&#xd;
 	&quot;measurableOutcome1&quot;: &quot;outcome 1&quot;&#xd;
 }</stringProp>
