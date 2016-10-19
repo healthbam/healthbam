@@ -9,6 +9,7 @@ import org.hmhb.county.County;
 import org.hmhb.exception.program.ProgramNameRequiredException;
 import org.hmhb.exception.program.ProgramNotFoundException;
 import org.hmhb.exception.program.ProgramOrganizationRequiredException;
+import org.hmhb.exception.program.ProgramPrimaryGoal1RequiredException;
 import org.hmhb.exception.program.ProgramStateRequiredException;
 import org.hmhb.exception.program.ProgramZipCodeRequiredException;
 import org.hmhb.geocode.GeocodeService;
@@ -46,6 +47,7 @@ public class DefaultProgramServiceTest {
     private static final String CITY = "test-city";
     private static final String STATE = "test-state";
     private static final String ZIP_CODE = "test-zip-code";
+    private static final String PRIMARY_GOAL = "test-primary-goal-1";
     private static final String GEO_CODE = "-1.00000000,1.00000000";
 
     private AuditHelper auditHelper;
@@ -111,6 +113,7 @@ public class DefaultProgramServiceTest {
         program.setCity(CITY);
         program.setState(STATE);
         program.setZipCode(ZIP_CODE);
+        program.setPrimaryGoal1(PRIMARY_GOAL);
         program.setCountiesServed(Collections.singleton(createCounty()));
         program.setProgramAreas(Collections.singleton(createProgramArea()));
 
@@ -228,6 +231,36 @@ public class DefaultProgramServiceTest {
         Program input = createFilledInProgram();
         input.setId(null);
         input.setName(" ");
+
+        /* Make the call. */
+        toTest.save(input);
+    }
+
+    @Test(expected = ProgramPrimaryGoal1RequiredException.class)
+    public void testSaveCreateNewNullGoal() throws Exception {
+        Program input = createFilledInProgram();
+        input.setId(null);
+        input.setPrimaryGoal1(null);
+
+        /* Make the call. */
+        toTest.save(input);
+    }
+
+    @Test(expected = ProgramPrimaryGoal1RequiredException.class)
+    public void testSaveCreateNewEmptyGoal() throws Exception {
+        Program input = createFilledInProgram();
+        input.setId(null);
+        input.setPrimaryGoal1("");
+
+        /* Make the call. */
+        toTest.save(input);
+    }
+
+    @Test(expected = ProgramPrimaryGoal1RequiredException.class)
+    public void testSaveCreateNewOnlyWhitespaceGoal() throws Exception {
+        Program input = createFilledInProgram();
+        input.setId(null);
+        input.setPrimaryGoal1(" ");
 
         /* Make the call. */
         toTest.save(input);
