@@ -37,6 +37,7 @@ CREATE TABLE program (
     measurable_outcome2 TEXT,
     measurable_outcome3 TEXT,
     serves_all_counties BOOLEAN NOT NULL DEFAULT FALSE,
+    other_program_area_explanation TEXT,
     created_on DATE NOT NULL,
     created_by TEXT NOT NULL,
     updated_on DATE,
