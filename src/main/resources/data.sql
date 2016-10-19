@@ -56,6 +56,7 @@ INSERT INTO program (
     state,
     zip_code,
     coordinates,
+    primary_goal1,
     created_on,
     created_by
 ) VALUES (
@@ -67,6 +68,7 @@ INSERT INTO program (
     'GA',
     '30306',
     '-84.35457490,33.78202630',
+    'To test that a program shows on the map 1.1',
     TIMESTAMP '2016-09-05 11:59:29',
     'initial data script'
 );
@@ -80,6 +82,7 @@ INSERT INTO program (
     state,
     zip_code,
     coordinates,
+    primary_goal1,
     created_on,
     created_by
 ) VALUES (
@@ -91,6 +94,7 @@ INSERT INTO program (
     'GA',
     '30144',
     '-84.56828080,34.03744520',
+    'To test that a program shows on the map 1.2',
     TIMESTAMP '2016-09-06 10:30:29',
     'initial data script'
 );
@@ -104,6 +108,7 @@ INSERT INTO program (
     state,
     zip_code,
     coordinates,
+    primary_goal1,
     created_on,
     created_by
 ) VALUES (
@@ -115,6 +120,7 @@ INSERT INTO program (
     'GA',
     '31830', /* http://gastateparks.org/LittleWhiteHouse */
     '-84.685721,32.881566',
+    'To better test oddly shaped counties that have a polygon outside of their main polygon',
     TIMESTAMP '2016-09-06 10:30:29',
     'initial data script'
 );
@@ -128,6 +134,7 @@ INSERT INTO program (
     state,
     zip_code,
     coordinates,
+    primary_goal1,
     created_on,
     created_by
 ) VALUES (
@@ -139,6 +146,7 @@ INSERT INTO program (
     'GA',
     '30634', /* https://en.wikipedia.org/wiki/Georgia_Guidestones */
     '-82.894390,34.232358',
+    'To better test oddly shaped counties that have more than 1 polygon outside of their main polygon',
     TIMESTAMP '2016-09-06 10:30:29',
     'initial data script'
 );
@@ -152,6 +160,7 @@ INSERT INTO program (
     state,
     zip_code,
     coordinates,
+    primary_goal1,
     created_on,
     created_by
 ) VALUES (
@@ -163,6 +172,7 @@ INSERT INTO program (
     'GA',
     '32034', /* https://www.nps.gov/cuis/index.htm */
     '-81.468750,30.779726',
+    'To better test oddly shaped counties that have a hole in their polygon',
     TIMESTAMP '2016-09-06 10:30:29',
     'initial data script'
 );
