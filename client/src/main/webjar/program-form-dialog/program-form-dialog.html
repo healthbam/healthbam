@@ -189,7 +189,14 @@
 
                     </div>
 
-                    <health-bam-counties-field counties="programFormDialog.program.countiesServed">
+                    <md-checkbox name="servesAllCounties"
+                                 ng-model="programFormDialog.program.servesAllCounties"
+                                 aria-label="Serves all counties?">
+                        Serves all counties?
+                    </md-checkbox>
+
+                    <health-bam-counties-field ng-if="!programFormDialog.program.servesAllCounties"
+                                               counties="programFormDialog.program.countiesServed">
                     </health-bam-counties-field>
 
                     <div class="health-bam-program-areas-container">
