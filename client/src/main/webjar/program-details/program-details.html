@@ -203,7 +203,18 @@
                         </div>
                     </md-list-item>
 
-                    <md-list-item ng-click="programDetails.toggleCounties()">
+                    <md-list-item ng-if="programDetails.program.servesAllCounties">
+                        <md-icon md-font-library="material-icons">
+                            map
+                        </md-icon>
+                        <div class="md-list-item-text"
+                             flex>
+                            <p>Serves all counties</p>
+                        </div>
+                    </md-list-item>
+
+                    <md-list-item ng-if="!programDetails.program.servesAllCounties"
+                                  ng-click="programDetails.toggleCounties()">
                         <md-icon ng-if="programDetails.countiesHidden"
                                  md-font-library="material-icons">
                             expand_more
