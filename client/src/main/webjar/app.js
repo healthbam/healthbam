@@ -66,7 +66,8 @@
             "ui.router",
             "healthBam.main",
             "healthBam.map",
-            "healthBam.programDetails"
+            "healthBam.programDetails",
+            "healthBam.organizationList"
         ]
     );
 
