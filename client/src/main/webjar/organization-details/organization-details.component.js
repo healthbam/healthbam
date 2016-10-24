@@ -12,7 +12,6 @@
      * @param $q
      * @param errorHandlingService
      * @param $mdToast
-     * @param mapConfig
      * @param $mdDialog
      * @param $log
      * @constructor
@@ -23,10 +22,9 @@
         $state,
         $stateParams,
         $q,
- //       organizationFormDialogService,
+        organizationFormDialogService,
         errorHandlingService,
         $mdToast,
-        mapConfig,
         $mdDialog,
         $log
     ) {
@@ -37,10 +35,10 @@
          * @param input
          * @returns {*} input for promise chaining.
          */
-        // function reloadState(input) {
-        //     $state.reload();
-        //     return input;
-        // }
+        function reloadState(input) {
+            $state.reload();
+            return input;
+        }
 
         /**
          * Navigates to the map view.
@@ -139,14 +137,14 @@
          * @param $event
          * @returns {promise} resolved when dialog is closed.
          */
-        // function edit($event) {
-        //     return organizationFormDialogService.edit(
-        //         $event,
-        //         programDetails.program
-        //     ).then(
-        //         reloadState
-        //     );
-        // }
+        function edit($event) {
+            return organizationFormDialogService.edit(
+                $event,
+                organizationDetails.orgInfo
+            ).then(
+                reloadState
+            );
+        }
 
         /**
          * Handles success loading the organization.
@@ -173,11 +171,10 @@
          * Initializes the controller.
          */
         function activate() {
-       //     organizationDetails.edit = edit;
+            organizationDetails.edit = edit;
             organizationDetails.deleteOrganization = deleteOrganization;
             organizationDetails.isAdmin = authenticationService.isAdmin;
 
-     //       organizationDetails.mapStyles = mapConfig.styles;
             organizationDetails.orgInfo = Organization.get({id: $stateParams.orgId});
 
             /* Load organization URL from server. */
@@ -191,7 +188,6 @@
             ).finally(
                 function () {
                     organizationDetails.loading = false;
-                    $log.debug("Organization Details done loading from server");
                 }
             );
 
@@ -209,10 +205,9 @@
         "$state",
         "$stateParams",
         "$q",
-    //    "organizationFormDialogService",
+        "organizationFormDialogService",
         "errorHandlingService",
         "$mdToast",
-        "mapConfig",
         "$mdDialog",
         "$log"
     ];

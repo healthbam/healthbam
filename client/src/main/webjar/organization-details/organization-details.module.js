@@ -9,11 +9,10 @@
             "ngMap",
             "healthBam.templates",
             "healthBam.main",
-            "healthBam.mapQuery",
             "healthBam.errorHandling",
             "healthBam.mapConfig",
-            "healthBam.authentication"
-     //       "healthBam.organizationFormDialog"
+            "healthBam.authentication",
+            "healthBam.organizationFormDialog"
         ]
     );
 
