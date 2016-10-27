@@ -67,7 +67,8 @@
             "healthBam.main",
             "healthBam.map",
             "healthBam.programDetails",
-            "healthBam.organizationList"
+            "healthBam.organizationList",
+            "healthBam.organizationDetails"
         ]
     );
 

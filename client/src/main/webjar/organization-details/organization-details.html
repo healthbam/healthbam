@@ -1,0 +1,145 @@
+<div ng-if="organizationDetails.loading"
+     layout="row"
+     layout-sm="column"
+     layout-align="space-around">
+    <md-progress-circular md-mode="indeterminate">
+    </md-progress-circular>
+</div>
+
+<div ng-if="organizationDetails.orgInfo"
+     layout="column"
+     layout="fill">
+
+    <!-- Toolbar with program actions. -->
+    <md-toolbar class="md-hue-2">
+        <div class="md-toolbar-tools">
+
+            <md-button class="md-icon-button"
+                       aria-label="Back to map"
+                       ui-sref="map">
+                <md-icon md-font-library="material-icons">
+                    arrow_back
+                </md-icon>
+                <md-tooltip md-direction="bottom">
+                    <span>
+                        Back to map
+                    </span>
+                </md-tooltip>
+            </md-button>
+
+            <h2>
+                <span ng-bind="organizationDetails.orgInfo.name">
+                </span>
+            </h2>
+
+            <span flex></span>
+
+            <md-button class="md-icon-button"
+                       aria-label="Delete organization"
+                       ng-click="organizationDetails.deleteOrganization($event)">
+                <md-icon md-font-library="material-icons">
+                    delete
+                </md-icon>
+                <md-tooltip md-direction="bottom">
+                    <span>
+                        Delete organization
+                    </span>
+                </md-tooltip>
+            </md-button>
+
+            <md-button class="md-icon-button"
+                       aria-label="Edit organization"
+                       ng-click="organizationDetails.edit($event)">
+                <md-icon md-font-library="material-icons">
+                    edit
+                </md-icon>
+                <md-tooltip md-direction="bottom">
+                    <span>
+                        Edit organization
+                    </span>
+                </md-tooltip>
+            </md-button>
+
+        </div>
+    </md-toolbar>
+
+    <md-content flex>
+
+         <!-- Organization information card -->
+
+        <md-card>
+
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline"
+                          md-colors="{color: 'primary'}"
+                          ng-bind="organizationDetails.orgInfo.name">
+                    </span>
+                </md-card-title-text>
+            </md-card-title>
+
+            <md-card-content layout="column">
+
+                <md-list>
+
+                    <md-list-item ng-if="organizationDetails.orgInfo.websiteUrl"
+                                  ng-href="{{organizationDetails.orgInfo.websiteUrl}}"
+                                  target="_blank"
+                                  rel="noopener noreferrer">
+                        <md-icon md-font-library="material-icons">
+                            public
+                        </md-icon>
+                        <div class="md-list-item-text"
+                             flex>
+                            <p ng-bind="organizationDetails.orgInfo.websiteUrl">
+                            </p>
+                        </div>
+                    </md-list-item>
+
+                    <md-list-item ng-if="organizationDetails.orgInfo.facebookUrl"
+                                  ng-href="{{organizationDetails.orgInfo.facebookUrl}}"
+                                  target="_blank"
+                                  rel="noopener noreferrer">
+                        <md-icon md-font-library="material-icons">
+                            share
+                        </md-icon>
+                        <div class="md-list-item-text"
+                             flex>
+                            <p ng-bind="organizationDetails.orgInfo.facebookUrl">
+                            </p>
+                        </div>
+                    </md-list-item>
+
+                    <md-list-item ng-if="organizationDetails.orgInfo.contactEmail"
+                                  ng-href="mailto:{{organizationDetails.orgInfo.contactEmail}}">
+                        <md-icon md-font-library="material-icons">
+                            mail
+                        </md-icon>
+                        <div class="md-list-item-text"
+                             flex>
+                            <p ng-bind="organizationDetails.orgInfo.contactEmail">
+                            </p>
+                        </div>
+                    </md-list-item>
+
+                    <md-list-item ng-if="organizationDetails.orgInfo.contactPhone"
+                                  ng-href="tel:{{organizationDetails.orgInfo.contactPhone}}">
+                        <md-icon md-font-library="material-icons">
+                            phone
+                        </md-icon>
+                        <div class="md-list-item-text"
+                             flex>
+                            <p ng-bind="organizationDetails.orgInfo.contactPhone">
+                            </p>
+                        </div>
+                    </md-list-item>
+
+                </md-list>
+
+            </md-card-content>
+
+        </md-card>
+
+    </md-content>
+
+</div>
