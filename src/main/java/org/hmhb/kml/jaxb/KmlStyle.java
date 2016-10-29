@@ -15,6 +15,7 @@ import static java.util.Objects.requireNonNull;
 public class KmlStyle {
 
     private final String id;
+    private final KmlLineStyle lineStyle;
     private final KmlPolyStyle polyStyle;
     private final KmlIconStyle iconStyle;
 
@@ -23,7 +24,19 @@ public class KmlStyle {
      */
     public KmlStyle() {
         this.id = null;
+        this.lineStyle = null;
         this.polyStyle = null;
+        this.iconStyle = null;
+    }
+
+    public KmlStyle(
+            @Nonnull String id,
+            @Nonnull KmlLineStyle lineStyle,
+            @Nonnull KmlPolyStyle polyStyle
+    ) {
+        this.id = requireNonNull(id, "id cannot be null");
+        this.lineStyle = requireNonNull(lineStyle, "lineStyle cannot be null");
+        this.polyStyle = requireNonNull(polyStyle, "polyStyle cannot be null");
         this.iconStyle = null;
     }
 
@@ -32,6 +45,7 @@ public class KmlStyle {
             @Nonnull KmlPolyStyle polyStyle
     ) {
         this.id = requireNonNull(id, "id cannot be null");
+        this.lineStyle = null;
         this.polyStyle = requireNonNull(polyStyle, "polyStyle cannot be null");
         this.iconStyle = null;
     }
@@ -41,6 +55,7 @@ public class KmlStyle {
             @Nonnull KmlIconStyle iconStyle
     ) {
         this.id = requireNonNull(id, "id cannot be null");
+        this.lineStyle = null;
         this.polyStyle = null;
         this.iconStyle = requireNonNull(iconStyle, "iconStyle cannot be null");
     }
@@ -54,6 +69,18 @@ public class KmlStyle {
      * Do not use this; it was only implemented to satisfy jaxb.
      */
     public void setId(String id) {
+        // empty
+    }
+
+    @XmlElement(name = "LineStyle")
+    public KmlLineStyle getLineStyle() {
+        return lineStyle;
+    }
+
+    /**
+     * Do not use this; it was only implemented to satisfy jaxb.
+     */
+    public void setLineStyle(KmlLineStyle lineStyle) {
         // empty
     }
 
