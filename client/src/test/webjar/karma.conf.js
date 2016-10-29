@@ -17,6 +17,7 @@ module.exports = function (config) {
                 "node_modules/angular-ui-router/release/angular-ui-router.js",
                 "node_modules/angular-material/angular-material.js",
                 "node_modules/ngmap/build/scripts/ng-map.js",
+                "node_modules/satellizer/satellizer.js",
                 "src/main/**/*.module.js",
                 "src/main/**/*.js",
                 "src/test/**/*.spec.js"

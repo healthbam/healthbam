@@ -8,7 +8,10 @@ import javax.transaction.Transactional;
 import com.codahale.metrics.annotation.Timed;
 import org.apache.commons.lang3.StringUtils;
 import org.hmhb.audit.AuditHelper;
+import org.hmhb.authorization.AuthorizationService;
 import org.hmhb.exception.organization.CannotDeleteOrganizationWithProgramsException;
+import org.hmhb.exception.organization.OnlyAdminCanDeleteOrgException;
+import org.hmhb.exception.organization.OnlyAdminCanUpdateOrgException;
 import org.hmhb.exception.organization.OrganizationNameRequiredException;
 import org.hmhb.exception.organization.OrganizationNotFoundException;
 import org.hmhb.program.ProgramDao;
@@ -25,17 +28,20 @@ public class DefaultOrganizationService implements OrganizationService {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultOrganizationService.class);
 
     private final AuditHelper auditHelper;
+    private final AuthorizationService authorizationService;
     private final OrganizationDao dao;
     private final ProgramDao programDao;
 
     @Autowired
     public DefaultOrganizationService(
             @Nonnull AuditHelper auditHelper,
+            @Nonnull AuthorizationService authorizationService,
             @Nonnull ProgramDao programDao,
             @Nonnull OrganizationDao dao
     ) {
         LOGGER.debug("constructed");
         this.auditHelper = requireNonNull(auditHelper, "auditHelper cannot be null");
+        this.authorizationService = requireNonNull(authorizationService, "authorizationService cannot be null");
         this.programDao = requireNonNull(programDao, "programDao cannot be null");
         this.dao = requireNonNull(dao, "dao cannot be null");
     }
@@ -69,12 +75,20 @@ public class DefaultOrganizationService implements OrganizationService {
     ) {
         LOGGER.debug("delete called: id={}", id);
         requireNonNull(id, "id cannot be null");
+
+        if (!authorizationService.isAdmin()) {
+            throw new OnlyAdminCanDeleteOrgException();
+        }
+
         /* Verify it exists. */
         Organization organization = getById(id);
+
         if (programDao.findByOrganizationId(id).size() > 0) {
             throw new CannotDeleteOrganizationWithProgramsException(id);
         }
+
         dao.delete(id);
+
         return organization;
     }
 
@@ -98,6 +112,11 @@ public class DefaultOrganizationService implements OrganizationService {
             organization.setUpdatedBy(null);
             organization.setUpdatedOn(null);
         } else {
+
+            if (!authorizationService.isAdmin()) {
+                throw new OnlyAdminCanUpdateOrgException();
+            }
+
             /* Verify it exists and get the original createdBy and createdOn. */
             Organization organizationInDb = getById(organization.getId());
 

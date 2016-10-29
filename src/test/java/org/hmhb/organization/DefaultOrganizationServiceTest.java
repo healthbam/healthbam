@@ -5,7 +5,10 @@ import java.util.Date;
 import java.util.List;
 
 import org.hmhb.audit.AuditHelper;
+import org.hmhb.authorization.AuthorizationService;
 import org.hmhb.exception.organization.CannotDeleteOrganizationWithProgramsException;
+import org.hmhb.exception.organization.OnlyAdminCanDeleteOrgException;
+import org.hmhb.exception.organization.OnlyAdminCanUpdateOrgException;
 import org.hmhb.exception.organization.OrganizationNameRequiredException;
 import org.hmhb.exception.organization.OrganizationNotFoundException;
 import org.hmhb.program.Program;
@@ -33,6 +36,7 @@ public class DefaultOrganizationServiceTest {
     private static final String FACEBOOK_URL = "http://www.facebook.com/TestFacebook";
 
     private AuditHelper auditHelper;
+    private AuthorizationService authorizationService;
     private ProgramDao programDao;
     private OrganizationDao dao;
     private DefaultOrganizationService toTest;
@@ -40,10 +44,16 @@ public class DefaultOrganizationServiceTest {
     @Before
     public void setUp() throws Exception {
         auditHelper = mock(AuditHelper.class);
+        authorizationService = mock(AuthorizationService.class);
         programDao = mock(ProgramDao.class);
         dao = mock(OrganizationDao.class);
 
-        toTest = new DefaultOrganizationService(auditHelper, programDao, dao);
+        toTest = new DefaultOrganizationService(
+                auditHelper,
+                authorizationService,
+                programDao,
+                dao
+        );
     }
 
     private Organization createFilledInOrg() {
@@ -101,6 +111,7 @@ public class DefaultOrganizationServiceTest {
         Organization orgInDb = createFilledInOrg();
 
         /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
         when(dao.findOne(ORG_ID)).thenReturn(orgInDb);
         when(programDao.findByOrganizationId(ORG_ID)).thenReturn(Collections.emptyList());
 
@@ -115,7 +126,17 @@ public class DefaultOrganizationServiceTest {
     @Test(expected = OrganizationNotFoundException.class)
     public void testDeleteNotFound() throws Exception {
         /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
         when(dao.findOne(ORG_ID)).thenReturn(null);
+
+        /* Make the call. */
+        toTest.delete(ORG_ID);
+    }
+
+    @Test(expected = OnlyAdminCanDeleteOrgException.class)
+    public void testDeleteNotAdmin() throws Exception {
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(false);
 
         /* Make the call. */
         toTest.delete(ORG_ID);
@@ -126,6 +147,7 @@ public class DefaultOrganizationServiceTest {
         Organization orgInDb = createFilledInOrg();
 
         /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
         when(dao.findOne(ORG_ID)).thenReturn(orgInDb);
         when(programDao.findByOrganizationId(ORG_ID)).thenReturn(Collections.singletonList(new Program()));
 
@@ -218,6 +240,7 @@ public class DefaultOrganizationServiceTest {
         inputWithUpdatedAuditFilledIn.setUpdatedOn(UPDATED_ON);
 
         /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
         when(dao.findOne(ORG_ID)).thenReturn(oldOrgInDb);
         when(auditHelper.getCurrentUser()).thenReturn(USERNAME_2);
         when(auditHelper.getCurrentTime()).thenReturn(UPDATED_ON);
@@ -237,6 +260,21 @@ public class DefaultOrganizationServiceTest {
         input.setName(ORG_NAME);
 
         /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
+        when(dao.findOne(ORG_ID)).thenReturn(null);
+
+        /* Make the call. */
+        toTest.save(input);
+    }
+
+    @Test(expected = OnlyAdminCanUpdateOrgException.class)
+    public void testSaveUpdateExistingOrgNotAdmin() throws Exception {
+        Organization input = createFilledInOrg();
+        input.setId(ORG_ID);
+        input.setName(ORG_NAME);
+
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(false);
         when(dao.findOne(ORG_ID)).thenReturn(null);
 
         /* Make the call. */

@@ -82,6 +82,14 @@ dependencies {
     /* using Moxy for jaxb so we can have CDATA in our xml */
     compile("org.eclipse.persistence:org.eclipse.persistence.moxy:2.6.4")
 
+    /* libraries to call into google for user information */
+    compile("com.google.api-client:google-api-client:1.22.0")
+    compile("com.google.apis:google-api-services-plus:v1-rev455-1.22.0")
+    compile("com.google.apis:google-api-services-gmail:v1-rev48-1.22.0")
+
+    /* libraries for jwt token generation and verification */
+    compile("io.jsonwebtoken:jjwt:0.7.0")
+
     testCompile("junit:junit:4.12")
     testCompile("org.hamcrest:hamcrest-core:1.3")
     testCompile("org.mockito:mockito-all:1.10.19")
