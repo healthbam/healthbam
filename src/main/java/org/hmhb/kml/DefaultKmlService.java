@@ -19,6 +19,7 @@ import org.hmhb.county.CountyService;
 import org.hmhb.kml.jaxb.KmlDocument;
 import org.hmhb.kml.jaxb.KmlIcon;
 import org.hmhb.kml.jaxb.KmlIconStyle;
+import org.hmhb.kml.jaxb.KmlLineStyle;
 import org.hmhb.kml.jaxb.KmlPlacemark;
 import org.hmhb.kml.jaxb.KmlPolyStyle;
 import org.hmhb.kml.jaxb.KmlRoot;
@@ -39,8 +40,14 @@ import static java.util.Objects.requireNonNull;
 @Service
 public class DefaultKmlService implements KmlService {
 
-    private static final String COVERED_COUNTY_STYLE = "coveredCounty";
-    private static final String UNCOVERED_COUNTY_STYLE = "uncoveredCounty";
+    private static final String PURPLE = "88b73a67"; // rgb(103,58,183) -> 673AB7
+    private static final String GRAY = "449e9e9e"; // rgb(158,158,158) -> 9E9E9E
+    private static final String AMBER = "ff00abff"; // rgb(255,171,0) -> FFAB00
+
+    private static final String SELECTED_COVERED_COUNTY_STYLE = "selectedCoveredCounty";
+    private static final String SELECTED_UNCOVERED_COUNTY_STYLE = "selectedUncoveredCounty";
+    private static final String UNSELECTED_COVERED_COUNTY_STYLE = "unselectedCoveredCounty";
+    private static final String UNSELECTED_UNCOVERED_COUNTY_STYLE = "unselectedUncoveredCounty";
     private static final String PROGRAM_STYLE = "program";
 
     // You can validate the KML with:
@@ -86,24 +93,47 @@ public class DefaultKmlService implements KmlService {
      * @return the {@link KmlStyle}s
      */
     private List<KmlStyle> getStyles() {
-        KmlStyle covered = new KmlStyle(
-                COVERED_COUNTY_STYLE,
-                new KmlPolyStyle(
-                        "88b73a67",
-                        "normal",
-                        "1",
-                        "1"
-                )
+
+        KmlPolyStyle coveredCountyPoly = new KmlPolyStyle(
+                PURPLE,
+                "normal",
+                "1",
+                "1"
         );
 
-        KmlStyle uncovered = new KmlStyle(
-                UNCOVERED_COUNTY_STYLE,
-                new KmlPolyStyle(
-                        "449e9e9e",
-                        "normal",
-                        "1",
-                        "1"
-                )
+        KmlPolyStyle uncoveredCountyPoly = new KmlPolyStyle(
+                GRAY,
+                "normal",
+                "1",
+                "1"
+        );
+
+        KmlLineStyle selectedLine = new KmlLineStyle(
+                AMBER,
+                "normal",
+                "3"
+        );
+
+        KmlStyle selectedCovered = new KmlStyle(
+                SELECTED_COVERED_COUNTY_STYLE,
+                selectedLine,
+                coveredCountyPoly
+        );
+
+        KmlStyle selectedUncovered = new KmlStyle(
+                SELECTED_UNCOVERED_COUNTY_STYLE,
+                selectedLine,
+                uncoveredCountyPoly
+        );
+
+        KmlStyle unselectedCovered = new KmlStyle(
+                UNSELECTED_COVERED_COUNTY_STYLE,
+                coveredCountyPoly
+        );
+
+        KmlStyle unselectedUncovered = new KmlStyle(
+                UNSELECTED_UNCOVERED_COUNTY_STYLE,
+                uncoveredCountyPoly
         );
 
         KmlStyle pin = new KmlStyle(
@@ -116,8 +146,10 @@ public class DefaultKmlService implements KmlService {
         );
 
         return Arrays.asList(
-                covered,
-                uncovered,
+                selectedCovered,
+                selectedUncovered,
+                unselectedCovered,
+                unselectedUncovered,
                 pin
         );
     }
@@ -142,22 +174,12 @@ public class DefaultKmlService implements KmlService {
         );
         Set<County> shadedCounties = new HashSet<>();
 
-        if (countyId != null) {
-            for (County county : allCounties) {
-                if (countyId.equals(county.getId())) {
-                    shadedCounties.add(county);
-                }
-            }
-        }
-
         for (Program program : programs) {
 
-            if (countyId == null) {
-                if (program.isServesAllCounties()) {
-                    shadedCounties = allCounties;
-                } else {
-                    shadedCounties.addAll(program.getCountiesServed());
-                }
+            if (program.isServesAllCounties()) {
+                shadedCounties = allCounties;
+            } else {
+                shadedCounties.addAll(program.getCountiesServed());
             }
 
             programPlacemarks.add(
@@ -166,28 +188,59 @@ public class DefaultKmlService implements KmlService {
 
         }
 
+        County selectedCounty = null;
+
         List<KmlPlacemark> countyPlacemarks = new ArrayList<>();
         for (County county : allCounties) {
 
-            String countyStyle;
+            if (countyId != null && countyId.equals(county.getId())) {
 
-            if (shadedCounties.contains(county)) {
-                countyStyle = "#" + COVERED_COUNTY_STYLE;
+                /* Set the selected county for later instead of mixing it in with the others. */
+                selectedCounty = county;
+
             } else {
-                countyStyle = "#" + UNCOVERED_COUNTY_STYLE;
-            }
 
-            countyPlacemarks.add(
-                    placemarkService.createCountyPlacemark(
-                            countyStyle,
-                            county
-                    )
-            );
+                String countyStyle;
+
+                if (shadedCounties.contains(county)) {
+                    countyStyle = "#" + UNSELECTED_COVERED_COUNTY_STYLE;
+                } else {
+                    countyStyle = "#" + UNSELECTED_UNCOVERED_COUNTY_STYLE;
+                }
+
+                countyPlacemarks.add(
+                        placemarkService.createCountyPlacemark(
+                                countyStyle,
+                                county
+                        )
+                );
+
+            }
 
         }
 
         List<KmlPlacemark> allPlacemarks = new ArrayList<>();
         allPlacemarks.addAll(programPlacemarks);
+
+        /* First, add the selected county if a county is selected. */
+        if (selectedCounty != null) {
+            String countyStyle;
+
+            if (shadedCounties.contains(selectedCounty)) {
+                countyStyle = "#" + SELECTED_COVERED_COUNTY_STYLE;
+            } else {
+                countyStyle = "#" + SELECTED_UNCOVERED_COUNTY_STYLE;
+            }
+
+            allPlacemarks.add(
+                    placemarkService.createCountyPlacemark(
+                            countyStyle,
+                            selectedCounty
+                    )
+            );
+        }
+
+        /* Now add all of the other counties. */
         allPlacemarks.addAll(countyPlacemarks);
 
         return new KmlRoot(
