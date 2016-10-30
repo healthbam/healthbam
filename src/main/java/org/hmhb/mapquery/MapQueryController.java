@@ -24,6 +24,11 @@ public class MapQueryController {
 
     private MapQueryService service;
 
+    /**
+     * An injectable constructor.
+     *
+     * @param service the {@link MapQueryService} to search with
+     */
     @Autowired
     public MapQueryController(
             @Nonnull MapQueryService service
@@ -32,6 +37,12 @@ public class MapQueryController {
         this.service = requireNonNull(service, "service cannot be null");
     }
 
+    /**
+     * Searches for programs matching the provided criteria.
+     *
+     * @param mapQuery {@link MapQuery} containing {@link MapQuerySearch} criteria.
+     * @return {@link MapQuery} with filled in {@link MapQueryResult} object.
+     */
     @Timed
     @RequestMapping(
             method = RequestMethod.POST,

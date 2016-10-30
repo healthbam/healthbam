@@ -11,6 +11,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * An object to represent a KML Style.
+ */
 @Immutable
 public class KmlStyle {
 
@@ -27,6 +30,12 @@ public class KmlStyle {
         this.iconStyle = null;
     }
 
+    /**
+     * Constructs a {@link KmlStyle} from a {@link KmlPolyStyle}.
+     *
+     * @param id the style ID
+     * @param polyStyle the {@link KmlPolyStyle}
+     */
     public KmlStyle(
             @Nonnull String id,
             @Nonnull KmlPolyStyle polyStyle
@@ -36,6 +45,12 @@ public class KmlStyle {
         this.iconStyle = null;
     }
 
+    /**
+     * Constructs a {@link KmlStyle} from a {@link KmlIconStyle}.
+     *
+     * @param id the style ID
+     * @param iconStyle the {@link KmlIconStyle}
+     */
     public KmlStyle(
             @Nonnull String id,
             @Nonnull KmlIconStyle iconStyle

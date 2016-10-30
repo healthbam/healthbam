@@ -9,6 +9,7 @@ public interface MapQueryService {
 
     /**
      * Searches for programs matching the provided criteria.
+     *
      * @param mapQuery {@link MapQuery} containing {@link MapQuerySearch} criteria.
      * @return {@link MapQuery} with filled in {@link MapQueryResult} object.
      */

@@ -3,6 +3,7 @@ package org.hmhb.program;
 import java.util.Collections;
 import java.util.List;
 
+import org.hmhb.exception.program.ProgramIdMismatchException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -62,7 +63,7 @@ public class ProgramControllerTest {
     @Test
     public void testCreate() {
         Program input = new Program();
-        input.setName("some org");
+        input.setName("some program");
 
         Program expected = program;
 
@@ -80,7 +81,7 @@ public class ProgramControllerTest {
     public void testUpdate() {
         Program input = new Program();
         input.setId(123L);
-        input.setName("blah org");
+        input.setName("blah program");
 
         Program expected = program;
 
@@ -92,6 +93,16 @@ public class ProgramControllerTest {
 
         /* Verify the results. */
         assertEquals(expected, actual);
+    }
+
+    @Test(expected = ProgramIdMismatchException.class)
+    public void testUpdate_IdsDoNotMatch() {
+        Program input = new Program();
+        input.setId(123L);
+        input.setName("blah program");
+
+        /* Make the call. */
+        toTest.update(input.getId() + 1, input);
     }
 
     @Test

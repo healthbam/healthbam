@@ -8,6 +8,11 @@ import org.hmhb.exception.NotAuthorizedException;
  */
 public class AuthHeaderHasTooManyPartsException extends NotAuthorizedException {
 
+    /**
+     * Constructs an {@link AuthHeaderHasTooManyPartsException}.
+     *
+     * @param authHeader the invalid auth header
+     */
     public AuthHeaderHasTooManyPartsException(String authHeader) {
         super("Invalid authorization header! " + authHeader);
     }

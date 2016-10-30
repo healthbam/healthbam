@@ -19,6 +19,7 @@ import org.hmhb.exception.program.ProgramNotFoundException;
 import org.hmhb.exception.program.ProgramOrganizationRequiredException;
 import org.hmhb.exception.program.ProgramPrimaryGoal1RequiredException;
 import org.hmhb.exception.program.ProgramStateRequiredException;
+import org.hmhb.exception.program.ProgramStreetAddressRequiredException;
 import org.hmhb.exception.program.ProgramZipCodeRequiredException;
 import org.hmhb.geocode.GeocodeService;
 import org.hmhb.geocode.LocationInfo;
@@ -34,17 +35,33 @@ import org.springframework.stereotype.Service;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * Default implementation of {@link ProgramService}.
+ */
 @Service
 public class DefaultProgramService implements ProgramService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultProgramService.class);
 
     private final AuditHelper auditHelper;
-    AuthorizationService authorizationService;
+    private final AuthorizationService authorizationService;
     private final GeocodeService geocodeService;
     private final OrganizationService organizationService;
     private final ProgramDao dao;
 
+    /**
+     * An injectable constructor.
+     *
+     * @param auditHelper the {@link AuditHelper} to get audit information
+     * @param authorizationService the {@link AuthorizationService} to verify a
+     *                             user is allowed to do certain operations
+     * @param geocodeService the {@link GeocodeService} to lookup location info
+     * @param organizationService the {@link OrganizationService} to save
+     *                            inline {@link Organization} info and lookup
+     *                            {@link Organization}s for validation
+     * @param dao the {@link ProgramDao} for saving, deleting, and
+     *            retrieving {@link Organization}s
+     */
     @Autowired
     public DefaultProgramService(
             @Nonnull AuditHelper auditHelper,
@@ -137,55 +154,18 @@ public class DefaultProgramService implements ProgramService {
         }
 
         /*
-         * Both of these potential implementations (nested ifs and flattened ifs) are really ugly,
-         * but using JPA Specification looks much more complicated.
+         * This implementation is really ugly, but using JPA Specification
+         * looked much more complicated.
          *
-         * For now, with only 3 search params, I'm just going to have all permutations of
-         * searches in the DAO.  If anymore params are added and the permutations get worse,
-         * I'll have to use JPA Specification or figure something else out.
+         * For now, with only 3 search params, I'm just going to have all
+         * permutations of searches in the DAO.  If anymore params are added
+         * and the permutations get worse, I'll have to use JPA Specification
+         * or figure something else out.
          */
-//        return doSearchFlattenedIfs(organizationId, countyId, programAreaId);
-        return doSearchNestedIfs(organizationId, countyId, programAreaId);
+        return doSearch(organizationId, countyId, programAreaId);
     }
 
-    private List<Program> doSearchFlattenedIfs(
-            Long organizationId,
-            Long countyId,
-            Long programAreaId
-    ) {
-
-        if (organizationId != null && countyId != null && programAreaId != null) {
-            return dao.findByOrganizationIdAndCountiesServedIdAndProgramAreasId(
-                    organizationId,
-                    countyId,
-                    programAreaId
-            );
-
-        } else if (organizationId != null && countyId == null && programAreaId != null) {
-            return dao.findByOrganizationIdAndProgramAreasId(organizationId, programAreaId);
-
-        } else if (organizationId != null && countyId != null /* && programAreaId == null */) {
-            return dao.findByOrganizationIdAndCountiesServedId(organizationId, countyId);
-
-        } else if (organizationId != null /* && countyId == null && programAreaId == null */) {
-            return dao.findByOrganizationId(organizationId);
-
-        } else if (/* organizationId == null && */ countyId != null && programAreaId != null) {
-            return dao.findByCountiesServedIdAndProgramAreasId(countyId, programAreaId);
-
-        } else if (/* organizationId == null && */ countyId != null /* && programAreaId == null */) {
-            return dao.findByCountiesServedId(countyId);
-
-        } else if (/* organizationId == null && countyId == null && */ programAreaId != null) {
-            return dao.findByProgramAreasId(programAreaId);
-
-        }
-
-        /* organizationId == null && countyId == null && programAreaId == null */
-        return getAll();
-    }
-
-    private List<Program> doSearchNestedIfs(
+    private List<Program> doSearch(
             Long organizationId,
             Long countyId,
             Long programAreaId
@@ -217,6 +197,7 @@ public class DefaultProgramService implements ProgramService {
                 }
 
             }
+
         } else {
 
             if (countyId != null) {
@@ -307,6 +288,10 @@ public class DefaultProgramService implements ProgramService {
             program.setOrganization(organizationService.getById(program.getOrganization().getId()));
         }
 
+        if (StringUtils.isBlank(program.getStreetAddress())) {
+            throw new ProgramStreetAddressRequiredException();
+        }
+
         fillCoordinatesAndZip(program);
 
         if (StringUtils.isBlank(program.getZipCode())) {
@@ -315,7 +300,7 @@ public class DefaultProgramService implements ProgramService {
 
         if (program.getId() == null) {
             /* They aren't allowed to set created* or updated* in a create. */
-            program.setCreatedBy(auditHelper.getCurrentUser());
+            program.setCreatedBy(auditHelper.getCurrentUserEmail());
             program.setCreatedOn(auditHelper.getCurrentTime());
             program.setUpdatedBy(null);
             program.setUpdatedOn(null);
@@ -326,7 +311,7 @@ public class DefaultProgramService implements ProgramService {
             /* They aren't allowed to change created* or updated* in an update. */
             program.setCreatedBy(programInDb.getCreatedBy());
             program.setCreatedOn(programInDb.getCreatedOn());
-            program.setUpdatedBy(auditHelper.getCurrentUser());
+            program.setUpdatedBy(auditHelper.getCurrentUserEmail());
             program.setUpdatedOn(auditHelper.getCurrentTime());
         }
 

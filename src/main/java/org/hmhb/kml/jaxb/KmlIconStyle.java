@@ -10,6 +10,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * An object to represent a KML IconStyle.
+ */
 @Immutable
 public class KmlIconStyle {
 
@@ -22,6 +25,11 @@ public class KmlIconStyle {
         this.icon = null;
     }
 
+    /**
+     * Constructs a {@link KmlIconStyle}.
+     *
+     * @param icon the {@link KmlIcon} for this style
+     */
     public KmlIconStyle(
             @Nonnull KmlIcon icon
     ) {

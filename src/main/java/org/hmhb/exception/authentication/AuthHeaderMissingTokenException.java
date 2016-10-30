@@ -8,6 +8,11 @@ import org.hmhb.exception.NotAuthorizedException;
  */
 public class AuthHeaderMissingTokenException extends NotAuthorizedException {
 
+    /**
+     * Constructs an {@link AuthHeaderMissingTokenException}.
+     *
+     * @param authHeader the invalid auth header
+     */
     public AuthHeaderMissingTokenException(String authHeader) {
         super("Authorization header is missing token! " + authHeader);
     }

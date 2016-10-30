@@ -4,11 +4,13 @@ import com.codahale.metrics.annotation.Timed;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.HandlerMapping;
 
+/**
+ * Spring MVC {@link Controller} for serving our our single page app (index.html).
+ */
 @Controller
 public class ViewsController {
 
@@ -16,6 +18,11 @@ public class ViewsController {
 
     private static final String INDEX_HTML_PATH = "/index.html";
 
+    /**
+     * Serves our single page app for any sub-views.
+     *
+     * @return our single page app's index.html
+     */
     @Timed
     @RequestMapping(
             method = RequestMethod.GET,
@@ -29,6 +36,11 @@ public class ViewsController {
         return INDEX_HTML_PATH;
     }
 
+    /**
+     * Serves our single page app for the top level view.
+     *
+     * @return our single page app's index.html
+     */
     @Timed
     @RequestMapping(
             method = RequestMethod.GET,
@@ -39,6 +51,12 @@ public class ViewsController {
         return INDEX_HTML_PATH;
     }
 
+    /**
+     * Serves our single page app for the server root (making index.html the
+     * default page).
+     *
+     * @return our single page app's index.html
+     */
     @Timed
     @RequestMapping(
             method = RequestMethod.GET,

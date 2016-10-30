@@ -27,6 +27,9 @@ import org.springframework.stereotype.Service;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * Default implementation of {@link JwtAuthenticationService}.
+ */
 @Service
 public class DefaultJwtAuthenticationService implements JwtAuthenticationService {
 
@@ -34,6 +37,11 @@ public class DefaultJwtAuthenticationService implements JwtAuthenticationService
 
     private final Environment environment;
 
+    /**
+     * An injectable constructor.
+     *
+     * @param environment the {@link Environment} to get config from
+     */
     @Autowired
     public DefaultJwtAuthenticationService(
             @Nonnull Environment environment

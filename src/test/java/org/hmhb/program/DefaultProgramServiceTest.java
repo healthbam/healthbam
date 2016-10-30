@@ -15,6 +15,7 @@ import org.hmhb.exception.program.ProgramNotFoundException;
 import org.hmhb.exception.program.ProgramOrganizationRequiredException;
 import org.hmhb.exception.program.ProgramPrimaryGoal1RequiredException;
 import org.hmhb.exception.program.ProgramStateRequiredException;
+import org.hmhb.exception.program.ProgramStreetAddressRequiredException;
 import org.hmhb.exception.program.ProgramZipCodeRequiredException;
 import org.hmhb.geocode.GeocodeService;
 import org.hmhb.geocode.LocationInfo;
@@ -39,8 +40,8 @@ public class DefaultProgramServiceTest {
     private static final long COUNTY_ID = 789L;
     private static final long PROGRAM_AREA_ID = 999L;
     private static final Date CREATED_ON = new Date(123456L);
-    private static final String USERNAME_1 = "somebody";
-    private static final String USERNAME_2 = "somebody-else";
+    private static final String USERNAME_1 = "somebody@mailinator.com";
+    private static final String USERNAME_2 = "somebody-else@mailinator.com";
     private static final Date UPDATED_ON = new Date(654321L);
     private static final String PROGRAM_NAME = "test-program-name";
     private static final String ORG_NAME = "test-org-name";
@@ -348,6 +349,45 @@ public class DefaultProgramServiceTest {
         toTest.save(input);
     }
 
+    @Test(expected = ProgramStreetAddressRequiredException.class)
+    public void testSaveCreateNewNullStreetAddress() throws Exception {
+        Program input = createFilledInProgram();
+        input.setId(null);
+        input.setStreetAddress(null);
+
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
+
+        /* Make the call. */
+        toTest.save(input);
+    }
+
+    @Test(expected = ProgramStreetAddressRequiredException.class)
+    public void testSaveCreateNewEmptyStreetAddress() throws Exception {
+        Program input = createFilledInProgram();
+        input.setId(null);
+        input.setStreetAddress("");
+
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
+
+        /* Make the call. */
+        toTest.save(input);
+    }
+
+    @Test(expected = ProgramStreetAddressRequiredException.class)
+    public void testSaveCreateNewOnlyWhitespaceStreetAddress() throws Exception {
+        Program input = createFilledInProgram();
+        input.setId(null);
+        input.setStreetAddress(" ");
+
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
+
+        /* Make the call. */
+        toTest.save(input);
+    }
+
     @Test(expected = ProgramOrganizationRequiredException.class)
     public void testSaveCreateNewNullOrg() throws Exception {
         Program input = createFilledInProgram();
@@ -409,7 +449,7 @@ public class DefaultProgramServiceTest {
         /* Train the mocks. */
         when(authorizationService.isAdmin()).thenReturn(true);
         when(organizationService.getById(ORG_ID)).thenReturn(createOrg());
-        when(auditHelper.getCurrentUser()).thenReturn(USERNAME_1);
+        when(auditHelper.getCurrentUserEmail()).thenReturn(USERNAME_1);
         when(auditHelper.getCurrentTime()).thenReturn(CREATED_ON);
         when(geocodeService.getLocationInfo(notNull(Program.class))).thenReturn(createLocationInfo());
 
@@ -431,7 +471,7 @@ public class DefaultProgramServiceTest {
         /* Train the mocks. */
         when(authorizationService.isAdmin()).thenReturn(true);
         when(organizationService.getById(ORG_ID)).thenReturn(createOrg());
-        when(auditHelper.getCurrentUser()).thenReturn(USERNAME_1);
+        when(auditHelper.getCurrentUserEmail()).thenReturn(USERNAME_1);
         when(auditHelper.getCurrentTime()).thenReturn(CREATED_ON);
         when(geocodeService.getLocationInfo(notNull(Program.class))).thenReturn(locationInfo);
 
@@ -448,7 +488,7 @@ public class DefaultProgramServiceTest {
         /* Train the mocks. */
         when(authorizationService.isAdmin()).thenReturn(true);
         when(organizationService.getById(ORG_ID)).thenReturn(createOrg());
-        when(auditHelper.getCurrentUser()).thenReturn(USERNAME_1);
+        when(auditHelper.getCurrentUserEmail()).thenReturn(USERNAME_1);
         when(auditHelper.getCurrentTime()).thenReturn(CREATED_ON);
         when(geocodeService.getLocationInfo(notNull(Program.class))).thenReturn(createLocationInfo());
 
@@ -470,7 +510,7 @@ public class DefaultProgramServiceTest {
         /* Train the mocks. */
         when(authorizationService.isAdmin()).thenReturn(true);
         when(organizationService.getById(ORG_ID)).thenReturn(createOrg());
-        when(auditHelper.getCurrentUser()).thenReturn(USERNAME_1);
+        when(auditHelper.getCurrentUserEmail()).thenReturn(USERNAME_1);
         when(auditHelper.getCurrentTime()).thenReturn(CREATED_ON);
         when(geocodeService.getLocationInfo(notNull(Program.class))).thenReturn(locationInfo);
 
@@ -487,7 +527,7 @@ public class DefaultProgramServiceTest {
         /* Train the mocks. */
         when(authorizationService.isAdmin()).thenReturn(true);
         when(organizationService.getById(ORG_ID)).thenReturn(createOrg());
-        when(auditHelper.getCurrentUser()).thenReturn(USERNAME_1);
+        when(auditHelper.getCurrentUserEmail()).thenReturn(USERNAME_1);
         when(auditHelper.getCurrentTime()).thenReturn(CREATED_ON);
         when(geocodeService.getLocationInfo(notNull(Program.class))).thenReturn(createLocationInfo());
 
@@ -509,7 +549,7 @@ public class DefaultProgramServiceTest {
         /* Train the mocks. */
         when(authorizationService.isAdmin()).thenReturn(true);
         when(organizationService.getById(ORG_ID)).thenReturn(createOrg());
-        when(auditHelper.getCurrentUser()).thenReturn(USERNAME_1);
+        when(auditHelper.getCurrentUserEmail()).thenReturn(USERNAME_1);
         when(auditHelper.getCurrentTime()).thenReturn(CREATED_ON);
         when(geocodeService.getLocationInfo(notNull(Program.class))).thenReturn(locationInfo);
 
@@ -526,7 +566,7 @@ public class DefaultProgramServiceTest {
         /* Train the mocks. */
         when(authorizationService.isAdmin()).thenReturn(true);
         when(organizationService.getById(ORG_ID)).thenReturn(createOrg());
-        when(auditHelper.getCurrentUser()).thenReturn(USERNAME_1);
+        when(auditHelper.getCurrentUserEmail()).thenReturn(USERNAME_1);
         when(auditHelper.getCurrentTime()).thenReturn(CREATED_ON);
         when(geocodeService.getLocationInfo(notNull(Program.class))).thenReturn(createLocationInfo());
 
@@ -566,7 +606,7 @@ public class DefaultProgramServiceTest {
         /* Train the mocks. */
         when(authorizationService.isAdmin()).thenReturn(true);
         when(organizationService.getById(ORG_ID)).thenReturn(createOrg());
-        when(auditHelper.getCurrentUser()).thenReturn(USERNAME_1);
+        when(auditHelper.getCurrentUserEmail()).thenReturn(USERNAME_1);
         when(auditHelper.getCurrentTime()).thenReturn(CREATED_ON);
         when(geocodeService.getLocationInfo(notNull(Program.class))).thenReturn(createLocationInfo());
         when(dao.save(inputWithCreatedAuditFilledIn)).thenReturn(inputWithCreatedAuditFilledIn);
@@ -621,7 +661,7 @@ public class DefaultProgramServiceTest {
         /* Train the mocks. */
         when(authorizationService.isAdmin()).thenReturn(true);
         when(organizationService.save(inputOrg)).thenReturn(createOrg());
-        when(auditHelper.getCurrentUser()).thenReturn(USERNAME_1);
+        when(auditHelper.getCurrentUserEmail()).thenReturn(USERNAME_1);
         when(auditHelper.getCurrentTime()).thenReturn(CREATED_ON);
         when(geocodeService.getLocationInfo(notNull(Program.class))).thenReturn(createLocationInfo());
         when(dao.save(inputWithCreatedAuditFilledIn)).thenReturn(inputWithCreatedAuditFilledIn);
@@ -673,7 +713,7 @@ public class DefaultProgramServiceTest {
         when(authorizationService.isAdmin()).thenReturn(true);
         when(organizationService.getById(ORG_ID)).thenReturn(createOrg());
         when(dao.findOne(PROGRAM_ID)).thenReturn(oldProgramInDb);
-        when(auditHelper.getCurrentUser()).thenReturn(USERNAME_2);
+        when(auditHelper.getCurrentUserEmail()).thenReturn(USERNAME_2);
         when(auditHelper.getCurrentTime()).thenReturn(UPDATED_ON);
         when(geocodeService.getLocationInfo(notNull(Program.class))).thenReturn(createLocationInfo());
         when(dao.save(inputWithUpdatedAuditFilledIn)).thenReturn(inputWithUpdatedAuditFilledIn);
@@ -725,7 +765,7 @@ public class DefaultProgramServiceTest {
         when(authorizationService.isAdmin()).thenReturn(true);
         when(organizationService.save(inputOrg)).thenReturn(createOrg());
         when(dao.findOne(PROGRAM_ID)).thenReturn(oldProgramInDb);
-        when(auditHelper.getCurrentUser()).thenReturn(USERNAME_2);
+        when(auditHelper.getCurrentUserEmail()).thenReturn(USERNAME_2);
         when(auditHelper.getCurrentTime()).thenReturn(UPDATED_ON);
         when(geocodeService.getLocationInfo(notNull(Program.class))).thenReturn(createLocationInfo());
         when(dao.save(inputWithUpdatedAuditFilledIn)).thenReturn(inputWithUpdatedAuditFilledIn);

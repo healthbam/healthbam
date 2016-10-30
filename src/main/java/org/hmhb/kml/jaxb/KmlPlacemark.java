@@ -12,6 +12,9 @@ import org.eclipse.persistence.oxm.annotations.XmlCDATA;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * An object to represent a KML Placemark.
+ */
 @Immutable
 public class KmlPlacemark {
 
@@ -36,6 +39,14 @@ public class KmlPlacemark {
         this.muliGeometry = null;
     }
 
+    /**
+     * Constructs a {@link KmlPlacemark} from a {@link KmlPolygon}.
+     *
+     * @param id the placemark id
+     * @param name the placemark name
+     * @param styleUrl the style id to apply to the placemark
+     * @param polygon the {@link KmlPolygon} to draw the placemark
+     */
     public KmlPlacemark(
             @Nonnull String id,
             @Nonnull String name,
@@ -51,6 +62,14 @@ public class KmlPlacemark {
         this.muliGeometry = null;
     }
 
+    /**
+     * Constructs a {@link KmlPlacemark} from a {@link KmlMuliGeometry}.
+     *
+     * @param id the placemark id
+     * @param name the placemark name
+     * @param styleUrl the style id to apply to the placemark
+     * @param muliGeometry the {@link KmlMuliGeometry} to draw the placemark
+     */
     public KmlPlacemark(
             @Nonnull String id,
             @Nonnull String name,
@@ -66,6 +85,15 @@ public class KmlPlacemark {
         this.muliGeometry = requireNonNull(muliGeometry, "multiGeometry cannot be null");
     }
 
+    /**
+     * Constructs a {@link KmlPlacemark} from a {@link KmlPoint}.
+     *
+     * @param id the placemark id
+     * @param name the placemark name
+     * @param styleUrl the style id to apply to the placemark
+     * @param description the placemark description
+     * @param point the {@link KmlPoint} to draw the placemark
+     */
     public KmlPlacemark(
             @Nonnull String id,
             @Nonnull String name,

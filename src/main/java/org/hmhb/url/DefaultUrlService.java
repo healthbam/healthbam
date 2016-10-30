@@ -3,6 +3,7 @@ package org.hmhb.url;
 import javax.annotation.Nonnull;
 import javax.servlet.http.HttpServletRequest;
 
+import com.codahale.metrics.annotation.Timed;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -10,12 +11,22 @@ import org.springframework.stereotype.Service;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * Default implementation of {@link UrlService}.
+ */
 @Service
 public class DefaultUrlService implements UrlService {
 
     private final HttpServletRequest request;
     private final Environment environment;
 
+    /**
+     * An injectable constructor.
+     *
+     * @param request the {@link HttpServletRequest} to get protocol and port
+     *                info
+     * @param environment the {@link Environment} to get config info
+     */
     @Autowired
     public DefaultUrlService(
             @Nonnull HttpServletRequest request,
@@ -25,6 +36,7 @@ public class DefaultUrlService implements UrlService {
         this.environment = requireNonNull(environment, "environment cannot be null");
     }
 
+    @Timed
     @Override
     public String getUrlPrefix() {
 

@@ -10,6 +10,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * An object to represent a KML Point.
+ */
 @Immutable
 public class KmlPoint {
 
@@ -22,6 +25,11 @@ public class KmlPoint {
         this.coordinates = null;
     }
 
+    /**
+     * Constructs a {@link KmlPoint}.
+     *
+     * @param coordinates the coordinates on where to place the point
+     */
     public KmlPoint(
             @Nonnull String coordinates
     ) {

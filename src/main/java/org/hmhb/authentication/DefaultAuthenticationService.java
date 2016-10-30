@@ -20,6 +20,9 @@ import org.springframework.stereotype.Service;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * Default implementation of {@link AuthenticationService}.
+ */
 @Service
 public class DefaultAuthenticationService implements AuthenticationService {
 
@@ -30,6 +33,17 @@ public class DefaultAuthenticationService implements AuthenticationService {
     private final JwtAuthenticationService jwtAuthenticationService;
     private final UserService userService;
 
+    /**
+     * An injectable constructor.
+     *
+     * @param environment the {@link Environment} for config
+     * @param googleOauthService the {@link GoogleOauthService} to confirm a
+     *                           user's email with google
+     * @param jwtAuthenticationService the {@link JwtAuthenticationService} to
+     *                                 generate a JWT with
+     * @param userService the {@link UserService} to lookup or provision a new
+     *                    {@link HmhbUser} in the system
+     */
     @Autowired
     public DefaultAuthenticationService(
             @Nonnull Environment environment,

@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Tests for {@link DefaultMapQueryService}.
+ * Unit tests for {@link DefaultMapQueryService}.
  */
 public class DefaultMapQueryServiceTest {
 

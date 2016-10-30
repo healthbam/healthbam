@@ -10,6 +10,11 @@ import org.hmhb.exception.NotAuthorizedException;
  */
 public class JwtTokenNotActiveYetException extends NotAuthorizedException {
 
+    /**
+     * Constructs a {@link JwtTokenNotActiveYetException}.
+     *
+     * @param issuedAt the {@link Date} the token was issued on
+     */
     public JwtTokenNotActiveYetException(Date issuedAt) {
         super("JWT token isn't active yet! issuedAt=" + issuedAt);
     }

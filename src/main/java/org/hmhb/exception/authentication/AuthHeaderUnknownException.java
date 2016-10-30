@@ -8,6 +8,10 @@ import org.hmhb.exception.NotAuthorizedException;
  */
 public class AuthHeaderUnknownException extends NotAuthorizedException {
 
+    /**
+     * Constructs an {@link AuthHeaderUnknownException}.
+     * @param authHeader the invalid auth header
+     */
     public AuthHeaderUnknownException(String authHeader) {
         super("Unknown authorization header! " + authHeader);
     }

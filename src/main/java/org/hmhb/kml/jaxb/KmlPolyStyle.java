@@ -10,6 +10,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * An object to represent a KML PolyStyle.
+ */
 @Immutable
 public class KmlPolyStyle {
 
@@ -28,6 +31,14 @@ public class KmlPolyStyle {
         this.outline = null;
     }
 
+    /**
+     * Constructs a {@link KmlPolyStyle}.
+     *
+     * @param color the color (hex of alpha blue green red)
+     * @param colorMode the color mode (normal or random)
+     * @param fill whether the polygon should be filled or not (0 or 1)
+     * @param outline whether the polygon should be outlined (0 or 1)
+     */
     public KmlPolyStyle(
             @Nonnull String color,
             @Nonnull String colorMode,

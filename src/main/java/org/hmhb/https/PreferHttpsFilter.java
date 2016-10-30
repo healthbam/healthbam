@@ -17,6 +17,9 @@ import java.net.URISyntaxException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * A {@link Filter} to try to forward requests from http to https.
+ */
 public class PreferHttpsFilter implements Filter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PreferHttpsFilter.class);

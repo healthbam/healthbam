@@ -33,6 +33,9 @@ import org.springframework.stereotype.Service;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * Default implementation of {@link KmlService}.
+ */
 @Service
 public class DefaultKmlService implements KmlService {
 
@@ -50,6 +53,18 @@ public class DefaultKmlService implements KmlService {
     private final CountyService countyService;
     private final ProgramService programService;
 
+    /**
+     * An injectable constructor.
+     *
+     * @param urlService the {@link UrlService} to get the prefix for our
+     *                   generated URLs
+     * @param placemarkService the {@link KmlPlacemarkService} for creating
+     *                         {@link KmlPlacemark}s
+     * @param countyService the {@link CountyService} for looking up
+     *                      {@link County}s
+     * @param programService the {@link ProgramService} for looking up
+     *                       {@link Program}s
+     */
     @Autowired
     public DefaultKmlService(
             @Nonnull UrlService urlService,
@@ -64,6 +79,12 @@ public class DefaultKmlService implements KmlService {
         this.programService = requireNonNull(programService, "programService cannot be null");
     }
 
+    /**
+     * Returns the list of {@link KmlStyle}s that will be used in the generated
+     * KML.
+     *
+     * @return the {@link KmlStyle}s
+     */
     private List<KmlStyle> getStyles() {
         KmlStyle covered = new KmlStyle(
                 COVERED_COUNTY_STYLE,
@@ -101,6 +122,13 @@ public class DefaultKmlService implements KmlService {
         );
     }
 
+    /**
+     * Create a KML root for the passed in county and programs.
+     *
+     * @param countyId the {@link County} database ID
+     * @param programs the {@link Program} database IDs
+     * @return the {@link KmlRoot}
+     */
     private KmlRoot convertToKml(
             @Nullable Long countyId,
             @Nonnull List<Program> programs
@@ -172,6 +200,12 @@ public class DefaultKmlService implements KmlService {
         );
     }
 
+    /**
+     * Gather the program IDs from the comma delimited program IDs string.
+     *
+     * @param idsString the comma delimited program IDs string
+     * @return the list of program database IDs
+     */
     private List<Long> getIds(
             @Nonnull String idsString
     ) {

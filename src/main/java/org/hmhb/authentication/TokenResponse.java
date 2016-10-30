@@ -9,11 +9,19 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * DTO for sending back a JWT token to the client.
+ */
 @Immutable
 public class TokenResponse {
 
     private final String token;
 
+    /**
+     * Constructs a {@link TokenResponse}.
+     *
+     * @param token the JWT token
+     */
     public TokenResponse(
             @Nonnull String token
     ) {
