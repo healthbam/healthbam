@@ -7,7 +7,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Tests for {@link MapQueryController}.
+ * Unit tests for {@link MapQueryController}.
  */
 public class MapQueryControllerTest {
 

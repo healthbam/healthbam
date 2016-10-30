@@ -11,6 +11,9 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import org.hmhb.exception.oauth.GoogleOauthException;
 import org.springframework.stereotype.Service;
 
+/**
+ * Default implementation of {@link GoogleOauthService}.
+ */
 @Service
 public class DefaultGoogleOauthService implements GoogleOauthService {
 

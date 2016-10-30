@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Tests for {@link DefaultProgramAreaService}.
+ * Unit tests for {@link DefaultProgramAreaService}.
  */
 public class DefaultProgramAreaServiceTest {
 

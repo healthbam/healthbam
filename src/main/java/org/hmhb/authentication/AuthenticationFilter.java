@@ -17,12 +17,22 @@ import org.slf4j.LoggerFactory;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * A {@link Filter} to check auth headers and potentially reject an http
+ * request or potentially allow & set user information.
+ */
 public class AuthenticationFilter implements Filter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationFilter.class);
 
     private final JwtAuthenticationService authenticationService;
 
+    /**
+     * Constructs a {@link AuthenticationFilter}.
+     *
+     * @param authenticationService the {@link AuthenticationService} to
+     *                              delegate most of the work to
+     */
     public AuthenticationFilter(
             @Nonnull JwtAuthenticationService authenticationService
     ) {

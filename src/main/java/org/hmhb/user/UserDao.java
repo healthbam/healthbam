@@ -2,8 +2,19 @@ package org.hmhb.user;
 
 import org.springframework.data.repository.CrudRepository;
 
+/**
+ * Database access object for {@link HmhbUser} objects.
+ *
+ * spring-data-jpa is providing the implementation of this dao:
+ * http://docs.spring.io/spring-data/jpa/docs/1.5.1.RELEASE/reference/html/jpa.repositories.html#jpa.query-methods.query-creation
+ */
 public interface UserDao extends CrudRepository<HmhbUser, Long> {
 
-    HmhbUser findByEmail(String email);
+    /**
+     * Returns the {@link HmhbUser}s associated with the passed in email.
+     *
+     * @return the {@link HmhbUser}s
+     */
+    HmhbUser findByEmailIgnoreCase(String email);
 
 }

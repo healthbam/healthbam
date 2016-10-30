@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Tests for {@link ProgramAreaController}.
+ * Unit tests for {@link ProgramAreaController}.
  */
 public class ProgramAreaControllerTest {
 

@@ -10,6 +10,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * An object to represent a KML Polygon.
+ */
 @Immutable
 public class KmlPolygon {
 
@@ -24,6 +27,11 @@ public class KmlPolygon {
         this.innerBoundaryIs = null;
     }
 
+    /**
+     * Constructs a {@link KmlPolygon} with only an outer boundary.
+     *
+     * @param outerBoundaryIs the outer boundary
+     */
     public KmlPolygon(
             @Nonnull KmlOuterBoundary outerBoundaryIs
     ) {
@@ -31,6 +39,12 @@ public class KmlPolygon {
         this.innerBoundaryIs = null;
     }
 
+    /**
+     * Constructs a {@link KmlPolygon} with an outer and inner boundary.
+     *
+     * @param outerBoundaryIs the outer boundary
+     * @param innerBoundaryIs the inner boundary
+     */
     public KmlPolygon(
             @Nonnull KmlOuterBoundary outerBoundaryIs,
             @Nonnull KmlInnerBoundary innerBoundaryIs

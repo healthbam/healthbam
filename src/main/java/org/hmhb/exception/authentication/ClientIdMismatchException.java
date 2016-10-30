@@ -10,6 +10,12 @@ import org.hmhb.exception.NotAuthorizedException;
  */
 public class ClientIdMismatchException extends NotAuthorizedException {
 
+    /**
+     * Constructs a {@link ClientIdMismatchException}.
+     *
+     * @param requestClientId the http request's client ID
+     * @param configuredClientId the client ID from config
+     */
     public ClientIdMismatchException(
             String requestClientId,
             String configuredClientId

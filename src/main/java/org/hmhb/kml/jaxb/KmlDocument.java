@@ -12,6 +12,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * An object to represent a KML Document.
+ */
 @Immutable
 public class KmlDocument {
 
@@ -30,6 +33,14 @@ public class KmlDocument {
         this.placemarks = null;
     }
 
+    /**
+     * Constructs a {@link KmlDocument}.
+     *
+     * @param name the KML name
+     * @param description the KML description
+     * @param styles all {@link KmlStyle}s that will be referenced in the KML
+     * @param placemarks all {@link KmlPlacemark}s that will be in the KML
+     */
     public KmlDocument(
             @Nonnull String name,
             @Nonnull String description,

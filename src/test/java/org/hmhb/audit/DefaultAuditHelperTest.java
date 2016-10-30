@@ -4,6 +4,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import java.util.Date;
 
+import org.hmhb.authorization.AuthorizationService;
+import org.hmhb.user.HmhbUser;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,14 +17,19 @@ import static org.mockito.Mockito.*;
  */
 public class DefaultAuditHelperTest {
 
+    private AuthorizationService authorizationService;
     private HttpServletRequest request;
     private DefaultAuditHelper toTest;
 
     @Before
     public void setUp() throws Exception {
+        authorizationService = mock(AuthorizationService.class);
         request = mock(HttpServletRequest.class);
 
-        toTest = new DefaultAuditHelper(request);
+        toTest = new DefaultAuditHelper(
+                authorizationService,
+                request
+        );
     }
 
     @Test
@@ -40,14 +47,32 @@ public class DefaultAuditHelperTest {
     }
 
     @Test
-    public void testGetCurrentUser() throws Exception {
-        String expected = "someone";
+    public void testGetCurrentUserEmail() throws Exception {
+        String expected = "someone@mailinator.com";
+
+        HmhbUser loggedInUser = new HmhbUser();
+        loggedInUser.setEmail(expected);
+
+        /* Train the mocks. */
+        when(authorizationService.getLoggedInUser()).thenReturn(loggedInUser);
 
         /* Make the call. */
-        String actual = toTest.getCurrentUser();
+        String actual = toTest.getCurrentUserEmail();
 
         /* Verify the results. */
         assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testGetCurrentUserEmail_NotLoggedIn() throws Exception {
+        /* Train the mocks. */
+        when(authorizationService.getLoggedInUser()).thenReturn(null);
+
+        /* Make the call. */
+        String actual = toTest.getCurrentUserEmail();
+
+        /* Verify the results. */
+        assertEquals(null, actual);
     }
 
     @Test

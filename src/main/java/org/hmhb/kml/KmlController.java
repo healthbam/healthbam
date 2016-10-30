@@ -24,6 +24,11 @@ public class KmlController {
 
     private final KmlService service;
 
+    /**
+     * An injectable constructor.
+     *
+     * @param service the {@link KmlService} to generate KML
+     */
     @Autowired
     public KmlController(
             @Nonnull KmlService service
@@ -32,6 +37,13 @@ public class KmlController {
         this.service = requireNonNull(service, "service cannot be null");
     }
 
+    /**
+     * Generate KML for the passed in county ID and program IDs.
+     *
+     * @param countyId the county ID
+     * @param programIds the comma delimited list of program IDs
+     * @return the generated KML
+     */
     @Timed
     @RequestMapping(
             method = RequestMethod.GET,

@@ -5,20 +5,22 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 /**
- * Logic layer for {@link ProgramArea} objects.
+ * Service for retrieving {@link ProgramArea}s.
  */
 public interface ProgramAreaService {
 
     /**
-     * Look up a single {@link ProgramArea} by ID.
-     * @param id of the {@link ProgramArea} to find.
-     * @return matching {@link ProgramArea}.
+     * Retrieves a {@link ProgramArea} by its database ID.
+     *
+     * @param id the database ID
+     * @return the {@link ProgramArea}
      */
     ProgramArea getById(@Nonnull Long id);
 
     /**
-     * Fetch all {@link ProgramArea} objects.
-     * @return {@link List} of all {@link ProgramArea} objects.
+     * Retrieves all {@link ProgramArea}s.
+     *
+     * @return all {@link ProgramArea}s.
      */
     List<ProgramArea> getAll();
 

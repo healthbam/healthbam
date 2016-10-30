@@ -5,6 +5,7 @@ import javax.annotation.Nonnull;
 import java.util.List;
 
 import com.codahale.metrics.annotation.Timed;
+import org.hmhb.exception.program.ProgramIdMismatchException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * REST endpoint for {@link Program} objects.
+ */
 @RestController
 public class ProgramController {
 
@@ -24,6 +28,12 @@ public class ProgramController {
 
     private final ProgramService service;
 
+    /**
+     * An injectable constructor.
+     *
+     * @param service the {@link ProgramService} for saving, deleting, and
+     *                retrieving {@link Program}
+     */
     @Autowired
     public ProgramController(
             @Nonnull ProgramService service
@@ -32,6 +42,11 @@ public class ProgramController {
         this.service = requireNonNull(service, "service cannot be null");
     }
 
+    /**
+     * Retrieves all {@link Program}s in the system.
+     *
+     * @return all {@link Program}s
+     */
     @Timed
     @RequestMapping(
             method = RequestMethod.GET,
@@ -43,6 +58,12 @@ public class ProgramController {
         return service.getAll();
     }
 
+    /**
+     * Retrieves a {@link Program} by its database ID.
+     *
+     * @param id the database ID
+     * @return the {@link Program}
+     */
     @Timed
     @RequestMapping(
             method = RequestMethod.GET,
@@ -56,6 +77,12 @@ public class ProgramController {
         return service.getById(id);
     }
 
+    /**
+     * Creates a new {@link Program}.
+     *
+     * @param program the new {@link Program} to create
+     * @return the newly created {@link Program}
+     */
     @Timed
     @RequestMapping(
             method = RequestMethod.POST,
@@ -70,6 +97,13 @@ public class ProgramController {
         return service.save(program);
     }
 
+    /**
+     * Updates an existing {@link Program}.
+     *
+     * @param id the database of the {@link Program} to update
+     * @param program the {@link Program} to update to
+     * @return the updated {@link Program}
+     */
     @Timed
     @RequestMapping(
             method = RequestMethod.POST,
@@ -82,9 +116,20 @@ public class ProgramController {
             @RequestBody Program program
     ) {
         LOGGER.debug("update called: id={}, program={}", id, program);
+
+        if (!Long.valueOf(id).equals(program.getId())) {
+            throw new ProgramIdMismatchException(id, program.getId());
+        }
+
         return service.save(program);
     }
 
+    /**
+     * Deletes a {@link Program}.
+     *
+     * @param id the database ID of the {@link Program} to delete
+     * @return the deleted {@link Program}
+     */
     @Timed
     @RequestMapping(
             method = RequestMethod.DELETE,

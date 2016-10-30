@@ -3,6 +3,7 @@ package org.hmhb.organization;
 import java.util.Collections;
 import java.util.List;
 
+import org.hmhb.exception.organization.OrganizationIdMismatchException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -92,6 +93,16 @@ public class OrganizationControllerTest {
 
         /* Verify the results. */
         assertEquals(expected, actual);
+    }
+
+    @Test(expected = OrganizationIdMismatchException.class)
+    public void testUpdate_IdsDoNotMatch() {
+        Organization input = new Organization();
+        input.setId(123L);
+        input.setName("blah org");
+
+        /* Make the call. */
+        toTest.update(input.getId() + 1, input);
     }
 
     @Test

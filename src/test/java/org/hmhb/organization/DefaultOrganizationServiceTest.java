@@ -26,8 +26,8 @@ public class DefaultOrganizationServiceTest {
 
     private static final long ORG_ID = 123L;
     private static final Date CREATED_ON = new Date(123456L);
-    private static final String USERNAME_1 = "somebody";
-    private static final String USERNAME_2 = "somebody-else";
+    private static final String USERNAME_1 = "somebody@mailinator.com";
+    private static final String USERNAME_2 = "somebody-else@mailinator.com";
     private static final Date UPDATED_ON = new Date(654321L);
     private static final String ORG_NAME = "test-org-name";
     private static final String CONTACT_EMAIL = "pub.email@mailinator.com";
@@ -201,7 +201,7 @@ public class DefaultOrganizationServiceTest {
         inputWithCreatedAuditFilledIn.setCreatedOn(CREATED_ON);
 
         /* Train the mocks. */
-        when(auditHelper.getCurrentUser()).thenReturn(USERNAME_1);
+        when(auditHelper.getCurrentUserEmail()).thenReturn(USERNAME_1);
         when(auditHelper.getCurrentTime()).thenReturn(CREATED_ON);
         when(dao.save(inputWithCreatedAuditFilledIn)).thenReturn(inputWithCreatedAuditFilledIn);
 
@@ -242,7 +242,7 @@ public class DefaultOrganizationServiceTest {
         /* Train the mocks. */
         when(authorizationService.isAdmin()).thenReturn(true);
         when(dao.findOne(ORG_ID)).thenReturn(oldOrgInDb);
-        when(auditHelper.getCurrentUser()).thenReturn(USERNAME_2);
+        when(auditHelper.getCurrentUserEmail()).thenReturn(USERNAME_2);
         when(auditHelper.getCurrentTime()).thenReturn(UPDATED_ON);
         when(dao.save(inputWithUpdatedAuditFilledIn)).thenReturn(inputWithUpdatedAuditFilledIn);
 

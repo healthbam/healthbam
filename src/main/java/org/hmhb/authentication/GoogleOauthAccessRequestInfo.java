@@ -4,6 +4,10 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+/**
+ * DTO to hold the google oauth info required to retrieve a user's email from
+ * google.
+ */
 public class GoogleOauthAccessRequestInfo {
 
     private String clientId;

@@ -5,6 +5,7 @@ import javax.annotation.Nonnull;
 import java.util.List;
 
 import com.codahale.metrics.annotation.Timed;
+import org.hmhb.exception.organization.OrganizationIdMismatchException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * REST endpoint for {@link Organization} objects.
+ */
 @RestController
 public class OrganizationController {
 
@@ -24,6 +28,12 @@ public class OrganizationController {
 
     private final OrganizationService service;
 
+    /**
+     * An injectable constructor.
+     *
+     * @param service the {@link OrganizationService} for saving, deleting, and
+     *                retrieving {@link Organization}s
+     */
     @Autowired
     public OrganizationController(
             @Nonnull OrganizationService service
@@ -32,6 +42,11 @@ public class OrganizationController {
         this.service = requireNonNull(service, "service cannot be null");
     }
 
+    /**
+     * Retrieves all {@link Organization}s in the system.
+     *
+     * @return all {@link Organization}s
+     */
     @Timed
     @RequestMapping(
             method = RequestMethod.GET,
@@ -43,6 +58,12 @@ public class OrganizationController {
         return service.getAll();
     }
 
+    /**
+     * Retrieves an {@link Organization} by its database ID.
+     *
+     * @param id the database ID
+     * @return the {@link Organization}
+     */
     @Timed
     @RequestMapping(
             method = RequestMethod.GET,
@@ -56,6 +77,12 @@ public class OrganizationController {
         return service.getById(id);
     }
 
+    /**
+     * Creates a new {@link Organization}.
+     *
+     * @param organization the {@link Organization} to create
+     * @return the newly created {@link Organization}
+     */
     @Timed
     @RequestMapping(
             method = RequestMethod.POST,
@@ -64,12 +91,19 @@ public class OrganizationController {
             path = "/api/organizations"
     )
     public Organization create(
-            @RequestBody Organization request
+            @RequestBody Organization organization
     ) {
-        LOGGER.debug("create called: request={}", request);
-        return service.save(request);
+        LOGGER.debug("create called: organization={}", organization);
+        return service.save(organization);
     }
 
+    /**
+     * Updates an existing {@link Organization}.
+     *
+     * @param id the database ID of the {@link Organization} to update
+     * @param organization the {@link Organization} to update to
+     * @return the updated {@link Organization}
+     */
     @Timed
     @RequestMapping(
             method = RequestMethod.POST,
@@ -79,12 +113,23 @@ public class OrganizationController {
     )
     public Organization update(
             @PathVariable long id,
-            @RequestBody Organization request
+            @RequestBody Organization organization
     ) {
-        LOGGER.debug("update called: id={}, request={}", id, request);
-        return service.save(request);
+        LOGGER.debug("update called: id={}, organization={}", id, organization);
+
+        if (!Long.valueOf(id).equals(organization.getId())) {
+            throw new OrganizationIdMismatchException(id, organization.getId());
+        }
+
+        return service.save(organization);
     }
 
+    /**
+     * Deletes an {@link Organization}.
+     *
+     * @param id the database ID of the {@link Organization} to delete
+     * @return the deleted {@link Organization}
+     */
     @Timed
     @RequestMapping(
             method = RequestMethod.DELETE,

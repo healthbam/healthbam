@@ -18,6 +18,9 @@ import org.springframework.stereotype.Service;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * Default implementation of {@link KmlPlacemarkService}.
+ */
 @Service
 public class DefaultKmlPlacemarkService implements KmlPlacemarkService {
 
@@ -97,6 +100,13 @@ public class DefaultKmlPlacemarkService implements KmlPlacemarkService {
         );
     }
 
+    /**
+     * Generate markup to display when a user clicks a {@link Program} on the
+     * map.
+     *
+     * @param program the {@link Program} info
+     * @return the html markup for a {@link Program} on the map
+     */
     private String getProgramDescription(
             @Nonnull Program program
     ) {
