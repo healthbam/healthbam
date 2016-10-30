@@ -2,29 +2,24 @@ package org.hmhb.user;
 
 import javax.annotation.Nonnull;
 
+import com.google.api.services.plus.model.Person;
+
 /**
  * Service to create and retrieve {@link HmhbUser}s.
  */
 public interface UserService {
 
     /**
-     * Retrieves a {@link HmhbUser} by its email.
+     * Updates an existing user, or creates a new non-admin {@link HmhbUser} in
+     * the system based on the data passed in from google.
      *
-     * @param email the email to look up a {@link HmhbUser} for
+     * @param email the email to lookup or save into the {@link HmhbUser}
+     * @param profile the user's google+ profile
      * @return the {@link HmhbUser}
      */
-    HmhbUser getUserByEmail(
-            @Nonnull String email
-    );
-
-    /**
-     * Creates a new non-admin {@link HmhbUser} in the system.
-     *
-     * @param email the email to save into the {@link HmhbUser}
-     * @return the newly created {@link HmhbUser}
-     */
-    HmhbUser provisionNewUser(
-            @Nonnull String email
+    HmhbUser saveWithGoogleData(
+            @Nonnull String email,
+            @Nonnull Person profile
     );
 
 }

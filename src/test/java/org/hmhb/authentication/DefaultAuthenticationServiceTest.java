@@ -4,10 +4,11 @@ import java.io.IOException;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
+import com.google.api.services.plus.model.Person;
 import org.hmhb.exception.authentication.ClientIdMismatchException;
 import org.hmhb.exception.oauth.GoogleOauthException;
-import org.hmhb.exception.user.UserNotFoundException;
 import org.hmhb.oauth.GoogleOauthService;
+import org.hmhb.oauth.GoogleResponseData;
 import org.hmhb.user.HmhbUser;
 import org.hmhb.user.UserService;
 import org.junit.Before;
@@ -55,19 +56,24 @@ public class DefaultAuthenticationServiceTest {
         GoogleTokenResponse googleTokenResponse = mock(GoogleTokenResponse.class);
         GoogleIdToken googleIdToken = mock(GoogleIdToken.class);
         GoogleIdToken.Payload payload = mock(GoogleIdToken.Payload.class);
+        Person gPlusProfile = new Person();
+        GoogleResponseData googleData = new GoogleResponseData(
+                googleTokenResponse,
+                gPlusProfile
+        );
 
         /* Train the mocks. */
         when(environment.getProperty("google.oauth.client.id")).thenReturn(CLIENT_ID);
         when(environment.getProperty("google.oauth.client.secret")).thenReturn(CLIENT_SECRET);
         when(
-                googleOauthService.getTokenResponse(
+                googleOauthService.getUserDataFromGoogle(
                         CLIENT_ID,
                         CLIENT_SECRET,
                         CODE,
                         PREFIX
                 )
         ).thenReturn(
-                googleTokenResponse
+                googleData
         );
         when(googleTokenResponse.parseIdToken()).thenReturn(googleIdToken);
         when(googleIdToken.getPayload()).thenReturn(payload);
@@ -95,17 +101,21 @@ public class DefaultAuthenticationServiceTest {
         GoogleOauthAccessRequestInfo input = prepGoogleCall();
 
         GoogleTokenResponse googleTokenResponse = mock(GoogleTokenResponse.class);
+        GoogleResponseData googleData = new GoogleResponseData(
+                googleTokenResponse,
+                new Person()
+        );
 
         /* Train the mocks. */
         when(
-                googleOauthService.getTokenResponse(
+                googleOauthService.getUserDataFromGoogle(
                         anyString(),
                         anyString(),
                         anyString(),
                         anyString()
                 )
         ).thenReturn(
-                googleTokenResponse
+                googleData
         );
         when(googleTokenResponse.parseIdToken()).thenThrow(new IOException("test-io-exception"));
 
@@ -125,30 +135,7 @@ public class DefaultAuthenticationServiceTest {
         user.setAdmin(true);
 
         /* Finish training the mocks. */
-        when(userService.getUserByEmail(USER_EMAIL)).thenReturn(user);
-        when(jwtAuthService.generateJwtToken(user)).thenReturn(TOKEN);
-
-        /* Make the call. */
-        TokenResponse actual = toTest.authenticate(input);
-
-        /* Verify the results. */
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    public void testAuthenticateNewUser() throws Exception {
-        GoogleOauthAccessRequestInfo input = prepGoogleCall();
-
-        TokenResponse expected = new TokenResponse(TOKEN);
-
-        HmhbUser user = new HmhbUser();
-        user.setId(USER_ID);
-        user.setEmail(USER_EMAIL);
-        user.setAdmin(true);
-
-        /* Finish training the mocks. */
-        when(userService.getUserByEmail(USER_EMAIL)).thenThrow(new UserNotFoundException(USER_EMAIL));
-        when(userService.provisionNewUser(USER_EMAIL)).thenReturn(user);
+        when(userService.saveWithGoogleData(eq(USER_EMAIL), any(Person.class))).thenReturn(user);
         when(jwtAuthService.generateJwtToken(user)).thenReturn(TOKEN);
 
         /* Make the call. */

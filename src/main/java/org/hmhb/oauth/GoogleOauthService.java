@@ -16,9 +16,10 @@ public interface GoogleOauthService {
      * @param clientSecret the oauth client secret
      * @param code the code from the user's request token
      * @param redirectUri the redirect uri for the request
-     * @return google's token response, which includes an email
+     * @return google's g+ profile and oauth token response, which includes an
+     * email
      */
-    GoogleTokenResponse getTokenResponse(
+    GoogleResponseData getUserDataFromGoogle(
             @Nonnull String clientId,
             @Nonnull String clientSecret,
             @Nonnull String code,

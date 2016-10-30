@@ -45,6 +45,10 @@
                 optionalUrlParams: [
                     "prompt"
                 ],
+                scope: [
+                    "profile",
+                    "email"
+                ],
                 url: "/auth/google", /* posts to our server */
                 redirectUri: redirectUri, /* redirects to the angular app; this has to match what the server uses */
                 /* TODO: get the clientId and redirectUrl from the server */
