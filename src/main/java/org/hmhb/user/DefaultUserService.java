@@ -3,7 +3,7 @@ package org.hmhb.user;
 import javax.annotation.Nonnull;
 
 import com.codahale.metrics.annotation.Timed;
-import org.hmhb.exception.user.UserNotFoundException;
+import com.google.api.services.plus.model.Person;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,32 +35,32 @@ public class DefaultUserService implements UserService {
 
     @Timed
     @Override
-    public HmhbUser getUserByEmail(
-            @Nonnull String email
+    public HmhbUser saveWithGoogleData(
+            @Nonnull String email,
+            @Nonnull Person profile
     ) {
-        LOGGER.debug("getUserByEmail called: email={}", email);
+        LOGGER.debug("saveWithGoogleData called: email={}, profile={}", email, profile);
         requireNonNull(email, "email cannot be null");
+        requireNonNull(profile, "profile cannot be null");
 
         HmhbUser user = dao.findByEmailIgnoreCase(email);
 
         if (user == null) {
-            throw new UserNotFoundException(email);
+            user = new HmhbUser();
+            user.setAdmin(false);
+            user.setEmail(email);
         }
 
-        return user;
-    }
+        user.setProfileUrl(profile.getUrl());
+        user.setDisplayName(profile.getDisplayName());
+        user.setImageUrl(profile.getImage().getUrl());
+        user.setLastName(profile.getName().getFamilyName());
+        user.setFirstName(profile.getName().getGivenName());
+        user.setMiddleName(profile.getName().getMiddleName());
+        user.setPrefix(profile.getName().getHonorificPrefix());
+        user.setSuffix(profile.getName().getHonorificSuffix());
 
-    @Timed
-    @Override
-    public HmhbUser provisionNewUser(
-            @Nonnull String email
-    ) {
-        LOGGER.debug("provisionNewUser called: email={}", email);
-        requireNonNull(email, "email cannot be null");
-
-        HmhbUser user = new HmhbUser();
-        user.setAdmin(false);
-        user.setEmail(email);
+        LOGGER.debug("updating user info: user={}", user);
 
         return dao.save(user);
     }

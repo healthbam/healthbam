@@ -5,11 +5,10 @@ import javax.annotation.Nonnull;
 import java.io.IOException;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
-import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
 import org.hmhb.exception.authentication.ClientIdMismatchException;
 import org.hmhb.exception.oauth.GoogleOauthException;
-import org.hmhb.exception.user.UserNotFoundException;
 import org.hmhb.oauth.GoogleOauthService;
+import org.hmhb.oauth.GoogleResponseData;
 import org.hmhb.user.HmhbUser;
 import org.hmhb.user.UserService;
 import org.slf4j.Logger;
@@ -83,7 +82,7 @@ public class DefaultAuthenticationService implements AuthenticationService {
                 request.getRedirectUri()
         );
 
-        GoogleTokenResponse googleTokenResponse = googleOauthService.getTokenResponse(
+        GoogleResponseData googleResponseData = googleOauthService.getUserDataFromGoogle(
                 request.getClientId(),
                 clientSecret,
                 request.getCode(),
@@ -91,20 +90,22 @@ public class DefaultAuthenticationService implements AuthenticationService {
         );
 
         try {
-            GoogleIdToken idToken = googleTokenResponse.parseIdToken();
-            email = idToken.getPayload().getEmail();
+            GoogleIdToken idToken = googleResponseData.getGoogleOauthToken()
+                    .parseIdToken();
+
+            email = idToken.getPayload()
+                    .getEmail();
+
             LOGGER.debug("successfully called into google: email={}", email);
+
         } catch (IOException e) {
             throw new GoogleOauthException("Failed to parse google id token!", e);
         }
 
-        HmhbUser user;
-
-        try {
-            user = userService.getUserByEmail(email);
-        } catch (UserNotFoundException e) {
-            user = userService.provisionNewUser(email);
-        }
+        HmhbUser user = userService.saveWithGoogleData(
+                email,
+                googleResponseData.getGooglePlusProfile()
+        );
 
         TokenResponse tokenResponse = new TokenResponse(
                 jwtAuthenticationService.generateJwtToken(user)

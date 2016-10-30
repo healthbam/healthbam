@@ -11,7 +11,15 @@ DROP TABLE IF EXISTS hmhb_user;
 CREATE TABLE hmhb_user (
     id BIGSERIAL PRIMARY KEY,
     email TEXT NOT NULL UNIQUE,
-    is_admin BOOLEAN NOT NULL
+    admin BOOLEAN NOT NULL,
+    display_name TEXT,
+    image_url TEXT,
+    first_name TEXT,
+    last_name TEXT,
+    middle_name TEXT,
+    prefix TEXT,
+    suffix TEXT,
+    profile_url TEXT
 );
 
 CREATE TABLE organization (

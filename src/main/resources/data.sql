@@ -5,7 +5,7 @@
  **********************************/
 INSERT INTO hmhb_user (
     email,
-    is_admin
+    admin
 ) VALUES (
     'john.ryan.bard@gmail.com',
     TRUE
@@ -13,7 +13,7 @@ INSERT INTO hmhb_user (
 
 INSERT INTO hmhb_user (
     email,
-    is_admin
+    admin
 ) VALUES (
     'mckoon@gmail.com',
     TRUE
@@ -21,7 +21,7 @@ INSERT INTO hmhb_user (
 
 INSERT INTO hmhb_user (
     email,
-    is_admin
+    admin
 ) VALUES (
     'jlgett@gmail.com',
     TRUE
