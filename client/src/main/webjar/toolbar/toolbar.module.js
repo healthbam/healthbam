@@ -5,7 +5,8 @@
         "healthBam.toolbar",
         [
             "ngMaterial",
-            "healthBam.templates"
+            "healthBam.templates",
+            "healthBam.authentication"
         ]
     );
 

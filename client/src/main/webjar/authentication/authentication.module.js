@@ -5,7 +5,8 @@
         "healthBam.authentication",
         [
             "ngMaterial",
-            "satellizer"
+            "satellizer",
+            "healthBam.errorHandling"
         ]
     );
 

@@ -23,8 +23,7 @@
 
             auth.authenticate = authenticationService.authenticate;
             auth.isAuthenticated = authenticationService.isAuthenticated;
-            auth.isAdmin = authenticationService.isAdmin;
-            auth.getEmail = authenticationService.getEmail;
+            auth.getUser = authenticationService.getUser;
             auth.logout = authenticationService.logout;
 
             $log.debug("Authentication Controller loaded", auth);

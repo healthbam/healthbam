@@ -5,7 +5,8 @@
         "healthBam.createProgram",
         [
             "ngMaterial",
-            "healthBam.programFormDialog"
+            "healthBam.programFormDialog",
+            "healthBam.authentication"
         ]
     );
 

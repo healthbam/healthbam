@@ -34,7 +34,8 @@
 
             <span flex></span>
 
-            <md-button class="md-icon-button"
+            <md-button ng-if="programDetails.isAdmin()"
+                       class="md-icon-button"
                        aria-label="Delete program"
                        ng-click="programDetails.deleteProgram($event)">
                 <md-icon md-font-library="material-icons">
@@ -47,7 +48,8 @@
                 </md-tooltip>
             </md-button>
 
-            <md-button class="md-icon-button"
+            <md-button ng-if="programDetails.isAdmin()"
+                       class="md-icon-button"
                        aria-label="Edit program"
                        ng-click="programDetails.edit($event)">
                 <md-icon md-font-library="material-icons">
