@@ -3,7 +3,6 @@ package org.hmhb.mapquery;
 import javax.annotation.Nonnull;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.codahale.metrics.annotation.Timed;
 import org.hmhb.county.County;
@@ -66,10 +65,18 @@ public class DefaultMapQueryService implements MapQueryService {
             countyId = county.getId().toString();
         }
 
-        String commaSeparatedProgramIds = programs.stream()
-                .map(Program::getId)
-                .map(Object::toString)
-                .collect(Collectors.joining(","));
+        StringBuilder programIdsBuilder = new StringBuilder();
+
+        for (Program program : programs) {
+            programIdsBuilder.append(program.getId());
+            programIdsBuilder.append(',');
+        }
+
+        String commaSeparatedProgramIds = programIdsBuilder.toString();
+
+        if (!commaSeparatedProgramIds.isEmpty()) {
+            commaSeparatedProgramIds = commaSeparatedProgramIds.substring(0, commaSeparatedProgramIds.length() - 1);
+        }
 
         MapQueryResult result = new MapQueryResult();
         result.setPrograms(programs);

@@ -89,7 +89,7 @@ public class DefaultKmlServiceTest {
          * Due to the results being an xml string, I'm using Mockito's verify
          * (instead of trying to interpret or parse the xml string).
          */
-        verify(programService, never()).getByIds(any());
+        verify(programService, never()).getByIds(anyListOf(Long.class));
         verify(countyService).getAll();
     }
 
