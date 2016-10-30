@@ -10,6 +10,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * An object to represent a KML outerBoundaryIs
+ */
 @Immutable
 public class KmlOuterBoundary {
 
@@ -22,6 +25,11 @@ public class KmlOuterBoundary {
         this.linearRing = null;
     }
 
+    /**
+     * Constructs a {@link KmlOuterBoundary}.
+     *
+     * @param linearRing the {@link KmlLinearRing} to put in this outer boundary
+     */
     public KmlOuterBoundary(
             @Nonnull KmlLinearRing linearRing
     ) {

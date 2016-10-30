@@ -1,37 +1,52 @@
 package org.hmhb.exception;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.annotation.concurrent.Immutable;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import static java.util.Objects.requireNonNull;
+
+/**
+ * DTO to hold exception information to send back as JSON in our REST calls.
+ */
+@Immutable
 public class JsonErrorResponse {
 
-    private int statusCode;
-    private String type;
-    private String message;
+    private final int statusCode;
+    private final String type;
+    private final String message;
+
+    /**
+     * Constructs a {@link JsonErrorResponse}.
+     *
+     * @param statusCode the http status code
+     * @param type the exception type (fully qualified name)
+     * @param message the exception message
+     */
+    public JsonErrorResponse(
+            int statusCode,
+            @Nonnull String type,
+            @Nullable String message
+    ) {
+        this.statusCode = statusCode;
+        this.type = requireNonNull(type, "type cannot be null");
+        this.message = message; /* Exceptions don't always have a message. */
+    }
 
     public int getStatusCode() {
         return statusCode;
-    }
-
-    public void setStatusCode(int statusCode) {
-        this.statusCode = statusCode;
     }
 
     public String getType() {
         return type;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public String getMessage() {
         return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 
     @Override

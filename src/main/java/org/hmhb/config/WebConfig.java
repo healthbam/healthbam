@@ -13,21 +13,39 @@ import org.springframework.context.annotation.Configuration;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * Spring {@link Configuration} for our authentication filter.
+ */
 @Configuration
 public class WebConfig {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger("WebConfig.AuthFilter");
+    private static final Logger LOGGER = LoggerFactory.getLogger(WebConfig.class);
+
     private final JwtAuthenticationService jwtAuthenticationService;
 
+    /**
+     * An injectable constructor.
+     *
+     * @param jwtAuthenticationService the {@link JwtAuthenticationService} to
+     *                                 authenticate the http request
+     */
     @Autowired
     public WebConfig(
             @Nonnull JwtAuthenticationService jwtAuthenticationService
     ) {
-        this.jwtAuthenticationService = requireNonNull(jwtAuthenticationService, "jwtAuthenticationService cannot be null");
+        LOGGER.debug("constructed");
+        requireNonNull(jwtAuthenticationService, "jwtAuthenticationService cannot be null");
+        this.jwtAuthenticationService = jwtAuthenticationService;
     }
 
+    /**
+     * Provides the {@link AuthenticationFilter} to authenticate http requests.
+     *
+     * @return the {@link AuthenticationFilter}
+     */
     @Bean
     public Filter provideAuthenticationFilter() {
+        LOGGER.debug("providing authentication filter");
         return new AuthenticationFilter(jwtAuthenticationService);
     }
 

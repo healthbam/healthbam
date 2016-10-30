@@ -23,6 +23,11 @@ public class DefaultCountyService implements CountyService {
 
     private final CountyDao dao;
 
+    /**
+     * An injectable constructor.
+     *
+     * @param dao the {@link CountyDao} to retrieve {@link County}s
+     */
     @Autowired
     public DefaultCountyService(
             @Nonnull CountyDao dao
@@ -54,12 +59,12 @@ public class DefaultCountyService implements CountyService {
 
     @Timed
     @Override
-    public List<County> findByNameStartingWithIgnoreCase(
+    public List<County> searchByName(
             @Nonnull String namePart
     ) {
         LOGGER.debug("findByNameStartingWithIgnoreCase called: namePart={}", namePart);
         requireNonNull(namePart, "namePart cannot be null");
-        return dao.findByNameStartingWithIgnoreCase(namePart);
+        return dao.findByNameStartingWithIgnoreCaseOrderByName(namePart);
     }
 
 }

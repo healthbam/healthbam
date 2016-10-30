@@ -10,6 +10,11 @@ import org.hmhb.exception.NotAuthorizedException;
  */
 public class JwtTokenExpiredException extends NotAuthorizedException {
 
+    /**
+     * Constructs a {@link JwtTokenExpiredException}.
+     *
+     * @param expiredOn the {@link Date} the token expired on
+     */
     public JwtTokenExpiredException(Date expiredOn) {
         super("JWT token is expired! expiredOn=" + expiredOn);
     }

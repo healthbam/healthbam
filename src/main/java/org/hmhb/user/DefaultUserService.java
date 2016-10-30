@@ -2,6 +2,7 @@ package org.hmhb.user;
 
 import javax.annotation.Nonnull;
 
+import com.codahale.metrics.annotation.Timed;
 import org.hmhb.exception.user.UserNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,9 @@ import org.springframework.stereotype.Service;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * Default implementation of {@link UserService}.
+ */
 @Service
 public class DefaultUserService implements UserService {
 
@@ -17,6 +21,11 @@ public class DefaultUserService implements UserService {
 
     private final UserDao dao;
 
+    /**
+     * An injectable constructor.
+     *
+     * @param dao the {@link UserDao} to save and retrieve {@link HmhbUser}s
+     */
     @Autowired
     public DefaultUserService(
             @Nonnull UserDao dao
@@ -24,6 +33,7 @@ public class DefaultUserService implements UserService {
         this.dao = requireNonNull(dao, "dao cannot be null");
     }
 
+    @Timed
     @Override
     public HmhbUser getUserByEmail(
             @Nonnull String email
@@ -31,7 +41,7 @@ public class DefaultUserService implements UserService {
         LOGGER.debug("getUserByEmail called: email={}", email);
         requireNonNull(email, "email cannot be null");
 
-        HmhbUser user = dao.findByEmail(email);
+        HmhbUser user = dao.findByEmailIgnoreCase(email);
 
         if (user == null) {
             throw new UserNotFoundException(email);
@@ -40,6 +50,7 @@ public class DefaultUserService implements UserService {
         return user;
     }
 
+    @Timed
     @Override
     public HmhbUser provisionNewUser(
             @Nonnull String email

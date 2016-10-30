@@ -23,6 +23,11 @@ public class DefaultProgramAreaService implements ProgramAreaService {
 
     private final ProgramAreaDao dao;
 
+    /**
+     * An injectable constructor.
+     *
+     * @param dao the {@link ProgramAreaDao} to retrieve {@link ProgramArea}s
+     */
     @Autowired
     public DefaultProgramAreaService(
             @Nonnull ProgramAreaDao dao

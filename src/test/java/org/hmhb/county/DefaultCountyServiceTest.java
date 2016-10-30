@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Tests for {@link DefaultCountyService}.
+ * Unit tests for {@link DefaultCountyService}.
  */
 public class DefaultCountyServiceTest {
 
@@ -78,14 +78,14 @@ public class DefaultCountyServiceTest {
     }
 
     @Test
-    public void testFindByNameStartingWithIgnoreCase() throws Exception {
+    public void testSearchByName() throws Exception {
         List<County> expected = Collections.singletonList(createFilledInCounty());
 
         /* Train the mocks. */
-        when(dao.findByNameStartingWithIgnoreCase(NAME)).thenReturn(expected);
+        when(dao.findByNameStartingWithIgnoreCaseOrderByName(NAME)).thenReturn(expected);
 
         /* Make the call. */
-        List<County> actual = toTest.findByNameStartingWithIgnoreCase(NAME);
+        List<County> actual = toTest.searchByName(NAME);
 
         /* Verify the results. */
         assertEquals(expected, actual);

@@ -5,7 +5,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * Unit test for {@link County}.
+ * Unit tests for {@link County}.
  */
 public class CountyTest {
 

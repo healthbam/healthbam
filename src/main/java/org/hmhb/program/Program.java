@@ -21,6 +21,9 @@ import org.hmhb.county.County;
 import org.hmhb.organization.Organization;
 import org.hmhb.programarea.ProgramArea;
 
+/**
+ * Domain object representing an HMHB program.
+ */
 @Entity
 public class Program {
 

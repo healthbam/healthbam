@@ -22,6 +22,9 @@ import org.springframework.stereotype.Service;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * Default implementation of {@link OrganizationService}.
+ */
 @Service
 public class DefaultOrganizationService implements OrganizationService {
 
@@ -32,10 +35,24 @@ public class DefaultOrganizationService implements OrganizationService {
     private final OrganizationDao dao;
     private final ProgramDao programDao;
 
+    /**
+     * An injectable constructor.
+     *
+     * @param auditHelper the {@link AuditHelper} to get audit information
+     * @param authorizationService the {@link AuthorizationService} to verify a
+     *                             user is allowed to do certain operations
+     * @param programDao the {@link ProgramDao} to check if an
+     *                   {@link Organization} has
+     *                   {@link org.hmhb.program.Program}s and cannot be
+     *                   deleted
+     * @param dao the {@link OrganizationDao} for saving, deleting, and
+     *            retrieving {@link Organization}s
+     */
     @Autowired
     public DefaultOrganizationService(
             @Nonnull AuditHelper auditHelper,
             @Nonnull AuthorizationService authorizationService,
+            /* I'm injecting ProgramDao instead of ProgramService to avoid a circular dependency. */
             @Nonnull ProgramDao programDao,
             @Nonnull OrganizationDao dao
     ) {
@@ -107,7 +124,7 @@ public class DefaultOrganizationService implements OrganizationService {
 
         if (organization.getId() == null) {
             /* They aren't allowed to set created* or updated* in a create. */
-            organization.setCreatedBy(auditHelper.getCurrentUser());
+            organization.setCreatedBy(auditHelper.getCurrentUserEmail());
             organization.setCreatedOn(auditHelper.getCurrentTime());
             organization.setUpdatedBy(null);
             organization.setUpdatedOn(null);
@@ -123,12 +140,11 @@ public class DefaultOrganizationService implements OrganizationService {
             /* They aren't allowed to change created* or updated* in an update. */
             organization.setCreatedBy(organizationInDb.getCreatedBy());
             organization.setCreatedOn(organizationInDb.getCreatedOn());
-            organization.setUpdatedBy(auditHelper.getCurrentUser());
+            organization.setUpdatedBy(auditHelper.getCurrentUserEmail());
             organization.setUpdatedOn(auditHelper.getCurrentTime());
         }
 
         return dao.save(organization);
-
     }
 
 }

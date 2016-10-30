@@ -8,6 +8,9 @@ import org.hmhb.exception.NotAuthorizedException;
  */
 public class JwtTokenNotSignedException extends NotAuthorizedException {
 
+    /**
+     * Constructs a {@link JwtTokenNotSignedException}.
+     */
     public JwtTokenNotSignedException() {
         super("JWT is not signed, do not trust it!");
     }

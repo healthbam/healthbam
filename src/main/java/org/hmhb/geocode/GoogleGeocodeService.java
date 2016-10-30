@@ -17,6 +17,9 @@ import org.springframework.stereotype.Service;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * An implementation of {@link GeocodeService} that uses google's geocode API.
+ */
 @Service
 public class GoogleGeocodeService implements GeocodeService {
 
@@ -24,6 +27,12 @@ public class GoogleGeocodeService implements GeocodeService {
 
     private final GoogleGeocodeClient googleGeocodeClient;
 
+    /**
+     * An injectable constructor.
+     *
+     * @param googleGeocodeClient the {@link GoogleGeocodeClient} to look up
+     *                            geo information
+     */
     @Autowired
     public GoogleGeocodeService(
             @Nonnull GoogleGeocodeClient googleGeocodeClient
@@ -31,6 +40,13 @@ public class GoogleGeocodeService implements GeocodeService {
         this.googleGeocodeClient = requireNonNull(googleGeocodeClient, "googleGeocodeClient cannot be null");
     }
 
+    /**
+     * Format the {@link Program}'s address information into a single string
+     * for google.
+     *
+     * @param program the {@link Program} with the address info
+     * @return the single line of address information for google
+     */
     private String formatAddress(
             Program program
     ) {

@@ -26,6 +26,12 @@ public class ProgramAreaController {
 
     private ProgramAreaService service;
 
+    /**
+     * An injectable constructor.
+     *
+     * @param service the {@link ProgramAreaService} to retrieve
+     *                {@link ProgramArea}s
+     */
     @Autowired
     public ProgramAreaController(
             @Nonnull ProgramAreaService service
@@ -34,6 +40,12 @@ public class ProgramAreaController {
         this.service = requireNonNull(service, "service cannot be null");
     }
 
+    /**
+     * Retrieves a {@link ProgramArea} by its database ID.
+     *
+     * @param id the database ID
+     * @return the {@link ProgramArea}
+     */
     @Timed
     @RequestMapping(
             method = RequestMethod.GET,
@@ -47,6 +59,11 @@ public class ProgramAreaController {
         return service.getById(id);
     }
 
+    /**
+     * Retrieves all {@link ProgramArea}s in the system.
+     *
+     * @return all {@link ProgramArea}s
+     */
     @Timed
     @RequestMapping(
             method = RequestMethod.GET,

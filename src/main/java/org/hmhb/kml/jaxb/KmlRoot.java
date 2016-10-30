@@ -11,7 +11,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import static java.util.Objects.requireNonNull;
 
-
+/**
+ * An object to be the root of the KML markup.
+ */
 @XmlRootElement(name = "kml")
 @Immutable
 public class KmlRoot {
@@ -25,6 +27,11 @@ public class KmlRoot {
         this.document = null;
     }
 
+    /**
+     * Constructs a {@link KmlRoot}.
+     *
+     * @param document the {@link KmlDocument}
+     */
     public KmlRoot(
             @Nonnull KmlDocument document
     ) {

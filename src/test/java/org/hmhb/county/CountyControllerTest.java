@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Tests for {@link CountyController}.
+ * Unit tests for {@link CountyController}.
  */
 public class CountyControllerTest {
 
@@ -62,14 +62,14 @@ public class CountyControllerTest {
     }
 
     @Test
-    public void testFindByNameStartingWithIgnoreCase() throws Exception {
+    public void testSearchByName() throws Exception {
         List<County> expected = Collections.singletonList(county);
 
         /* Train the mocks. */
-        when(service.findByNameStartingWithIgnoreCase(NAME)).thenReturn(expected);
+        when(service.searchByName(NAME)).thenReturn(expected);
 
         /* Make the call. */
-        List<County> actual = toTest.findByNameStartingWithIgnoreCase(NAME);
+        List<County> actual = toTest.searchByName(NAME);
 
         /* Verify the results. */
         assertEquals(expected, actual);

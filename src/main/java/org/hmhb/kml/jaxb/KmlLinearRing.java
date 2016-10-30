@@ -10,6 +10,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * An object to represent a KML LinearRing.
+ */
 @Immutable
 public class KmlLinearRing {
 
@@ -22,6 +25,11 @@ public class KmlLinearRing {
         this.coordinates = null;
     }
 
+    /**
+     * Constructs a {@link KmlLinearRing}.
+     *
+     * @param coordinates the coordinates to put in this linear ring
+     */
     public KmlLinearRing(
             @Nonnull String coordinates
     ) {

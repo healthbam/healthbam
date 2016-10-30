@@ -12,6 +12,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * An object to represent a KML MultiGeometry.
+ */
 @Immutable
 public class KmlMuliGeometry {
 
@@ -24,6 +27,11 @@ public class KmlMuliGeometry {
         this.polygons = null;
     }
 
+    /**
+     * Constructs a {@link KmlMuliGeometry}.
+     *
+     * @param polygons the {@link KmlPolygon}s to put in this multi geometry
+     */
     public KmlMuliGeometry(
             @Nonnull List<KmlPolygon> polygons
     ) {

@@ -27,6 +27,11 @@ public class CountyController {
 
     private CountyService service;
 
+    /**
+     * An injectable constructor.
+     *
+     * @param service the {@link CountyService} to retieve {@link County}s
+     */
     @Autowired
     public CountyController(
             @Nonnull CountyService service
@@ -35,6 +40,12 @@ public class CountyController {
         this.service = requireNonNull(service, "service cannot be null");
     }
 
+    /**
+     * Retrieve a {@link County} by its ID.
+     *
+     * @param id the database ID of the {@link County}
+     * @return the {@link County}
+     */
     @Timed
     @RequestMapping(
             method = RequestMethod.GET,
@@ -48,6 +59,11 @@ public class CountyController {
         return service.getById(id);
     }
 
+    /**
+     * Retrieves all {@link County}s in the system (Georgia).
+     *
+     * @return all {@link County}s
+     */
     @Timed
     @RequestMapping(
             method = RequestMethod.GET,
@@ -59,6 +75,13 @@ public class CountyController {
         return service.getAll();
     }
 
+    /**
+     * Retrieves all {@link County}s that match the passed in name.
+     *
+     * @param namePart the user's county search string to find matching
+     *                 {@link County}s with
+     * @return the matching {@link County}s
+     */
     @Timed
     @RequestMapping(
             method = RequestMethod.GET,
@@ -66,11 +89,11 @@ public class CountyController {
             path = "/api/counties",
             params = {"name"}
     )
-    public List<County> findByNameStartingWithIgnoreCase(
+    public List<County> searchByName(
             @RequestParam(value = "name") String namePart
     ) {
-        LOGGER.debug("findByNameStartingWithIgnoreCase called: namePart={}", namePart);
-        return service.findByNameStartingWithIgnoreCase(namePart);
+        LOGGER.debug("searchByName called: namePart={}", namePart);
+        return service.searchByName(namePart);
     }
 
 }

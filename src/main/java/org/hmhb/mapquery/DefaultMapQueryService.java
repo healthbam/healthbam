@@ -27,6 +27,14 @@ public class DefaultMapQueryService implements MapQueryService {
     private final UrlService urlService;
     private final ProgramService programService;
 
+    /**
+     * An injectable constructor.
+     *
+     * @param urlService the {@link UrlService} for getting the prefix for our
+     *                   generated links
+     * @param programService the {@link ProgramService} for searching for
+     *                       {@link Program}s
+     */
     @Autowired
     public DefaultMapQueryService(
             @Nonnull UrlService urlService,

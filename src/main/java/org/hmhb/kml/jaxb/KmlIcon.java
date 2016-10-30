@@ -10,6 +10,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * An object to represent a KML Icon.
+ */
 @Immutable
 public class KmlIcon {
 
@@ -22,6 +25,11 @@ public class KmlIcon {
         this.href = null;
     }
 
+    /**
+     * Constructs a {@link KmlIcon}.
+     *
+     * @param href the link to an image for the icon
+     */
     public KmlIcon(
             @Nonnull String href
     ) {
