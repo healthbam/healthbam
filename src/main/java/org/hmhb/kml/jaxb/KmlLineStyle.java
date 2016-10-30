@@ -10,6 +10,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * An object to represent a KML LineStyle.
+ */
 @Immutable
 public class KmlLineStyle {
 
@@ -26,6 +29,13 @@ public class KmlLineStyle {
         this.width = null;
     }
 
+    /**
+     * Constructs a {@link KmlLineStyle}.
+     *
+     * @param color the color (hex: alpha blue green red)
+     * @param colorMode the color mode (normal or random)
+     * @param width the width of the line
+     */
     public KmlLineStyle(
             @Nonnull String color,
             @Nonnull String colorMode,
