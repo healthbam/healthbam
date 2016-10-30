@@ -10,7 +10,7 @@
      layout="column"
      layout="fill">
 
-    <!-- Toolbar with program actions. -->
+    <!-- Toolbar with organization actions. -->
     <md-toolbar class="md-hue-2">
         <div class="md-toolbar-tools">
 
@@ -34,7 +34,8 @@
 
             <span flex></span>
 
-            <md-button class="md-icon-button"
+            <md-button ng-if="organizationDetails.isAdmin()"
+                       class="md-icon-button"
                        aria-label="Delete organization"
                        ng-click="organizationDetails.deleteOrganization($event)">
                 <md-icon md-font-library="material-icons">
@@ -47,7 +48,8 @@
                 </md-tooltip>
             </md-button>
 
-            <md-button class="md-icon-button"
+            <md-button ng-if="organizationDetails.isAdmin()"
+                       class="md-icon-button"
                        aria-label="Edit organization"
                        ng-click="organizationDetails.edit($event)">
                 <md-icon md-font-library="material-icons">
@@ -66,7 +68,6 @@
     <md-content flex>
 
          <!-- Organization information card -->
-
         <md-card>
 
             <md-card-title>

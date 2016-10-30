@@ -13,7 +13,8 @@
             "healthBam.errorHandling",
             "healthBam.countiesField",
             "healthBam.mapConfig",
-            "healthBam.programFormDialog"
+            "healthBam.programFormDialog",
+            "healthBam.authentication"
         ]
     );
 

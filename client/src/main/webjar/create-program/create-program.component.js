@@ -5,11 +5,13 @@
 
     /**
      * Controller for the healthBamCreateProgram component.
+     * @param authenticationService
      * @param programFormDialogService
      * @param $log
      * @constructor
      */
     function CreateProgramController(
+        authenticationService,
         programFormDialogService,
         $log
     ) {
@@ -29,6 +31,7 @@
          */
         function activate() {
             createProgram.openProgramForm = openProgramForm;
+            createProgram.isAdmin = authenticationService.isAdmin;
 
             $log.debug("CreateProgram Controller loaded", createProgram);
         }
@@ -39,6 +42,7 @@
 
     /* Inject dependencies. */
     CreateProgramController.$inject = [
+        "authenticationService",
         "programFormDialogService",
         "$log"
     ];

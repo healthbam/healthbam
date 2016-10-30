@@ -1,4 +1,5 @@
-<md-button class="md-fab health-bam-create-program"
+<md-button ng-if="createProgram.isAdmin()"
+           class="md-fab health-bam-create-program"
            aria-label="Create New Program"
            ng-click="createProgram.openProgramForm($event)">
     <md-icon md-font-library="material-icons">

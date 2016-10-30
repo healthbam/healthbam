@@ -29,6 +29,7 @@
                     angular.mock.inject(
                         function ($injector) {
                             $componentController = $injector.get("$componentController");
+                            locals.authenticationService = $injector.get("authenticationService");
                             locals.programFormDialogService = $injector.get("programFormDialogService");
                             locals.$log = $injector.get("$log");
                         }
@@ -96,6 +97,20 @@
                     expect(locals.programFormDialogService.create).toHaveBeenCalledWith(
                         event
                     );
+                });
+
+            });
+
+            describe("isAdmin", function () {
+
+                beforeEach(
+                    function () {
+                        createProgram.$onInit();
+                    }
+                );
+
+                it("should alias authenticationService.isAdmin", function () {
+                    expect(createProgram.isAdmin).toEqual(locals.authenticationService.isAdmin);
                 });
 
             });

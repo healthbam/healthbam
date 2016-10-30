@@ -5,7 +5,7 @@
 
     /**
      * Controller for the healthBamOrganizationDetails component.
-     * @param MapQuery
+     * @param authenticationService
      * @param Organization
      * @param $state
      * @param $stateParams
@@ -18,6 +18,7 @@
      * @constructor
      */
     function OrganizationDetailsController(
+        authenticationService,
         Organization,
         $state,
         $stateParams,
@@ -174,6 +175,7 @@
         function activate() {
        //     organizationDetails.edit = edit;
             organizationDetails.deleteOrganization = deleteOrganization;
+            organizationDetails.isAdmin = authenticationService.isAdmin;
 
      //       organizationDetails.mapStyles = mapConfig.styles;
             organizationDetails.orgInfo = Organization.get({id: $stateParams.orgId});
@@ -202,6 +204,7 @@
 
     /* Inject dependencies. */
     OrganizationDetailsController.$inject = [
+        "authenticationService",
         "Organization",
         "$state",
         "$stateParams",

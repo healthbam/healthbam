@@ -5,6 +5,7 @@
 
     /**
      * Controller for the healthBamProgramDetails component.
+     * @param authenticationService
      * @param MapQuery
      * @param Program
      * @param $state
@@ -19,6 +20,7 @@
      * @constructor
      */
     function ProgramDetailsController(
+        authenticationService,
         MapQuery,
         Program,
         $state,
@@ -195,6 +197,7 @@
             programDetails.toggleCounties = toggleCounties;
             programDetails.edit = edit;
             programDetails.deleteProgram = deleteProgram;
+            programDetails.isAdmin = authenticationService.isAdmin;
 
             programDetails.mapStyles = mapConfig.styles;
 
@@ -234,6 +237,7 @@
 
     /* Inject dependencies. */
     ProgramDetailsController.$inject = [
+        "authenticationService",
         "MapQuery",
         "Program",
         "$state",

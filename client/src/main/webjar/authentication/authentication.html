@@ -1,26 +1,42 @@
-<div>
-    <div ng-if="!auth.isAuthenticated()">
-        <button ng-click="auth.authenticate()">
-            Login
-        </button>
-    </div>
-    <div ng-if="auth.isAuthenticated()">
-        <button ng-click="auth.logout()">
-            Logout
-        </button>
-    </div>
-    <div>
-        <span>
-            email:
-        </span>
-        <span ng-bind="auth.getEmail()">
-        </span>
-    </div>
-    <div>
-        <span>
-            admin:
-        </span>
-        <span ng-bind="auth.isAdmin()">
-        </span>
-    </div>
-</div>
+<md-button ng-if="!auth.isAuthenticated()"
+           ng-click="auth.authenticate()">
+    <md-icon md-font-library="material-icons">
+        account_circle
+    </md-icon>
+    <span>
+        Sign in
+    </span>
+</md-button>
+
+<md-menu ng-if="auth.isAuthenticated()">
+
+    <!-- Button to open menu. -->
+    <md-button class="md-icon-button health-bam-profile-button"
+               aria-label="Account actions"
+               ng-click="$mdOpenMenu($event)">
+        <img ng-src="{{auth.getUser().imageUrl}}"
+             class="health-bam-profile-image"
+             alt="{{auth.getUser().displayName}}" />
+        <md-tooltip md-direction="bottom">
+            Account actions
+        </md-tooltip>
+    </md-button>
+
+    <!-- Menu contents -->
+    <md-menu-content>
+
+        <md-menu-item>
+            <md-button ng-click="auth.logout()"
+                       aria-label="Sign out">
+                <md-icon md-font-library="material-icons">
+                    account_circle
+                </md-icon>
+                <span>
+                    Sign out
+                </span>
+            </md-button>
+        </md-menu-item>
+
+    </md-menu-content>
+
+</md-menu>

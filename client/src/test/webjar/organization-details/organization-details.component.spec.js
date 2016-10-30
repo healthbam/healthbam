@@ -36,6 +36,7 @@
                         function ($injector) {
                             $componentController = $injector.get("$componentController");
                             $httpBackend = $injector.get("$httpBackend");
+                            locals.authenticationService = $injector.get("authenticationService");
                             locals.Organization = $injector.get("Organization");
                             locals.$stateParams = $injector.get("$stateParams");
                             locals.$state = $injector.get("$state");
@@ -227,6 +228,16 @@
                     expect(locals.$mdDialog.show).toHaveBeenCalled();
                     expect(locals.errorHandlingService.handleError).toHaveBeenCalled();
                     expect(locals.$state.go).not.toHaveBeenCalled();
+                });
+
+            });
+
+            describe("isAdmin", function () {
+
+                beforeEach(initController);
+
+                it("should alias authenticationService.isAdmin", function () {
+                    expect(organizationDetails.isAdmin).toEqual(locals.authenticationService.isAdmin);
                 });
 
             });
