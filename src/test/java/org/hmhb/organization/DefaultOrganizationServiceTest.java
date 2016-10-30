@@ -113,7 +113,7 @@ public class DefaultOrganizationServiceTest {
         /* Train the mocks. */
         when(authorizationService.isAdmin()).thenReturn(true);
         when(dao.findOne(ORG_ID)).thenReturn(orgInDb);
-        when(programDao.findByOrganizationId(ORG_ID)).thenReturn(Collections.emptyList());
+        when(programDao.findByOrganizationId(ORG_ID)).thenReturn(Collections.<Program>emptyList());
 
         /* Make the call. */
         Organization actual = toTest.delete(ORG_ID);
