@@ -2,7 +2,7 @@
 <md-content>
     <md-list flex>
         <md-subheader class="md-no-sticky">Existing Organizations</md-subheader>
-        <md-list-item ng-repeat="organization in organizationList.list" ui-sref="organizationDetails({orgId: {{organization.id}}})">
+        <md-list-item ng-repeat="organization in organizationList.list" ui-sref="organizationDetails({orgId: organization.id})">
            <div class="md-list-item-text" layout="column">
                 <h3>{{ organization.name }}</h3>
                <md-divider ></md-divider>

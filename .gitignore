@@ -50,3 +50,6 @@ jmeter.log
 
 # ignore node_modules pulled down by npm
 node_modules/
+
+# run in Windows
+runInWindows.bat
