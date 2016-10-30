@@ -1,11 +1,11 @@
-package org.hmhb.program;
+package org.hmhb.user;
 
 import javax.annotation.Nonnull;
 
 import java.util.List;
 
 import com.codahale.metrics.annotation.Timed;
-import org.hmhb.exception.program.ProgramIdMismatchException;
+import org.hmhb.exception.user.UserIdMismatchException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,58 +19,58 @@ import org.springframework.web.bind.annotation.RestController;
 import static java.util.Objects.requireNonNull;
 
 /**
- * REST endpoint for {@link Program} objects.
+ * REST endpoint for {@link HmhbUser} objects.
  */
 @RestController
-public class ProgramController {
+public class UserController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProgramController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
-    private final ProgramService service;
+    private final UserService service;
 
     /**
      * An injectable constructor.
      *
-     * @param service the {@link ProgramService} for saving, deleting, and
-     *                retrieving {@link Program}
+     * @param service the {@link UserService} for saving, deleting, and
+     *                retrieving {@link HmhbUser}s
      */
     @Autowired
-    public ProgramController(
-            @Nonnull ProgramService service
+    public UserController(
+            @Nonnull UserService service
     ) {
         LOGGER.debug("constructed");
         this.service = requireNonNull(service, "service cannot be null");
     }
 
     /**
-     * Retrieves all {@link Program}s in the system.
+     * Retrieves all {@link HmhbUser}s in the system.
      *
-     * @return all {@link Program}s
+     * @return all {@link HmhbUser}s
      */
     @Timed
     @RequestMapping(
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE,
-            path = "/api/programs"
+            path = "/api/users"
     )
-    public List<Program> getAll() {
+    public List<HmhbUser> getAll() {
         LOGGER.debug("getAll called");
         return service.getAll();
     }
 
     /**
-     * Retrieves a {@link Program} by its database ID.
+     * Retrieves a {@link HmhbUser} by its database ID.
      *
      * @param id the database ID
-     * @return the {@link Program}
+     * @return the {@link HmhbUser}
      */
     @Timed
     @RequestMapping(
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE,
-            path = "/api/programs/{id}"
+            path = "/api/users/{id}"
     )
-    public Program getById(
+    public HmhbUser getById(
             @PathVariable long id
     ) {
         LOGGER.debug("getById called: id={}", id);
@@ -78,65 +78,65 @@ public class ProgramController {
     }
 
     /**
-     * Creates a new {@link Program}.
+     * Creates a new {@link HmhbUser}.
      *
-     * @param program the new {@link Program} to create
-     * @return the newly created {@link Program}
+     * @param user the new {@link HmhbUser} to create
+     * @return the newly created {@link HmhbUser}
      */
     @Timed
     @RequestMapping(
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE,
-            path = "/api/programs"
+            path = "/api/users"
     )
-    public Program create(
-            @RequestBody Program program
+    public HmhbUser create(
+            @RequestBody HmhbUser user
     ) {
-        LOGGER.debug("create called: program={}", program);
-        return service.save(program);
+        LOGGER.debug("create called: user={}", user);
+        return service.save(user);
     }
 
     /**
-     * Updates an existing {@link Program}.
+     * Updates an existing {@link HmhbUser}.
      *
-     * @param id the database ID of the {@link Program} to update
-     * @param program the {@link Program} to update to
-     * @return the updated {@link Program}
+     * @param id the database ID of the {@link HmhbUser} to update
+     * @param user the {@link HmhbUser} to update to
+     * @return the updated {@link HmhbUser}
      */
     @Timed
     @RequestMapping(
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE,
-            path = "/api/programs/{id}"
+            path = "/api/users/{id}"
     )
-    public Program update(
+    public HmhbUser update(
             @PathVariable long id,
-            @RequestBody Program program
+            @RequestBody HmhbUser user
     ) {
-        LOGGER.debug("update called: id={}, program={}", id, program);
+        LOGGER.debug("update called: id={}, user={}", id, user);
 
-        if (!Long.valueOf(id).equals(program.getId())) {
-            throw new ProgramIdMismatchException(id, program.getId());
+        if (!Long.valueOf(id).equals(user.getId())) {
+            throw new UserIdMismatchException(id, user.getId());
         }
 
-        return service.save(program);
+        return service.save(user);
     }
 
     /**
-     * Deletes a {@link Program}.
+     * Deletes a {@link HmhbUser}.
      *
-     * @param id the database ID of the {@link Program} to delete
-     * @return the deleted {@link Program}
+     * @param id the database ID of the {@link HmhbUser} to delete
+     * @return the deleted {@link HmhbUser}
      */
     @Timed
     @RequestMapping(
             method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_VALUE,
-            path = "/api/programs/{id}"
+            path = "/api/users/{id}"
     )
-    public Program delete(
+    public HmhbUser delete(
             @PathVariable long id
     ) {
         LOGGER.debug("delete called: id={}", id);

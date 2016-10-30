@@ -2,6 +2,8 @@ package org.hmhb.user;
 
 import javax.annotation.Nonnull;
 
+import java.util.List;
+
 import com.google.api.services.plus.model.Person;
 
 /**
@@ -20,6 +22,43 @@ public interface UserService {
     HmhbUser saveWithGoogleData(
             @Nonnull String email,
             @Nonnull Person profile
+    );
+
+    /**
+     * Retrieves a {@link HmhbUser} by its database ID.
+     *
+     * @param id the database ID
+     * @return the {@link HmhbUser}
+     */
+    HmhbUser getById(
+            @Nonnull Long id
+    );
+
+    /**
+     * Retrieves all {@link HmhbUser}s in the system.
+     *
+     * @return all {@link HmhbUser}s
+     */
+    List<HmhbUser> getAll();
+
+    /**
+     * Deletes a {@link HmhbUser} by its database ID.
+     *
+     * @param id the database ID
+     * @return the deleted {@link HmhbUser}
+     */
+    HmhbUser delete(
+            @Nonnull Long id
+    );
+
+    /**
+     * Saves a {@link HmhbUser} (create or update).
+     *
+     * @param user the {@link HmhbUser} to create or update
+     * @return the saved {@link HmhbUser}
+     */
+    HmhbUser save(
+            @Nonnull HmhbUser user
     );
 
 }
