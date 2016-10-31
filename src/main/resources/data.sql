@@ -26,6 +26,22 @@ INSERT INTO hmhb_user (
     'jlgett@gmail.com',
     TRUE
 );
+
+INSERT INTO hmhb_user (
+    email,
+    admin
+) VALUES (
+    'jslide07@gmail.com',
+    TRUE
+);
+
+INSERT INTO hmhb_user (
+    email,
+    admin
+) VALUES (
+    'contactkaranpratap@gmail.com',
+    TRUE
+);
 /**********************************
  * End Users.
  **********************************/

@@ -12,6 +12,7 @@ import java.util.Map;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.hmhb.config.ConfigService;
 import org.hmhb.exception.authentication.AuthHeaderHasTooManyPartsException;
 import org.hmhb.exception.authentication.AuthHeaderMissingTokenException;
 import org.hmhb.exception.authentication.AuthHeaderUnknownException;
@@ -22,7 +23,6 @@ import org.hmhb.user.HmhbUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import static java.util.Objects.requireNonNull;
@@ -35,26 +35,26 @@ public class DefaultJwtAuthenticationService implements JwtAuthenticationService
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultAuthenticationService.class);
 
-    private final Environment environment;
+    private final ConfigService configService;
 
     /**
      * An injectable constructor.
      *
-     * @param environment the {@link Environment} to get config from
+     * @param configService the {@link ConfigService} to get config from
      */
     @Autowired
     public DefaultJwtAuthenticationService(
-            @Nonnull Environment environment
+            @Nonnull ConfigService configService
     ) {
-        this.environment = requireNonNull(environment, "environment cannot be null");
+        this.configService = requireNonNull(configService, "configService cannot be null");
     }
 
     private String getDomain() {
-        return environment.getProperty("hmhb.jwt.domain");
+        return configService.getPrivateConfig().getJwtDomain();
     }
 
     private String getSecret() {
-        return environment.getProperty("hmhb.jwt.secret");
+        return configService.getPrivateConfig().getJwtSecret();
     }
 
     private Date getTokenExpirationDate() {

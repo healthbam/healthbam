@@ -6,6 +6,7 @@
         [
             "ngMaterial",
             "satellizer",
+            "healthBam.config",
             "healthBam.errorHandling"
         ]
     );

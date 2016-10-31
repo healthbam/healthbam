@@ -3,13 +3,15 @@ package org.hmhb.authentication;
 import javax.servlet.http.HttpServletRequest;
 
 import io.jsonwebtoken.SignatureException;
+import org.hmhb.config.ConfigService;
+import org.hmhb.config.PrivateConfig;
+import org.hmhb.config.PublicConfig;
 import org.hmhb.exception.authentication.AuthHeaderHasTooManyPartsException;
 import org.hmhb.exception.authentication.AuthHeaderMissingTokenException;
 import org.hmhb.exception.authentication.AuthHeaderUnknownException;
 import org.hmhb.user.HmhbUser;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.core.env.Environment;
 
 import static org.mockito.Mockito.*;
 
@@ -24,15 +26,15 @@ public class DefaultJwtAuthenticationServiceTest {
     private static final String USER_EMAIL = "john.doe@mailinator.com";
 
     private HttpServletRequest request;
-    private Environment environment;
+    private ConfigService configService;
 
     private DefaultJwtAuthenticationService toTest;
 
     @Before
     public void setUp() throws Exception {
-        environment = mock(Environment.class);
+        configService = mock(ConfigService.class);
         request = mock(HttpServletRequest.class);
-        toTest = new DefaultJwtAuthenticationService(environment);
+        toTest = new DefaultJwtAuthenticationService(configService);
     }
 
     @Test
@@ -42,16 +44,17 @@ public class DefaultJwtAuthenticationServiceTest {
         user.setEmail(USER_EMAIL);
         user.setAdmin(false);
 
+        PublicConfig publicConfig = new PublicConfig("oauthClientId", null);
+        PrivateConfig privateConfig = new PrivateConfig("oauthClientSecret", TEST_DOMAIN, TEST_SECRET);
+
         /* Train the config. */
-        when(environment.getProperty("hmhb.jwt.domain")).thenReturn(TEST_DOMAIN);
-        when(environment.getProperty("hmhb.jwt.secret")).thenReturn(TEST_SECRET);
+        when(configService.getPublicConfig()).thenReturn(publicConfig);
+        when(configService.getPrivateConfig()).thenReturn(privateConfig);
 
         /* Make the generate call. */
         String token = toTest.generateJwtToken(user);
 
         /* Train the mocks. */
-        when(environment.getProperty("hmhb.jwt.domain")).thenReturn(TEST_DOMAIN);
-        when(environment.getProperty("hmhb.jwt.secret")).thenReturn(TEST_SECRET);
         when(request.getHeader("Authorization")).thenReturn("Bearer " + token);
 
         /* Make the validate call. */
@@ -68,9 +71,12 @@ public class DefaultJwtAuthenticationServiceTest {
         user.setEmail(USER_EMAIL);
         user.setAdmin(false);
 
+        PublicConfig publicConfig = new PublicConfig("oauthClientId", null);
+        PrivateConfig privateConfig = new PrivateConfig("oauthClientSecret", TEST_DOMAIN, TEST_SECRET);
+
         /* Train the config. */
-        when(environment.getProperty("hmhb.jwt.domain")).thenReturn(TEST_DOMAIN);
-        when(environment.getProperty("hmhb.jwt.secret")).thenReturn(TEST_SECRET);
+        when(configService.getPublicConfig()).thenReturn(publicConfig);
+        when(configService.getPrivateConfig()).thenReturn(privateConfig);
 
         /* Make the generate call. */
         String token = toTest.generateJwtToken(user);
@@ -115,9 +121,12 @@ public class DefaultJwtAuthenticationServiceTest {
         user.setEmail(USER_EMAIL);
         user.setAdmin(false);
 
+        PublicConfig publicConfig = new PublicConfig("oauthClientId", null);
+        PrivateConfig privateConfig = new PrivateConfig("oauthClientSecret", TEST_DOMAIN, TEST_SECRET);
+
         /* Train the config. */
-        when(environment.getProperty("hmhb.jwt.domain")).thenReturn(TEST_DOMAIN);
-        when(environment.getProperty("hmhb.jwt.secret")).thenReturn(TEST_SECRET);
+        when(configService.getPublicConfig()).thenReturn(publicConfig);
+        when(configService.getPrivateConfig()).thenReturn(privateConfig);
 
         /* Make the generate call. */
         String token = toTest.generateJwtToken(user);
@@ -136,9 +145,12 @@ public class DefaultJwtAuthenticationServiceTest {
         user.setEmail(USER_EMAIL);
         user.setAdmin(false);
 
+        PublicConfig publicConfig = new PublicConfig("oauthClientId", null);
+        PrivateConfig privateConfig = new PrivateConfig("oauthClientSecret", TEST_DOMAIN, TEST_SECRET);
+
         /* Train the config. */
-        when(environment.getProperty("hmhb.jwt.domain")).thenReturn(TEST_DOMAIN);
-        when(environment.getProperty("hmhb.jwt.secret")).thenReturn(TEST_SECRET);
+        when(configService.getPublicConfig()).thenReturn(publicConfig);
+        when(configService.getPrivateConfig()).thenReturn(privateConfig);
 
         /* Make the generate call. */
         String token = toTest.generateJwtToken(user);
