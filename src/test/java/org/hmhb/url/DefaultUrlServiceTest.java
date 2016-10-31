@@ -2,9 +2,11 @@ package org.hmhb.url;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.hmhb.config.ConfigService;
+import org.hmhb.config.PrivateConfig;
+import org.hmhb.config.PublicConfig;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.core.env.Environment;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -15,23 +17,29 @@ import static org.mockito.Mockito.*;
 public class DefaultUrlServiceTest {
 
     private HttpServletRequest request;
-    private Environment environment;
+    private ConfigService configService;
 
     private DefaultUrlService toTest;
 
     @Before
     public void setUp() throws Exception {
         request = mock(HttpServletRequest.class);
-        environment = mock(Environment.class);
-        toTest = new DefaultUrlService(request, environment);
+        configService = mock(ConfigService.class);
+        toTest = new DefaultUrlService(request, configService);
     }
 
     @Test
     public void testGetUrlPrefix() throws Exception {
         String expected = "https://hmhb.herokuapp.com:443";
 
+        PublicConfig publicConfig = new PublicConfig("oauthClientId", null);
+        PrivateConfig privateConfig = new PrivateConfig("oauthClientSecret", "jwtDomain", "jwtSecret");
+
+        /* Train the config. */
+        when(configService.getPublicConfig()).thenReturn(publicConfig);
+        when(configService.getPrivateConfig()).thenReturn(privateConfig);
+
         /* Train the mocks. */
-        when(environment.getProperty("hmhb.url.prefix")).thenReturn(null);
         when(request.getScheme()).thenReturn("https");
         when(request.getServerName()).thenReturn("hmhb.herokuapp.com");
         when(request.getServerPort()).thenReturn(443);
@@ -47,8 +55,14 @@ public class DefaultUrlServiceTest {
     public void testGetUrlPrefixNoPortSpecified() throws Exception {
         String expected = "https://hmhb.herokuapp.com";
 
+        PublicConfig publicConfig = new PublicConfig("oauthClientId", null);
+        PrivateConfig privateConfig = new PrivateConfig("oauthClientSecret", "jwtDomain", "jwtSecret");
+
+        /* Train the config. */
+        when(configService.getPublicConfig()).thenReturn(publicConfig);
+        when(configService.getPrivateConfig()).thenReturn(privateConfig);
+
         /* Train the mocks. */
-        when(environment.getProperty("hmhb.url.prefix")).thenReturn(null);
         when(request.getScheme()).thenReturn("https");
         when(request.getServerName()).thenReturn("hmhb.herokuapp.com");
         when(request.getServerPort()).thenReturn(-1);
@@ -64,8 +78,14 @@ public class DefaultUrlServiceTest {
     public void testGetUrlPrefixConfigOverride() throws Exception {
         String expected = "https://hmhb.herokuapp.com";
 
+        PublicConfig publicConfig = new PublicConfig("oauthClientId", expected);
+        PrivateConfig privateConfig = new PrivateConfig("oauthClientSecret", "jwtDomain", "jwtSecret");
+
+        /* Train the config. */
+        when(configService.getPublicConfig()).thenReturn(publicConfig);
+        when(configService.getPrivateConfig()).thenReturn(privateConfig);
+
         /* Train the mocks. */
-        when(environment.getProperty("hmhb.url.prefix")).thenReturn(expected);
         when(request.getScheme()).thenReturn("http");
         when(request.getServerName()).thenReturn("localhost");
         when(request.getServerPort()).thenReturn(8080);
@@ -81,8 +101,14 @@ public class DefaultUrlServiceTest {
     public void testGetUrlPrefixConfigOverrideIsEmpty() throws Exception {
         String expected = "http://localhost:8080";
 
+        PublicConfig publicConfig = new PublicConfig("oauthClientId", "");
+        PrivateConfig privateConfig = new PrivateConfig("oauthClientSecret", "jwtDomain", "jwtSecret");
+
+        /* Train the config. */
+        when(configService.getPublicConfig()).thenReturn(publicConfig);
+        when(configService.getPrivateConfig()).thenReturn(privateConfig);
+
         /* Train the mocks. */
-        when(environment.getProperty("hmhb.url.prefix")).thenReturn("");
         when(request.getScheme()).thenReturn("http");
         when(request.getServerName()).thenReturn("localhost");
         when(request.getServerPort()).thenReturn(8080);
@@ -98,8 +124,14 @@ public class DefaultUrlServiceTest {
     public void testGetUrlPrefixConfigOverrideIsSpace() throws Exception {
         String expected = "http://localhost:8080";
 
+        PublicConfig publicConfig = new PublicConfig("oauthClientId", "   ");
+        PrivateConfig privateConfig = new PrivateConfig("oauthClientSecret", "jwtDomain", "jwtSecret");
+
+        /* Train the config. */
+        when(configService.getPublicConfig()).thenReturn(publicConfig);
+        when(configService.getPrivateConfig()).thenReturn(privateConfig);
+
         /* Train the mocks. */
-        when(environment.getProperty("hmhb.url.prefix")).thenReturn("   ");
         when(request.getScheme()).thenReturn("http");
         when(request.getServerName()).thenReturn("localhost");
         when(request.getServerPort()).thenReturn(8080);

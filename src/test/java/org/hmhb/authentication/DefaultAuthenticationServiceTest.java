@@ -5,6 +5,9 @@ import java.io.IOException;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
 import com.google.api.services.plus.model.Person;
+import org.hmhb.config.ConfigService;
+import org.hmhb.config.PrivateConfig;
+import org.hmhb.config.PublicConfig;
 import org.hmhb.exception.authentication.ClientIdMismatchException;
 import org.hmhb.exception.oauth.GoogleOauthException;
 import org.hmhb.oauth.GoogleOauthService;
@@ -13,7 +16,6 @@ import org.hmhb.user.HmhbUser;
 import org.hmhb.user.UserService;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.core.env.Environment;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -31,7 +33,7 @@ public class DefaultAuthenticationServiceTest {
     private static final String PREFIX = "test-prefix/views/oauth-callback";
     private static final String TOKEN = "test-token";
 
-    private Environment environment;
+    private ConfigService configService;
     private GoogleOauthService googleOauthService;
     private JwtAuthenticationService jwtAuthService;
     private UserService userService;
@@ -40,12 +42,12 @@ public class DefaultAuthenticationServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        environment = mock(Environment.class);
+        configService = mock(ConfigService.class);
         googleOauthService = mock(GoogleOauthService.class);
         jwtAuthService = mock(JwtAuthenticationService.class);
         userService = mock(UserService.class);
         toTest = new DefaultAuthenticationService(
-                environment,
+                configService,
                 googleOauthService,
                 jwtAuthService,
                 userService
@@ -62,9 +64,12 @@ public class DefaultAuthenticationServiceTest {
                 gPlusProfile
         );
 
+        PublicConfig publicConfig = new PublicConfig(CLIENT_ID, null);
+        PrivateConfig privateConfig = new PrivateConfig(CLIENT_SECRET, "jwtDomain", "jwtSecret");
+
         /* Train the mocks. */
-        when(environment.getProperty("google.oauth.client.id")).thenReturn(CLIENT_ID);
-        when(environment.getProperty("google.oauth.client.secret")).thenReturn(CLIENT_SECRET);
+        when(configService.getPublicConfig()).thenReturn(publicConfig);
+        when(configService.getPrivateConfig()).thenReturn(privateConfig);
         when(
                 googleOauthService.getUserDataFromGoogle(
                         CLIENT_ID,

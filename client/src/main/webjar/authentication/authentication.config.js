@@ -32,6 +32,7 @@
      * Configures satellizer's Google Oauth.
      */
     function configGoogleOauth(
+        getConfig,
         $authProvider
     ) {
         var redirectUri = getUrlPrefix() + "views/oauth-callback";
@@ -50,14 +51,15 @@
                     "email"
                 ],
                 url: "/auth/google", /* posts to our server */
+                /* TODO: get the redirectUrl from the server */
                 redirectUri: redirectUri, /* redirects to the angular app; this has to match what the server uses */
-                /* TODO: get the clientId and redirectUrl from the server */
-                clientId: "259324353484-f8u4ltb5qko7fltub68dguhs16ae93nr.apps.googleusercontent.com"
+                clientId: getConfig().googleOauthClientId
             }
         );
     }
 
     configGoogleOauth.$inject = [
+        "getConfig",
         "$authProvider"
     ];
 

@@ -5,8 +5,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.codahale.metrics.annotation.Timed;
 import org.apache.commons.lang3.StringUtils;
+import org.hmhb.config.ConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import static java.util.Objects.requireNonNull;
@@ -18,29 +18,30 @@ import static java.util.Objects.requireNonNull;
 public class DefaultUrlService implements UrlService {
 
     private final HttpServletRequest request;
-    private final Environment environment;
+    private final ConfigService configService;
 
     /**
      * An injectable constructor.
      *
      * @param request the {@link HttpServletRequest} to get protocol and port
      *                info
-     * @param environment the {@link Environment} to get config info
+     * @param configService the {@link org.hmhb.config.ConfigService} to get
+     *                      config info
      */
     @Autowired
     public DefaultUrlService(
             @Nonnull HttpServletRequest request,
-            @Nonnull Environment environment
+            @Nonnull ConfigService configService
     ) {
         this.request = requireNonNull(request, "request cannot be null");
-        this.environment = requireNonNull(environment, "environment cannot be null");
+        this.configService = requireNonNull(configService, "configService cannot be null");
     }
 
     @Timed
     @Override
     public String getUrlPrefix() {
 
-        String configuredUrlPrefix = environment.getProperty("hmhb.url.prefix");
+        String configuredUrlPrefix = configService.getPublicConfig().getUrlPrefix();
 
         if (StringUtils.isNotBlank(configuredUrlPrefix)) {
             return configuredUrlPrefix;

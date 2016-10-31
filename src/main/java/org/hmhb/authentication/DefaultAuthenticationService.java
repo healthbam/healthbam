@@ -5,6 +5,7 @@ import javax.annotation.Nonnull;
 import java.io.IOException;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import org.hmhb.config.ConfigService;
 import org.hmhb.exception.authentication.ClientIdMismatchException;
 import org.hmhb.exception.oauth.GoogleOauthException;
 import org.hmhb.oauth.GoogleOauthService;
@@ -14,7 +15,6 @@ import org.hmhb.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import static java.util.Objects.requireNonNull;
@@ -27,7 +27,7 @@ public class DefaultAuthenticationService implements AuthenticationService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultAuthenticationService.class);
 
-    private final Environment environment;
+    private final ConfigService configService;
     private final GoogleOauthService googleOauthService;
     private final JwtAuthenticationService jwtAuthenticationService;
     private final UserService userService;
@@ -35,7 +35,7 @@ public class DefaultAuthenticationService implements AuthenticationService {
     /**
      * An injectable constructor.
      *
-     * @param environment the {@link Environment} for config
+     * @param configService the {@link ConfigService} for config
      * @param googleOauthService the {@link GoogleOauthService} to confirm a
      *                           user's email with google
      * @param jwtAuthenticationService the {@link JwtAuthenticationService} to
@@ -45,12 +45,12 @@ public class DefaultAuthenticationService implements AuthenticationService {
      */
     @Autowired
     public DefaultAuthenticationService(
-            @Nonnull Environment environment,
+            @Nonnull ConfigService configService,
             @Nonnull GoogleOauthService googleOauthService,
             @Nonnull JwtAuthenticationService jwtAuthenticationService,
             @Nonnull UserService userService
     ) {
-        this.environment = requireNonNull(environment, "environment cannot be null");
+        this.configService = requireNonNull(configService, "configService cannot be null");
         this.googleOauthService = requireNonNull(googleOauthService, "googleOauthService cannot be null");
         this.jwtAuthenticationService = requireNonNull(jwtAuthenticationService, "jwtAuthenticationService cannot be null");
         this.userService = requireNonNull(userService, "userService cannot be null");
@@ -65,8 +65,8 @@ public class DefaultAuthenticationService implements AuthenticationService {
 
         String email;
 
-        String clientId = environment.getProperty("google.oauth.client.id");
-        String clientSecret = environment.getProperty("google.oauth.client.secret");
+        String clientId = configService.getPublicConfig().getGoogleOauthClientId();
+        String clientSecret = configService.getPrivateConfig().getGoogleOauthSecret();
 
         if (!clientId.equals(request.getClientId())) {
             throw new ClientIdMismatchException(
