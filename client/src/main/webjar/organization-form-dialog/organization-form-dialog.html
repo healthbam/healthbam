@@ -1,0 +1,121 @@
+<md-dialog aria-label="Organization Form Dialog"
+           flex="80">
+
+    <form name="organizationFormDialog.organizationForm"
+          ng-submit="organizationFormDialog.save()">
+
+        <md-dialog-content>
+
+            <div class="md-dialog-content">
+
+                <h1>
+                    <span ng-if="organizationFormDialog.organization.id">
+                        Edit existing organization
+                    </span>
+                    <span ng-if="!organizationFormDialog.organization.id">
+                        Create a new organization
+                    </span>
+                </h1>
+
+                <div ng-if="organizationFormDialog.loading"
+                     layout="row"
+                     layout-sm="column"
+                     layout-align="space-around">
+
+                    <md-progress-circular md-mode="indeterminate">
+                    </md-progress-circular>
+
+                </div>
+
+                <div ng-if="!organizationFormDialog.loading">
+                        <h2>
+                        <span md-colors="{color: 'primary'}">
+                            Organization information
+                        </span>
+                        </h2>
+
+                        <div layout-gt-sm="row">
+
+                            <md-input-container class="md-block" flex-gt-sm>
+                                <label>
+                                    Company/Organization name
+                                </label>
+                                <input name="organizationName"
+                                       ng-model="organizationFormDialog.organization.name"
+                                       required>
+                            </md-input-container>
+
+                        </div>
+
+                        <div layout-gt-sm="row">
+
+                            <md-input-container class="md-block" flex-gt-sm>
+                                <label>
+                                    Company/Organization phone
+                                </label>
+                                <input name="organizationPhone"
+                                       ng-model="organizationFormDialog.organization.contactPhone">
+                            </md-input-container>
+
+                            <md-input-container class="md-block" flex-gt-sm>
+                                <label>
+                                    Company/Organization email
+                                </label>
+                                <input name="organizationEmail"
+                                       ng-model="organizationFormDialog.organization.contactEmail"
+                                       type="email">
+                            </md-input-container>
+
+                        </div>
+
+                        <div layout-gt-sm="row">
+
+                            <md-input-container class="md-block" flex-gt-sm>
+                                <label>
+                                    Company/Organization website
+                                </label>
+                                <input name="organizationWebsiteUrl"
+                                       ng-model="organizationFormDialog.organization.websiteUrl"
+                                       type="url">
+                            </md-input-container>
+
+                            <md-input-container class="md-block" flex-gt-sm>
+                                <label>
+                                    Company/Organization Facebook page
+                                </label>
+                                <input name="organizationFacebook"
+                                       ng-model="organizationFormDialog.organization.facebookUrl"
+                                       type="url">
+                            </md-input-container>
+
+                        </div>
+
+                    </fieldset>
+
+                  </div>
+
+            </div>
+
+        </md-dialog-content>
+
+        <md-dialog-actions>
+
+            <span flex></span>
+
+            <md-button ng-click="organizationFormDialog.cancel()"
+                       aria-label="Cancel">
+                Cancel
+            </md-button>
+
+            <md-button type="submit"
+                       aria-label="Save"
+                       ng-disabled="organizationFormDialog.organizationForm.$invalid &&
+                        organizationFormDialog.organizationForm.$dirty">
+                Save
+            </md-button>
+
+        </md-dialog-actions>
+
+    </form>
+
+</md-dialog>
