@@ -15,6 +15,7 @@
 
             var organizationList,
                 $componentController,
+                $httpBackend,
                 locals;
 
             beforeEach(
@@ -29,8 +30,9 @@
                             $componentController = $injector.get("$componentController");
                             locals.Organization = $injector.get("Organization");
                             locals.errorHandlingService = $injector.get("errorHandlingService");
+                            locals.$state = $injector.get("$state");
                             locals.$log = $injector.get("$log");
-                            locals.$httpBackend = $injector.get("$httpBackend");
+                            $httpBackend = $injector.get("$httpBackend");
                         }
                     );
 
@@ -71,7 +73,7 @@
                         )
                     ];
 
-                    locals.$httpBackend.expectGET(
+                    $httpBackend.expectGET(
                         "api/organizations"
                     ).respond(
                         list
@@ -79,7 +81,7 @@
 
                     organizationList.$onInit();
 
-                    locals.$httpBackend.flush();
+                    $httpBackend.flush();
 
                     expect(
                         organizationList.list
@@ -94,7 +96,7 @@
 
                 it("should handle error fetching Organizations", function () {
 
-                    locals.$httpBackend.expectGET(
+                    $httpBackend.expectGET(
                         "api/organizations"
                     ).respond(
                         418
@@ -102,13 +104,49 @@
 
                     organizationList.$onInit();
 
-                    locals.$httpBackend.flush();
+                    $httpBackend.flush();
 
                     expect(
                         locals.errorHandlingService.handleError
                     ).toHaveBeenCalled();
                 });
+
             });
+
+            describe("viewDetails", function () {
+
+                var organization;
+
+                beforeEach(
+                    function () {
+                        organizationList.$onInit();
+                        spyOn(locals.$state, "go");
+                        organization = new locals.Organization(
+                            {
+                                id: 12345
+                            }
+                        );
+                    }
+                );
+
+                it("should be exposed", function () {
+                    expect(organizationList.viewDetails).toEqual(jasmine.any(Function));
+                });
+
+                it("should navigate to the organizationDetails state", function () {
+                    organizationList.viewDetails(organization);
+                    expect(
+                        locals.$state.go
+                    ).toHaveBeenCalledWith(
+                        "organizationDetails",
+                        {
+                            orgId: organization.id
+                        }
+                    );
+                });
+
+            });
+
         });
     });
 

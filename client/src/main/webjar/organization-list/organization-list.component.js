@@ -8,6 +8,7 @@
      * @param $q
      * @param errorHandlingService
      * @param Organization
+     * @param $state
      * @param $log
      * @constructor
      */
@@ -15,6 +16,7 @@
         $q,
         errorHandlingService,
         Organization,
+        $state,
         $log
     ) {
         var organizationList = this;
@@ -45,9 +47,24 @@
         }
 
         /**
+         * Navigates to the organizationDetails state.
+         * @param organization
+         */
+        function viewDetails(organization) {
+            $state.go(
+                "organizationDetails",
+                {
+                    orgId: organization.id
+                }
+            );
+        }
+
+        /**
          * Initializes the controller.
          */
         function activate() {
+
+            organizationList.viewDetails = viewDetails;
 
             load();
 
@@ -63,6 +80,7 @@
         "$q",
         "errorHandlingService",
         "Organization",
+        "$state",
         "$log"
     ];
 
