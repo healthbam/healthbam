@@ -12,7 +12,8 @@
             "healthBam.errorHandling",
             "healthBam.mapConfig",
             "healthBam.authentication",
-            "healthBam.organizationFormDialog"
+            "healthBam.organizationFormDialog",
+            "healthBam.organizationCard"
         ]
     );
 

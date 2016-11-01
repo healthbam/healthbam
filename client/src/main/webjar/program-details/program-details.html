@@ -269,81 +269,8 @@
         </md-card>
 
         <!-- Organization card -->
-        <md-card>
-
-            <md-card-title>
-                <md-card-title-text>
-                    <span class="md-headline"
-                          md-colors="{color: 'primary'}"
-                          ng-bind="programDetails.program.organization.name">
-                    </span>
-                    <span class="md-subhead">
-                        Organization
-                    </span>
-                </md-card-title-text>
-            </md-card-title>
-
-            <md-card-content layout="column">
-
-                <md-list>
-
-                    <md-list-item ng-if="programDetails.program.organization.websiteUrl"
-                                  ng-href="{{programDetails.program.organization.websiteUrl}}"
-                                  target="_blank"
-                                  rel="noopener noreferrer">
-                        <md-icon md-font-library="material-icons">
-                            public
-                        </md-icon>
-                        <div class="md-list-item-text"
-                             flex>
-                            <p ng-bind="programDetails.program.organization.websiteUrl">
-                            </p>
-                        </div>
-                    </md-list-item>
-
-                    <md-list-item ng-if="programDetails.program.organization.facebookUrl"
-                                  ng-href="{{programDetails.program.organization.facebookUrl}}"
-                                  target="_blank"
-                                  rel="noopener noreferrer">
-                        <md-icon md-font-library="material-icons">
-                            share
-                        </md-icon>
-                        <div class="md-list-item-text"
-                             flex>
-                            <p ng-bind="programDetails.program.organization.facebookUrl">
-                            </p>
-                        </div>
-                    </md-list-item>
-
-                    <md-list-item ng-if="programDetails.program.organization.contactEmail"
-                                  ng-href="mailto:{{programDetails.program.organization.contactEmail}}">
-                        <md-icon md-font-library="material-icons">
-                            mail
-                        </md-icon>
-                        <div class="md-list-item-text"
-                             flex>
-                            <p ng-bind="programDetails.program.organization.contactEmail">
-                            </p>
-                        </div>
-                    </md-list-item>
-
-                    <md-list-item ng-if="programDetails.program.organization.contactPhone"
-                                  ng-href="tel:{{programDetails.program.organization.contactPhone}}">
-                        <md-icon md-font-library="material-icons">
-                            phone
-                        </md-icon>
-                        <div class="md-list-item-text"
-                             flex>
-                            <p ng-bind="programDetails.program.organization.contactPhone">
-                            </p>
-                        </div>
-                    </md-list-item>
-
-                </md-list>
-
-            </md-card-content>
-
-        </md-card>
+        <health-bam-organization-card organization="programDetails.program.organization">
+        </health-bam-organization-card>
 
     </md-content>
 

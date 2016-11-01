@@ -6,7 +6,7 @@
     </md-progress-circular>
 </div>
 
-<div ng-if="organizationDetails.orgInfo"
+<div ng-if="organizationDetails.organization"
      layout="column"
      layout="fill">
 
@@ -26,7 +26,7 @@
             </md-button>
 
             <h2>
-                <span ng-bind="organizationDetails.orgInfo.name">
+                <span ng-bind="organizationDetails.organization.name">
                 </span>
             </h2>
 
@@ -61,79 +61,9 @@
 
     <md-content flex>
 
-         <!-- Organization information card -->
-        <md-card>
-
-            <md-card-title>
-                <md-card-title-text>
-                    <span class="md-headline"
-                          md-colors="{color: 'primary'}"
-                          ng-bind="organizationDetails.orgInfo.name">
-                    </span>
-                </md-card-title-text>
-            </md-card-title>
-
-            <md-card-content layout="column">
-
-                <md-list>
-
-                    <md-list-item ng-if="organizationDetails.orgInfo.websiteUrl"
-                                  ng-href="{{organizationDetails.orgInfo.websiteUrl}}"
-                                  target="_blank"
-                                  rel="noopener noreferrer">
-                        <md-icon md-font-library="material-icons">
-                            public
-                        </md-icon>
-                        <div class="md-list-item-text"
-                             flex>
-                            <p ng-bind="organizationDetails.orgInfo.websiteUrl">
-                            </p>
-                        </div>
-                    </md-list-item>
-
-                    <md-list-item ng-if="organizationDetails.orgInfo.facebookUrl"
-                                  ng-href="{{organizationDetails.orgInfo.facebookUrl}}"
-                                  target="_blank"
-                                  rel="noopener noreferrer">
-                        <md-icon md-font-library="material-icons">
-                            share
-                        </md-icon>
-                        <div class="md-list-item-text"
-                             flex>
-                            <p ng-bind="organizationDetails.orgInfo.facebookUrl">
-                            </p>
-                        </div>
-                    </md-list-item>
-
-                    <md-list-item ng-if="organizationDetails.orgInfo.contactEmail"
-                                  ng-href="mailto:{{organizationDetails.orgInfo.contactEmail}}">
-                        <md-icon md-font-library="material-icons">
-                            mail
-                        </md-icon>
-                        <div class="md-list-item-text"
-                             flex>
-                            <p ng-bind="organizationDetails.orgInfo.contactEmail">
-                            </p>
-                        </div>
-                    </md-list-item>
-
-                    <md-list-item ng-if="organizationDetails.orgInfo.contactPhone"
-                                  ng-href="tel:{{organizationDetails.orgInfo.contactPhone}}">
-                        <md-icon md-font-library="material-icons">
-                            phone
-                        </md-icon>
-                        <div class="md-list-item-text"
-                             flex>
-                            <p ng-bind="organizationDetails.orgInfo.contactPhone">
-                            </p>
-                        </div>
-                    </md-list-item>
-
-                </md-list>
-
-            </md-card-content>
-
-        </md-card>
+        <!-- Organization card -->
+        <health-bam-organization-card organization="organizationDetails.organization">
+        </health-bam-organization-card>
 
     </md-content>
 

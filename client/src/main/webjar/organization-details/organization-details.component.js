@@ -140,7 +140,7 @@
         function edit($event) {
             return organizationFormDialogService.edit(
                 $event,
-                organizationDetails.orgInfo
+                organizationDetails.organization
             ).then(
                 reloadState
             );
@@ -151,7 +151,7 @@
          */
         function handleOrgDetailsLoadSuccess() {
             organizationDetails.organization = new Organization(
-                angular.copy(organizationDetails.orgInfo)
+                angular.copy(organizationDetails.organization)
             );
 
             $log.debug("success");
@@ -175,13 +175,13 @@
             organizationDetails.deleteOrganization = deleteOrganization;
             organizationDetails.isAdmin = authenticationService.isAdmin;
 
-            organizationDetails.orgInfo = Organization.get({id: $stateParams.orgId});
+            organizationDetails.organization = Organization.get({id: $stateParams.orgId});
 
             /* Load organization URL from server. */
             organizationDetails.loading = true;
 
             /* Handle successful or failure server response. */
-            organizationDetails.orgInfo.$promise.then(
+            organizationDetails.organization.$promise.then(
                 handleOrgDetailsLoadSuccess
             ).catch(
                 handleOrgDetailsLoadError
