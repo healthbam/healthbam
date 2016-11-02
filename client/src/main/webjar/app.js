@@ -67,9 +67,10 @@
             "healthBam.authentication",
             "healthBam.main",
             "healthBam.map",
-            "healthBam.programDetails",
-            "healthBam.organizationList",
             "healthBam.organizationDetails",
+            "healthBam.organizationList",
+            "healthBam.programDetails",
+            "healthBam.programList",
             "healthBam.user"
         ]
     );
