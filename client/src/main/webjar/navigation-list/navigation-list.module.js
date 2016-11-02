@@ -2,12 +2,11 @@
     "use strict";
 
     angular.module(
-        "healthBam.sidenav",
+        "healthBam.navigationList",
         [
             "ngMaterial",
             "healthBam.templates",
-            "healthBam.mapQueryForm",
-            "healthBam.navigationList"
+            "ui.router"
         ]
     );
 
