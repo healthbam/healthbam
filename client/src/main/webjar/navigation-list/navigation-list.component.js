@@ -35,11 +35,21 @@
         }
 
         /**
+         * Navigates to the programList state.
+         */
+        function viewPrograms() {
+            $state.go(
+                "programList"
+            );
+        }
+
+        /**
          * Initializes the controller.
          */
         function activate() {
             navigationList.viewMap = viewMap;
             navigationList.viewOrganizations = viewOrganizations;
+            navigationList.viewPrograms = viewPrograms;
             $log.debug("NavigationList Controller loaded", navigationList);
         }
 

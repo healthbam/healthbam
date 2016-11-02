@@ -38,7 +38,9 @@
             organizationList.loading = true;
             $log.debug("OrganizationList is loading");
             organizationList.list = Organization.query();
-            organizationList.list.$promise.catch(handleOrganizationListLoadError).finally(
+            organizationList.list.$promise.catch(
+                handleOrganizationListLoadError
+            ).finally(
                 function () {
                     organizationList.loading = false;
                     $log.debug("OrganizationList has finished loading");

@@ -89,6 +89,29 @@
 
             });
 
+            describe("viewPrograms", function () {
+
+                beforeEach(
+                    function () {
+                        navigationList.$onInit();
+                    }
+                );
+
+                it("should be exposed", function () {
+                    expect(navigationList.viewPrograms).toEqual(jasmine.any(Function));
+                });
+
+                it("should navigate to the programList state", function () {
+                    navigationList.viewPrograms();
+                    expect(
+                        locals.$state.go
+                    ).toHaveBeenCalledWith(
+                        "programList"
+                    );
+                });
+
+            });
+
             describe("viewOrganizations", function () {
 
                 beforeEach(
