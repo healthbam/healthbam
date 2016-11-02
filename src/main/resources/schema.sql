@@ -10,8 +10,9 @@ DROP TABLE IF EXISTS hmhb_user;
 
 CREATE TABLE hmhb_user (
     id BIGSERIAL PRIMARY KEY,
-    email TEXT NOT NULL UNIQUE,
-    admin BOOLEAN NOT NULL,
+    email TEXT NOT NULL,
+    super_admin BOOLEAN NOT NULL DEFAULT FALSE,
+    admin BOOLEAN NOT NULL DEFAULT FALSE,
     display_name TEXT,
     image_url TEXT,
     first_name TEXT,
@@ -19,8 +20,17 @@ CREATE TABLE hmhb_user (
     middle_name TEXT,
     prefix TEXT,
     suffix TEXT,
-    profile_url TEXT
+    profile_url TEXT,
+    created_on DATE NOT NULL,
+    created_by TEXT NOT NULL,
+    updated_on DATE,
+    updated_by TEXT
 );
+
+/*
+ * Create the unique index to make the unique constraint on emails case insensitive.
+ */
+CREATE UNIQUE INDEX hmhb_user_lower_email_index ON hmhb_user(LOWER(email));
 
 CREATE TABLE organization (
     id BIGSERIAL PRIMARY KEY,
@@ -43,7 +53,7 @@ CREATE TABLE county (
     inner_boundary1 TEXT,
     outer_boundary2 TEXT,
     outer_boundary3 TEXT,
-    UNIQUE (name, state)
+    UNIQUE(name, state)
 );
 
 CREATE TABLE program_area (
@@ -73,7 +83,7 @@ CREATE TABLE program (
     created_by TEXT NOT NULL,
     updated_on DATE,
     updated_by TEXT,
-    UNIQUE (name, organization_id)
+    UNIQUE(name, organization_id)
 );
 
 CREATE TABLE program_county (

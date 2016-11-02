@@ -1,5 +1,7 @@
 package org.hmhb.user;
 
+import java.util.List;
+
 import org.springframework.data.repository.CrudRepository;
 
 /**
@@ -16,5 +18,13 @@ public interface UserDao extends CrudRepository<HmhbUser, Long> {
      * @return the {@link HmhbUser}s
      */
     HmhbUser findByEmailIgnoreCase(String email);
+
+    /**
+     * Returns all {@link HmhbUser}s ordered ascending by their display names,
+     * then emails.
+     *
+     * @return all {@link HmhbUser}s
+     */
+    List<HmhbUser> findAllByOrderByDisplayNameAscEmailAsc();
 
 }

@@ -10,10 +10,10 @@ public class UserNotFoundException extends NotFoundException {
     /**
      * Constructs a {@link UserNotFoundException}.
      *
-     * @param email the {@link org.hmhb.user.HmhbUser}'s email that wasn't found
+     * @param id the {@link org.hmhb.user.HmhbUser}'s database ID that wasn't found
      */
-    public UserNotFoundException(String email) {
-        super("User wasn't found: email=" + email);
+    public UserNotFoundException(Long id) {
+        super("User wasn't found: id=" + id);
     }
 
 }
