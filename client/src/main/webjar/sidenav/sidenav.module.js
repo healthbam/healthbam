@@ -6,7 +6,8 @@
         [
             "ngMaterial",
             "healthBam.templates",
-            "healthBam.mapQueryForm"
+            "healthBam.mapQueryForm",
+            "healthBam.navigationList"
         ]
     );
 

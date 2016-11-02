@@ -52,67 +52,8 @@
                     <fieldset ng-if="programFormDialog.isNewOrganization()"
                               md-colors="{borderColor: 'primary'}">
 
-                        <h2>
-                        <span md-colors="{color: 'primary'}">
-                            New organization information
-                        </span>
-                        </h2>
-
-                        <div layout-gt-sm="row">
-
-                            <md-input-container class="md-block" flex-gt-sm>
-                                <label>
-                                    Company/Organization name
-                                </label>
-                                <input name="organizationName"
-                                       ng-model="programFormDialog.program.organization.name"
-                                       required>
-                            </md-input-container>
-
-                        </div>
-
-                        <div layout-gt-sm="row">
-
-                            <md-input-container class="md-block" flex-gt-sm>
-                                <label>
-                                    Company/Organization phone
-                                </label>
-                                <input name="organizationPhone"
-                                       ng-model="programFormDialog.program.organization.contactPhone">
-                            </md-input-container>
-
-                            <md-input-container class="md-block" flex-gt-sm>
-                                <label>
-                                    Company/Organization email
-                                </label>
-                                <input name="organizationEmail"
-                                       ng-model="programFormDialog.program.organization.contactEmail"
-                                       type="email">
-                            </md-input-container>
-
-                        </div>
-
-                        <div layout-gt-sm="row">
-
-                            <md-input-container class="md-block" flex-gt-sm>
-                                <label>
-                                    Company/Organization website
-                                </label>
-                                <input name="organizationWebsiteUrl"
-                                       ng-model="programFormDialog.program.organization.websiteUrl"
-                                       type="url">
-                            </md-input-container>
-
-                            <md-input-container class="md-block" flex-gt-sm>
-                                <label>
-                                    Company/Organization Facebook page
-                                </label>
-                                <input name="organizationFacebook"
-                                       ng-model="programFormDialog.program.organization.facebookUrl"
-                                       type="url">
-                            </md-input-container>
-
-                        </div>
+                        <health-bam-organization-form organization="programFormDialog.program.organization">
+                        </health-bam-organization-form>
 
                     </fieldset>
 

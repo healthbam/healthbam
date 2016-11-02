@@ -2,13 +2,11 @@
     "use strict";
 
     angular.module(
-        "healthBam.organizationFormDialog",
+        "healthBam.navigationList",
         [
             "ngMaterial",
             "healthBam.templates",
-            "healthBam.errorHandling",
-            "healthBam.organization",
-            "healthBam.organizationForm"
+            "ui.router"
         ]
     );
 

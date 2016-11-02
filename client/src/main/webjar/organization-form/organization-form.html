@@ -1,0 +1,66 @@
+<ng-form ng-if="organizationForm.organization"
+         name="organizationForm.orgForm">
+
+    <h2>
+        <span md-colors="{color: 'primary'}">
+            Organization information
+        </span>
+    </h2>
+
+    <div layout-gt-sm="row">
+
+        <md-input-container class="md-block" flex-gt-sm>
+            <label>
+                Company/Organization name
+            </label>
+            <input name="organizationName"
+                   ng-model="organizationForm.organization.name"
+                   required>
+        </md-input-container>
+
+    </div>
+
+    <div layout-gt-sm="row">
+
+        <md-input-container class="md-block" flex-gt-sm>
+            <label>
+                Company/Organization phone
+            </label>
+            <input name="organizationPhone"
+                   ng-model="organizationForm.organization.contactPhone">
+        </md-input-container>
+
+        <md-input-container class="md-block" flex-gt-sm>
+            <label>
+                Company/Organization email
+            </label>
+            <input name="organizationEmail"
+                   ng-model="organizationForm.organization.contactEmail"
+                   type="email">
+        </md-input-container>
+
+    </div>
+
+    <div layout-gt-sm="row">
+
+        <md-input-container class="md-block" flex-gt-sm>
+            <label>
+                Company/Organization website
+            </label>
+            <input name="organizationWebsiteUrl"
+                   ng-model="organizationForm.organization.websiteUrl"
+                   type="url">
+        </md-input-container>
+
+        <md-input-container class="md-block" flex-gt-sm>
+            <label>
+                Company/Organization Facebook page
+            </label>
+            <input name="organizationFacebook"
+                   ng-model="organizationForm.organization.facebookUrl"
+                   type="url">
+        </md-input-container>
+
+    </div>
+
+</ng-form>

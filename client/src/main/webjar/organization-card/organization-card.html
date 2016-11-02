@@ -1,0 +1,75 @@
+<md-card ng-if="organizationCard.organization">
+
+    <md-card-title>
+        <md-card-title-text>
+            <span class="md-headline"
+                  md-colors="{color: 'primary'}"
+                  ng-bind="organizationCard.organization.name">
+            </span>
+            <span class="md-subhead">
+                Organization
+            </span>
+        </md-card-title-text>
+    </md-card-title>
+
+    <md-card-content layout="column">
+
+        <md-list>
+
+            <md-list-item ng-if="organizationCard.organization.websiteUrl"
+                          ng-href="{{organizationCard.organization.websiteUrl}}"
+                          target="_blank"
+                          rel="noopener noreferrer">
+                <md-icon md-font-library="material-icons">
+                    public
+                </md-icon>
+                <div class="md-list-item-text"
+                     flex>
+                    <p ng-bind="organizationCard.organization.websiteUrl">
+                    </p>
+                </div>
+            </md-list-item>
+
+            <md-list-item ng-if="organizationCard.organization.facebookUrl"
+                          ng-href="{{organizationCard.organization.facebookUrl}}"
+                          target="_blank"
+                          rel="noopener noreferrer">
+                <md-icon md-font-library="material-icons">
+                    share
+                </md-icon>
+                <div class="md-list-item-text"
+                     flex>
+                    <p ng-bind="organizationCard.organization.facebookUrl">
+                    </p>
+                </div>
+            </md-list-item>
+
+            <md-list-item ng-if="organizationCard.organization.contactEmail"
+                          ng-href="mailto:{{organizationCard.organization.contactEmail}}">
+                <md-icon md-font-library="material-icons">
+                    mail
+                </md-icon>
+                <div class="md-list-item-text"
+                     flex>
+                    <p ng-bind="organizationCard.organization.contactEmail">
+                    </p>
+                </div>
+            </md-list-item>
+
+            <md-list-item ng-if="organizationCard.organization.contactPhone"
+                          ng-href="tel:{{organizationCard.organization.contactPhone}}">
+                <md-icon md-font-library="material-icons">
+                    phone
+                </md-icon>
+                <div class="md-list-item-text"
+                     flex>
+                    <p ng-bind="organizationCard.organization.contactPhone">
+                    </p>
+                </div>
+            </md-list-item>
+
+        </md-list>
+
+    </md-card-content>
+
+</md-card>

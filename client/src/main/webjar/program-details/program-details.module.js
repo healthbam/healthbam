@@ -14,7 +14,8 @@
             "healthBam.countiesField",
             "healthBam.mapConfig",
             "healthBam.programFormDialog",
-            "healthBam.authentication"
+            "healthBam.authentication",
+            "healthBam.organizationCard"
         ]
     );
 
