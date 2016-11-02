@@ -2,7 +2,7 @@
            flex="80">
 
     <form name="organizationFormDialog.organizationForm"
-          ng-submit="organizationFormDialog.save()">
+             ng-submit="organizationFormDialog.save()">
 
         <md-dialog-content>
 
@@ -27,72 +27,9 @@
 
                 </div>
 
-                <div ng-if="!organizationFormDialog.loading">
-                        <h2>
-                        <span md-colors="{color: 'primary'}">
-                            Organization information
-                        </span>
-                        </h2>
-
-                        <div layout-gt-sm="row">
-
-                            <md-input-container class="md-block" flex-gt-sm>
-                                <label>
-                                    Company/Organization name
-                                </label>
-                                <input name="organizationName"
-                                       ng-model="organizationFormDialog.organization.name"
-                                       required>
-                            </md-input-container>
-
-                        </div>
-
-                        <div layout-gt-sm="row">
-
-                            <md-input-container class="md-block" flex-gt-sm>
-                                <label>
-                                    Company/Organization phone
-                                </label>
-                                <input name="organizationPhone"
-                                       ng-model="organizationFormDialog.organization.contactPhone">
-                            </md-input-container>
-
-                            <md-input-container class="md-block" flex-gt-sm>
-                                <label>
-                                    Company/Organization email
-                                </label>
-                                <input name="organizationEmail"
-                                       ng-model="organizationFormDialog.organization.contactEmail"
-                                       type="email">
-                            </md-input-container>
-
-                        </div>
-
-                        <div layout-gt-sm="row">
-
-                            <md-input-container class="md-block" flex-gt-sm>
-                                <label>
-                                    Company/Organization website
-                                </label>
-                                <input name="organizationWebsiteUrl"
-                                       ng-model="organizationFormDialog.organization.websiteUrl"
-                                       type="url">
-                            </md-input-container>
-
-                            <md-input-container class="md-block" flex-gt-sm>
-                                <label>
-                                    Company/Organization Facebook page
-                                </label>
-                                <input name="organizationFacebook"
-                                       ng-model="organizationFormDialog.organization.facebookUrl"
-                                       type="url">
-                            </md-input-container>
-
-                        </div>
-
-                    </fieldset>
-
-                  </div>
+                <health-bam-organization-form ng-if="!organizationFormDialog.loading"
+                                              organization="organizationFormDialog.organization">
+                </health-bam-organization-form>
 
             </div>
 

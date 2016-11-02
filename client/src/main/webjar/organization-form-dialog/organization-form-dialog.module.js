@@ -7,7 +7,8 @@
             "ngMaterial",
             "healthBam.templates",
             "healthBam.errorHandling",
-            "healthBam.organization"
+            "healthBam.organization",
+            "healthBam.organizationForm"
         ]
     );
 

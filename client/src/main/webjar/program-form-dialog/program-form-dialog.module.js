@@ -10,7 +10,8 @@
             "healthBam.program",
             "healthBam.organization",
             "healthBam.programArea",
-            "healthBam.countiesField"
+            "healthBam.countiesField",
+            "healthBam.organizationForm"
         ]
     );
 
