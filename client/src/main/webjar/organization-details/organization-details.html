@@ -35,7 +35,8 @@
             <md-button ng-if="organizationDetails.isAdmin()"
                        class="md-icon-button"
                        aria-label="Delete organization"
-                       ng-click="organizationDetails.deleteOrganization($event)">
+                       ng-click="organizationDetails.deleteOrganization($event)"
+                       ng-disabled="organizationDetails.mapQuery.result.programs.length">
                 <md-icon md-font-library="material-icons">
                     delete
                 </md-icon>
