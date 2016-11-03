@@ -1,0 +1,46 @@
+<md-card>
+
+    <md-card-title>
+        <md-card-title-text>
+            <span class="md-headline"
+                  md-colors="{color: 'primary'}"
+                  ng-bind="programCard.program.name">
+            </span>
+            <span class="md-subhead"
+                  ng-if="programCard.program.startYear"
+                  ng-bind-template="Since {{programCard.program.startYear}}">
+            </span>
+        </md-card-title-text>
+    </md-card-title>
+
+    <md-card-content layout="column">
+
+        <h3>
+            Program Areas
+        </h3>
+
+        <div class="md-padding">
+
+            <div layout="column"
+                 layout-gt-sm="row"
+                 layout-wrap>
+                <div ng-repeat="programArea in programCard.program.programAreas"
+                     flex-gt-sm="50">
+                    <span ng-bind="programArea.name">
+                    </span>
+                </div>
+            </div>
+
+            <div ng-if="programCard.program.otherProgramAreaExplanation">
+                <span>
+                    Other:
+                </span>
+                <span ng-bind="programCard.program.otherProgramAreaExplanation">
+                </span>
+            </div>
+
+        </div>
+
+    </md-card-content>
+
+</md-card>

@@ -22,7 +22,10 @@
                 orgId,
                 event,
                 $rootScope,
-                organizationEndpoint;
+                organizationEndpoint,
+                mapQueryEndpoint,
+                program,
+                mapQuery;
 
             beforeEach(
                 function () {
@@ -46,12 +49,36 @@
                             locals.$mdToast = $injector.get("$mdToast");
                             locals.mapConfig = $injector.get("mapConfig");
                             locals.$log = $injector.get("$log");
+                            locals.MapQuery = $injector.get("MapQuery");
+                            locals.mapConfig = $injector.get("mapConfig");
                             $rootScope = $injector.get("$rootScope");
                         }
                     );
                     orgId = 1234;
                     locals.$stateParams.orgId = orgId;
+
+                    program = {
+                        id: 42
+                    };
+
                     organizationEndpoint = "api/organizations/" + orgId;
+                    mapQueryEndpoint = "api/map-queries";
+
+                    mapQuery = new locals.MapQuery(
+                        {
+                            search: {
+                                organization: {
+                                    id: orgId
+                                }
+                            },
+                            result: {
+                                mapLayerUrl: "foo/bar",
+                                programs: [
+                                    program
+                                ]
+                            }
+                        }
+                    );
 
                     event = {
                         mock: "event"
@@ -80,6 +107,12 @@
                     organizationEndpoint
                 ).respond(
                     angular.toJson(expectedOrg)
+                );
+
+                $httpBackend.expectPOST(
+                    mapQueryEndpoint
+                ).respond(
+                    angular.toJson(mapQuery)
                 );
 
                 /* Get the controller for the organizationDetails component. */
@@ -111,9 +144,9 @@
                     expect(organizationDetails.organization).toEqual(jasmine.objectContaining(expectedOrg));
                 });
 
-                // it("should expose mapStyles", function () {
-                //     expect(organizationDetails.mapStyles).toEqual(locals.mapConfig.styles);
-                // });
+                it("should expose mapStyles", function () {
+                    expect(organizationDetails.mapStyles).toEqual(locals.mapConfig.styles);
+                });
 
                 it("should log loading debug message", function () {
                     expect(locals.$log.debug).toHaveBeenCalledWith(
@@ -129,6 +162,12 @@
 
                     $httpBackend.expectGET(
                         organizationEndpoint
+                    ).respond(
+                        angular.toJson(expectedOrg)
+                    );
+
+                    $httpBackend.expectPOST(
+                        mapQueryEndpoint
                     ).respond(
                         418
                     );
@@ -150,6 +189,39 @@
 
                     expect(locals.errorHandlingService.handleError).toHaveBeenCalledWith(jasmine.any(String));
                 });
+
+                it("should handle error response when failing to get mapQuery", function () {
+
+                    $httpBackend.expectGET(
+                        organizationEndpoint
+                    ).respond(
+                        418
+                    );
+
+                    $httpBackend.expectPOST(
+                        mapQueryEndpoint
+                    ).respond(
+                        angular.toJson(mapQuery)
+                    );
+
+                    /* Get the controller for the organizationDetails component. */
+                    organizationDetails = $componentController(
+                        "healthBamOrganizationDetails",
+                        locals,
+                        bindings
+                    );
+
+                    organizationDetails.$onInit();
+
+                    expect(organizationDetails.loading).toEqual(true);
+
+                    $httpBackend.flush();
+
+                    expect(organizationDetails.loading).toEqual(false);
+
+                    expect(locals.errorHandlingService.handleError).toHaveBeenCalledWith(jasmine.any(String));
+                });
+
             });
 
             describe("deleteOrganization", function () {

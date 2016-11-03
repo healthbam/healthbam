@@ -15,6 +15,7 @@
             "healthBam.mapConfig",
             "healthBam.programFormDialog",
             "healthBam.authentication",
+            "healthBam.programCard",
             "healthBam.organizationCard"
         ]
     );
