@@ -6,15 +6,23 @@ import java.util.List;
 
 import org.hmhb.audit.AuditHelper;
 import org.hmhb.authorization.AuthorizationService;
+import org.hmhb.config.ConfigService;
+import org.hmhb.config.PublicConfig;
 import org.hmhb.county.County;
 import org.hmhb.exception.program.OnlyAdminCanDeleteProgramException;
 import org.hmhb.exception.program.OnlyAdminCanSaveProgramException;
+import org.hmhb.exception.program.ProgramCityNameIsTooLongException;
+import org.hmhb.exception.program.ProgramCityRequiredException;
+import org.hmhb.exception.program.ProgramGoalIsTooLongException;
 import org.hmhb.exception.program.ProgramMeasurableOutcome1RequiredException;
 import org.hmhb.exception.program.ProgramNameRequiredException;
 import org.hmhb.exception.program.ProgramNotFoundException;
 import org.hmhb.exception.program.ProgramOrganizationRequiredException;
+import org.hmhb.exception.program.ProgramOutcomeIsTooLongException;
 import org.hmhb.exception.program.ProgramPrimaryGoal1RequiredException;
+import org.hmhb.exception.program.ProgramStartYearIsTooOldException;
 import org.hmhb.exception.program.ProgramStateRequiredException;
+import org.hmhb.exception.program.ProgramStreetAddressIsTooLongException;
 import org.hmhb.exception.program.ProgramStreetAddressRequiredException;
 import org.hmhb.exception.program.ProgramZipCodeRequiredException;
 import org.hmhb.geocode.GeocodeService;
@@ -56,6 +64,11 @@ public class DefaultProgramServiceTest {
     private static final String MEASURABLE_OUTCOME = "test-measurable-outcome-1";
     private static final String GEO_CODE = "-1.00000000,1.00000000";
 
+    private static final int MIN_VALUE = 1500;
+    private static final int TOO_OLD = 1;
+    private static final int MAX_LEN = 50;
+    private static final String TOO_LONG = "1234567890-1234567890-1234567890-1234567890-1234567890";
+
     private AuditHelper auditHelper;
     private AuthorizationService authorizationService;
     private GeocodeService geocodeService;
@@ -65,13 +78,28 @@ public class DefaultProgramServiceTest {
 
     @Before
     public void setUp() throws Exception {
+        ConfigService configService = mock(ConfigService.class);
         auditHelper = mock(AuditHelper.class);
         authorizationService = mock(AuthorizationService.class);
         geocodeService = mock(GeocodeService.class);
         organizationService = mock(OrganizationService.class);
         dao = mock(ProgramDao.class);
 
+        PublicConfig publicConfig = new PublicConfig(
+                "test-oauth-client-id",
+                "test-url-prefix",
+                MIN_VALUE,
+                MAX_LEN,
+                MAX_LEN,
+                MAX_LEN,
+                MAX_LEN
+        );
+
+        /* Train the config. */
+        when(configService.getPublicConfig()).thenReturn(publicConfig);
+
         toTest = new DefaultProgramService(
+                configService,
                 auditHelper,
                 authorizationService,
                 geocodeService,
@@ -149,8 +177,14 @@ public class DefaultProgramServiceTest {
         assertEquals(expected, actual);
     }
 
+    @Test(expected = NullPointerException.class)
+    public void testGetById_Null() throws Exception {
+        /* Make the call. */
+        toTest.getById(null);
+    }
+
     @Test(expected = ProgramNotFoundException.class)
-    public void testGetByIdNotFound() throws Exception {
+    public void testGetById_NotFound() throws Exception {
         /* Train the mocks. */
         when(dao.findOne(PROGRAM_ID)).thenReturn(null);
 
@@ -178,7 +212,7 @@ public class DefaultProgramServiceTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void testGetByIdsNull() throws Exception {
+    public void testGetByIds_Null() throws Exception {
         /* Make the call. */
         toTest.getByIds(null);
     }
@@ -214,7 +248,7 @@ public class DefaultProgramServiceTest {
     }
 
     @Test(expected = ProgramNotFoundException.class)
-    public void testDeleteNotFound() throws Exception {
+    public void testDelete_NotFound() throws Exception {
         /* Train the mocks. */
         when(authorizationService.isAdmin()).thenReturn(true);
         when(dao.findOne(PROGRAM_ID)).thenReturn(null);
@@ -224,7 +258,7 @@ public class DefaultProgramServiceTest {
     }
 
     @Test(expected = OnlyAdminCanDeleteProgramException.class)
-    public void testDeleteNotAdmin() throws Exception {
+    public void testDelete_NotAdmin() throws Exception {
         /* Train the mocks. */
         when(authorizationService.isAdmin()).thenReturn(false);
 
@@ -232,8 +266,155 @@ public class DefaultProgramServiceTest {
         toTest.delete(PROGRAM_ID);
     }
 
+    @Test(expected = ProgramStartYearIsTooOldException.class)
+    public void testSaveCreateNew_StartYearTooOld() {
+        Program input = createFilledInProgram();
+        input.setStartYear(TOO_OLD);
+
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
+
+        /* Make the call. */
+        toTest.save(input);
+    }
+
+    @Test(expected = ProgramStreetAddressIsTooLongException.class)
+    public void testSaveCreateNew_StreetAddressTooLong() {
+        Program input = createFilledInProgram();
+        input.setStreetAddress(TOO_LONG);
+
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
+
+        /* Make the call. */
+        toTest.save(input);
+    }
+
+    @Test(expected = ProgramCityNameIsTooLongException.class)
+    public void testSaveCreateNew_CityNameTooLong() {
+        Program input = createFilledInProgram();
+        input.setCity(TOO_LONG);
+
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
+
+        /* Make the call. */
+        toTest.save(input);
+    }
+
+    @Test(expected = ProgramGoalIsTooLongException.class)
+    public void testSaveCreateNew_Goal1TooLong() {
+        Program input = createFilledInProgram();
+        input.setPrimaryGoal1(TOO_LONG);
+
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
+
+        /* Make the call. */
+        toTest.save(input);
+    }
+
+    @Test(expected = ProgramGoalIsTooLongException.class)
+    public void testSaveCreateNew_Goal2TooLong() {
+        Program input = createFilledInProgram();
+        input.setPrimaryGoal2(TOO_LONG);
+
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
+
+        /* Make the call. */
+        toTest.save(input);
+    }
+
+    @Test(expected = ProgramGoalIsTooLongException.class)
+    public void testSaveCreateNew_Goal3TooLong() {
+        Program input = createFilledInProgram();
+        input.setPrimaryGoal3(TOO_LONG);
+
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
+
+        /* Make the call. */
+        toTest.save(input);
+    }
+
+    @Test(expected = ProgramOutcomeIsTooLongException.class)
+    public void testSaveCreateNew_Outcome1TooLong() {
+        Program input = createFilledInProgram();
+        input.setMeasurableOutcome1(TOO_LONG);
+
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
+
+        /* Make the call. */
+        toTest.save(input);
+    }
+
+    @Test(expected = ProgramOutcomeIsTooLongException.class)
+    public void testSaveCreateNew_Outcome2TooLong() {
+        Program input = createFilledInProgram();
+        input.setMeasurableOutcome2(TOO_LONG);
+
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
+
+        /* Make the call. */
+        toTest.save(input);
+    }
+
+    @Test(expected = ProgramOutcomeIsTooLongException.class)
+    public void testSaveCreateNew_Outcome3TooLong() {
+        Program input = createFilledInProgram();
+        input.setMeasurableOutcome3(TOO_LONG);
+
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
+
+        /* Make the call. */
+        toTest.save(input);
+    }
+
+    @Test(expected = ProgramCityRequiredException.class)
+    public void testSaveCreateNew_NullCity() throws Exception {
+        Program input = createFilledInProgram();
+        input.setId(null);
+        input.setCity(null);
+
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
+
+        /* Make the call. */
+        toTest.save(input);
+    }
+
+    @Test(expected = ProgramCityRequiredException.class)
+    public void testSaveCreateNew_EmptyCity() throws Exception {
+        Program input = createFilledInProgram();
+        input.setId(null);
+        input.setCity("");
+
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
+
+        /* Make the call. */
+        toTest.save(input);
+    }
+
+    @Test(expected = ProgramCityRequiredException.class)
+    public void testSaveCreateNew_OnlyWhitespaceCity() throws Exception {
+        Program input = createFilledInProgram();
+        input.setId(null);
+        input.setCity(" ");
+
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
+
+        /* Make the call. */
+        toTest.save(input);
+    }
+
     @Test(expected = ProgramNameRequiredException.class)
-    public void testSaveCreateNewNullName() throws Exception {
+    public void testSaveCreateNew_NullName() throws Exception {
         Program input = createFilledInProgram();
         input.setId(null);
         input.setName(null);
@@ -246,7 +427,7 @@ public class DefaultProgramServiceTest {
     }
 
     @Test(expected = ProgramNameRequiredException.class)
-    public void testSaveCreateNewEmptyName() throws Exception {
+    public void testSaveCreateNew_EmptyName() throws Exception {
         Program input = createFilledInProgram();
         input.setId(null);
         input.setName("");
@@ -259,7 +440,7 @@ public class DefaultProgramServiceTest {
     }
 
     @Test(expected = ProgramNameRequiredException.class)
-    public void testSaveCreateNewOnlyWhitespaceName() throws Exception {
+    public void testSaveCreateNew_OnlyWhitespaceName() throws Exception {
         Program input = createFilledInProgram();
         input.setId(null);
         input.setName(" ");
@@ -272,7 +453,7 @@ public class DefaultProgramServiceTest {
     }
 
     @Test(expected = ProgramPrimaryGoal1RequiredException.class)
-    public void testSaveCreateNewNullGoal() throws Exception {
+    public void testSaveCreateNew_NullGoal() throws Exception {
         Program input = createFilledInProgram();
         input.setId(null);
         input.setPrimaryGoal1(null);
@@ -285,7 +466,7 @@ public class DefaultProgramServiceTest {
     }
 
     @Test(expected = ProgramPrimaryGoal1RequiredException.class)
-    public void testSaveCreateNewEmptyGoal() throws Exception {
+    public void testSaveCreateNew_EmptyGoal() throws Exception {
         Program input = createFilledInProgram();
         input.setId(null);
         input.setPrimaryGoal1("");
@@ -298,7 +479,7 @@ public class DefaultProgramServiceTest {
     }
 
     @Test(expected = ProgramPrimaryGoal1RequiredException.class)
-    public void testSaveCreateNewOnlyWhitespaceGoal() throws Exception {
+    public void testSaveCreateNew_OnlyWhitespaceGoal() throws Exception {
         Program input = createFilledInProgram();
         input.setId(null);
         input.setPrimaryGoal1(" ");
@@ -311,7 +492,7 @@ public class DefaultProgramServiceTest {
     }
 
     @Test(expected = ProgramMeasurableOutcome1RequiredException.class)
-    public void testSaveCreateNewNullOutcome() throws Exception {
+    public void testSaveCreateNew_NullOutcome() throws Exception {
         Program input = createFilledInProgram();
         input.setId(null);
         input.setMeasurableOutcome1(null);
@@ -324,7 +505,7 @@ public class DefaultProgramServiceTest {
     }
 
     @Test(expected = ProgramMeasurableOutcome1RequiredException.class)
-    public void testSaveCreateNewEmptyOutcome() throws Exception {
+    public void testSaveCreateNew_EmptyOutcome() throws Exception {
         Program input = createFilledInProgram();
         input.setId(null);
         input.setMeasurableOutcome1("");
@@ -337,7 +518,7 @@ public class DefaultProgramServiceTest {
     }
 
     @Test(expected = ProgramMeasurableOutcome1RequiredException.class)
-    public void testSaveCreateNewOnlyWhitespaceOutcome() throws Exception {
+    public void testSaveCreateNew_OnlyWhitespaceOutcome() throws Exception {
         Program input = createFilledInProgram();
         input.setId(null);
         input.setMeasurableOutcome1(" ");
@@ -350,7 +531,7 @@ public class DefaultProgramServiceTest {
     }
 
     @Test(expected = ProgramStreetAddressRequiredException.class)
-    public void testSaveCreateNewNullStreetAddress() throws Exception {
+    public void testSaveCreateNew_NullStreetAddress() throws Exception {
         Program input = createFilledInProgram();
         input.setId(null);
         input.setStreetAddress(null);
@@ -363,7 +544,7 @@ public class DefaultProgramServiceTest {
     }
 
     @Test(expected = ProgramStreetAddressRequiredException.class)
-    public void testSaveCreateNewEmptyStreetAddress() throws Exception {
+    public void testSaveCreateNew_EmptyStreetAddress() throws Exception {
         Program input = createFilledInProgram();
         input.setId(null);
         input.setStreetAddress("");
@@ -376,7 +557,7 @@ public class DefaultProgramServiceTest {
     }
 
     @Test(expected = ProgramStreetAddressRequiredException.class)
-    public void testSaveCreateNewOnlyWhitespaceStreetAddress() throws Exception {
+    public void testSaveCreateNew_OnlyWhitespaceStreetAddress() throws Exception {
         Program input = createFilledInProgram();
         input.setId(null);
         input.setStreetAddress(" ");
@@ -389,7 +570,7 @@ public class DefaultProgramServiceTest {
     }
 
     @Test(expected = ProgramOrganizationRequiredException.class)
-    public void testSaveCreateNewNullOrg() throws Exception {
+    public void testSaveCreateNew_NullOrg() throws Exception {
         Program input = createFilledInProgram();
         input.setId(null);
         input.setOrganization(null);
@@ -402,7 +583,7 @@ public class DefaultProgramServiceTest {
     }
 
     @Test(expected = ProgramStateRequiredException.class)
-    public void testSaveCreateNewNullState() throws Exception {
+    public void testSaveCreateNew_NullState() throws Exception {
         Program input = createFilledInProgram();
         input.setId(null);
         input.setState(null);
@@ -415,7 +596,7 @@ public class DefaultProgramServiceTest {
     }
 
     @Test(expected = ProgramStateRequiredException.class)
-    public void testSaveCreateNewEmptyState() throws Exception {
+    public void testSaveCreateNew_EmptyState() throws Exception {
         Program input = createFilledInProgram();
         input.setId(null);
         input.setState("");
@@ -428,7 +609,7 @@ public class DefaultProgramServiceTest {
     }
 
     @Test(expected = ProgramStateRequiredException.class)
-    public void testSaveCreateNewOnlyWhitespaceState() throws Exception {
+    public void testSaveCreateNew_OnlyWhitespaceState() throws Exception {
         Program input = createFilledInProgram();
         input.setId(null);
         input.setState(" ");
@@ -441,7 +622,7 @@ public class DefaultProgramServiceTest {
     }
 
     @Test
-    public void testSaveCreateNewNullZipCodeButGoogleFoundIt() throws Exception {
+    public void testSaveCreateNew_NullZipCodeButGoogleFoundIt() throws Exception {
         Program input = createFilledInProgram();
         input.setId(null);
         input.setZipCode(null);
@@ -460,7 +641,7 @@ public class DefaultProgramServiceTest {
     }
 
     @Test(expected = ProgramZipCodeRequiredException.class)
-    public void testSaveCreateNewNullZipCode() throws Exception {
+    public void testSaveCreateNew_NullZipCode() throws Exception {
         Program input = createFilledInProgram();
         input.setId(null);
         input.setZipCode(null);
@@ -480,7 +661,7 @@ public class DefaultProgramServiceTest {
     }
 
     @Test
-    public void testSaveCreateNewEmptyZipCodeButGoogleFoundIt() throws Exception {
+    public void testSaveCreateNew_EmptyZipCodeButGoogleFoundIt() throws Exception {
         Program input = createFilledInProgram();
         input.setId(null);
         input.setZipCode("");
@@ -499,7 +680,7 @@ public class DefaultProgramServiceTest {
     }
 
     @Test(expected = ProgramZipCodeRequiredException.class)
-    public void testSaveCreateNewEmptyZipCode() throws Exception {
+    public void testSaveCreateNew_EmptyZipCode() throws Exception {
         Program input = createFilledInProgram();
         input.setId(null);
         input.setZipCode("");
@@ -519,7 +700,7 @@ public class DefaultProgramServiceTest {
     }
 
     @Test
-    public void testSaveCreateNewOnlyWhitespaceZipCodeButGoogleFoundIt() throws Exception {
+    public void testSaveCreateNew_OnlyWhitespaceZipCodeButGoogleFoundIt() throws Exception {
         Program input = createFilledInProgram();
         input.setId(null);
         input.setZipCode(" ");
@@ -538,7 +719,7 @@ public class DefaultProgramServiceTest {
     }
 
     @Test(expected = ProgramZipCodeRequiredException.class)
-    public void testSaveCreateNewOnlyWhitespaceZipCode() throws Exception {
+    public void testSaveCreateNew_OnlyWhitespaceZipCode() throws Exception {
         Program input = createFilledInProgram();
         input.setId(null);
         input.setZipCode(" ");
@@ -558,7 +739,7 @@ public class DefaultProgramServiceTest {
     }
 
     @Test
-    public void testSaveCreateNewNullStartYear() throws Exception {
+    public void testSaveCreateNew_NullStartYear() throws Exception {
         Program input = createFilledInProgram();
         input.setId(null);
         input.setStartYear(null);
@@ -619,7 +800,7 @@ public class DefaultProgramServiceTest {
     }
 
     @Test(expected = OnlyAdminCanSaveProgramException.class)
-    public void testSaveCreateNewNotAdmin() throws Exception {
+    public void testSaveCreateNew_NotAdmin() throws Exception {
         Program input = createFilledInProgram();
         input.setId(null);
         input.setName(PROGRAM_NAME);
@@ -632,7 +813,7 @@ public class DefaultProgramServiceTest {
     }
 
     @Test
-    public void testSaveCreateNewProgramWithNewOrg() throws Exception {
+    public void testSaveCreateNew_ProgramWithNewOrg() throws Exception {
         Program input = createFilledInProgram();
         input.setId(null);
         input.setName(PROGRAM_NAME);
@@ -726,7 +907,7 @@ public class DefaultProgramServiceTest {
     }
 
     @Test
-    public void testSaveUpdateExistingProgramWithNewOrg() throws Exception {
+    public void testSaveUpdateExisting_ProgramWithNewOrg() throws Exception {
         Program input = createFilledInProgram();
         input.setId(PROGRAM_ID);
         input.setName(PROGRAM_NAME);
@@ -778,7 +959,7 @@ public class DefaultProgramServiceTest {
     }
 
     @Test(expected = ProgramNotFoundException.class)
-    public void testSaveUpdateExistingProgramNotFound() throws Exception {
+    public void testSaveUpdateExisting_ProgramNotFound() throws Exception {
         Program input = createFilledInProgram();
         input.setId(PROGRAM_ID);
         input.setName(ORG_NAME);
@@ -793,7 +974,7 @@ public class DefaultProgramServiceTest {
     }
 
     @Test(expected = OnlyAdminCanSaveProgramException.class)
-    public void testSaveUpdateExistingProgramNotAdmin() throws Exception {
+    public void testSaveUpdateExisting_ProgramNotAdmin() throws Exception {
         Program input = createFilledInProgram();
         input.setId(PROGRAM_ID);
         input.setName(ORG_NAME);
@@ -806,13 +987,13 @@ public class DefaultProgramServiceTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void testSearchNullQuerySpecified() throws Exception {
+    public void testSearch_NullQuerySpecified() throws Exception {
         /* Make the call. */
         toTest.search(null);
     }
 
     @Test
-    public void testSearchNullSearchSpecified() throws Exception {
+    public void testSearch_NullSearchSpecified() throws Exception {
         MapQuery input = new MapQuery();
         input.setSearch(null);
 
@@ -829,7 +1010,7 @@ public class DefaultProgramServiceTest {
     }
 
     @Test
-    public void testSearchEmptySearchSpecified() throws Exception {
+    public void testSearch_EmptySearchSpecified() throws Exception {
         MapQuerySearch search = new MapQuerySearch();
         MapQuery input = new MapQuery();
         input.setSearch(search);
@@ -847,7 +1028,7 @@ public class DefaultProgramServiceTest {
     }
 
     @Test
-    public void testSearchProgramSpecified() throws Exception {
+    public void testSearch_ProgramSpecified() throws Exception {
         MapQuerySearch search = new MapQuerySearch();
         search.setProgram(createFilledInProgram());
         MapQuery input = new MapQuery();
@@ -866,7 +1047,7 @@ public class DefaultProgramServiceTest {
     }
 
     @Test
-    public void testSearchOnlyOrgSpecified() throws Exception {
+    public void testSearch_OnlyOrgSpecified() throws Exception {
         MapQuerySearch search = new MapQuerySearch();
         search.setOrganization(createOrg());
         MapQuery input = new MapQuery();
@@ -885,7 +1066,7 @@ public class DefaultProgramServiceTest {
     }
 
     @Test
-    public void testSearchOnlyCountySpecified() throws Exception {
+    public void testSearch_OnlyCountySpecified() throws Exception {
         MapQuerySearch search = new MapQuerySearch();
         search.setCounty(createCounty());
         MapQuery input = new MapQuery();
@@ -904,7 +1085,7 @@ public class DefaultProgramServiceTest {
     }
 
     @Test
-    public void testSearchOnlyProgramAreaSpecified() throws Exception {
+    public void testSearch_OnlyProgramAreaSpecified() throws Exception {
         MapQuerySearch search = new MapQuerySearch();
         search.setProgramArea(createProgramArea());
         MapQuery input = new MapQuery();
@@ -923,7 +1104,7 @@ public class DefaultProgramServiceTest {
     }
 
     @Test
-    public void testSearchOrgAndCountySpecified() throws Exception {
+    public void testSearch_OrgAndCountySpecified() throws Exception {
         MapQuerySearch search = new MapQuerySearch();
         search.setOrganization(createOrg());
         search.setCounty(createCounty());
@@ -943,7 +1124,7 @@ public class DefaultProgramServiceTest {
     }
 
     @Test
-    public void testSearchOrgAndProgramAreaSpecified() throws Exception {
+    public void testSearch_OrgAndProgramAreaSpecified() throws Exception {
         MapQuerySearch search = new MapQuerySearch();
         search.setOrganization(createOrg());
         search.setProgramArea(createProgramArea());
@@ -963,7 +1144,7 @@ public class DefaultProgramServiceTest {
     }
 
     @Test
-    public void testSearchCountyAndProgramAreaSpecified() throws Exception {
+    public void testSearch_CountyAndProgramAreaSpecified() throws Exception {
         MapQuerySearch search = new MapQuerySearch();
         search.setCounty(createCounty());
         search.setProgramArea(createProgramArea());
@@ -983,7 +1164,7 @@ public class DefaultProgramServiceTest {
     }
 
     @Test
-    public void testSearchOrgAndCountyAndProgramAreaSpecified() throws Exception {
+    public void testSearch_OrgAndCountyAndProgramAreaSpecified() throws Exception {
         MapQuerySearch search = new MapQuerySearch();
         search.setOrganization(createOrg());
         search.setCounty(createCounty());

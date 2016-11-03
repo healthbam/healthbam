@@ -16,6 +16,11 @@ public class PublicConfig {
 
     private final String googleOauthClientId;
     private final String urlPrefix;
+    private final int programStartYearMin;
+    private final int programStreetAddressMaxLength;
+    private final int programCityMaxLength;
+    private final int programGoalMaxLength;
+    private final int programOutcomeMaxLength;
 
     /**
      * Constructs a {@link PublicConfig}.
@@ -25,10 +30,20 @@ public class PublicConfig {
      */
     public PublicConfig(
             @Nonnull String googleOauthClientId,
-            @Nullable String urlPrefix
+            @Nullable String urlPrefix,
+            int programStartYearMin,
+            int programStreetAddressMaxLength,
+            int programCityMaxLength,
+            int programGoalMaxLength,
+            int programOutcomeMaxLength
     ) {
         this.googleOauthClientId = requireNonNull(googleOauthClientId, "googleOauthClientId cannot be null");
         this.urlPrefix = urlPrefix;
+        this.programStartYearMin = programStartYearMin;
+        this.programStreetAddressMaxLength = programStreetAddressMaxLength;
+        this.programCityMaxLength = programCityMaxLength;
+        this.programGoalMaxLength = programGoalMaxLength;
+        this.programOutcomeMaxLength = programOutcomeMaxLength;
     }
 
     /**
@@ -48,6 +63,26 @@ public class PublicConfig {
      */
     public String getUrlPrefix() {
         return urlPrefix;
+    }
+
+    public int getProgramStartYearMin() {
+        return programStartYearMin;
+    }
+
+    public int getProgramStreetAddressMaxLength() {
+        return programStreetAddressMaxLength;
+    }
+
+    public int getProgramCityMaxLength() {
+        return programCityMaxLength;
+    }
+
+    public int getProgramGoalMaxLength() {
+        return programGoalMaxLength;
+    }
+
+    public int getProgramOutcomeMaxLength() {
+        return programOutcomeMaxLength;
     }
 
     @Override

@@ -10,15 +10,23 @@ import com.codahale.metrics.annotation.Timed;
 import org.apache.commons.lang3.StringUtils;
 import org.hmhb.audit.AuditHelper;
 import org.hmhb.authorization.AuthorizationService;
+import org.hmhb.config.ConfigService;
+import org.hmhb.config.PublicConfig;
 import org.hmhb.county.County;
 import org.hmhb.exception.program.OnlyAdminCanDeleteProgramException;
 import org.hmhb.exception.program.OnlyAdminCanSaveProgramException;
+import org.hmhb.exception.program.ProgramCityNameIsTooLongException;
+import org.hmhb.exception.program.ProgramCityRequiredException;
+import org.hmhb.exception.program.ProgramGoalIsTooLongException;
 import org.hmhb.exception.program.ProgramMeasurableOutcome1RequiredException;
 import org.hmhb.exception.program.ProgramNameRequiredException;
 import org.hmhb.exception.program.ProgramNotFoundException;
 import org.hmhb.exception.program.ProgramOrganizationRequiredException;
+import org.hmhb.exception.program.ProgramOutcomeIsTooLongException;
 import org.hmhb.exception.program.ProgramPrimaryGoal1RequiredException;
+import org.hmhb.exception.program.ProgramStartYearIsTooOldException;
 import org.hmhb.exception.program.ProgramStateRequiredException;
+import org.hmhb.exception.program.ProgramStreetAddressIsTooLongException;
 import org.hmhb.exception.program.ProgramStreetAddressRequiredException;
 import org.hmhb.exception.program.ProgramZipCodeRequiredException;
 import org.hmhb.geocode.GeocodeService;
@@ -43,6 +51,7 @@ public class DefaultProgramService implements ProgramService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultProgramService.class);
 
+    private final PublicConfig publicConfig;
     private final AuditHelper auditHelper;
     private final AuthorizationService authorizationService;
     private final GeocodeService geocodeService;
@@ -52,6 +61,8 @@ public class DefaultProgramService implements ProgramService {
     /**
      * An injectable constructor.
      *
+     * @param configService the {@link ConfigService} to get config for
+     *                      validation rules of programs
      * @param auditHelper the {@link AuditHelper} to get audit information
      * @param authorizationService the {@link AuthorizationService} to verify a
      *                             user is allowed to do certain operations
@@ -64,6 +75,7 @@ public class DefaultProgramService implements ProgramService {
      */
     @Autowired
     public DefaultProgramService(
+            @Nonnull ConfigService configService,
             @Nonnull AuditHelper auditHelper,
             @Nonnull AuthorizationService authorizationService,
             @Nonnull GeocodeService geocodeService,
@@ -71,6 +83,8 @@ public class DefaultProgramService implements ProgramService {
             @Nonnull ProgramDao dao
     ) {
         LOGGER.debug("constructed");
+        requireNonNull(configService, "configService cannot be null");
+        this.publicConfig = requireNonNull(configService.getPublicConfig(), "publicConfig cannot be null");
         this.authorizationService = requireNonNull(authorizationService, "authorizationService cannot be null");
         this.auditHelper = requireNonNull(auditHelper, "auditHelper cannot be null");
         this.geocodeService = requireNonNull(geocodeService, "geocodeService cannot be null");
@@ -274,8 +288,62 @@ public class DefaultProgramService implements ProgramService {
             throw new ProgramPrimaryGoal1RequiredException();
         }
 
+        if (program.getPrimaryGoal1().length() > publicConfig.getProgramGoalMaxLength()) {
+            throw new ProgramGoalIsTooLongException();
+        }
+
+        if (program.getPrimaryGoal2() != null) {
+            if (program.getPrimaryGoal2().length() > publicConfig.getProgramGoalMaxLength()) {
+                throw new ProgramGoalIsTooLongException();
+            }
+        }
+
+        if (program.getPrimaryGoal3() != null) {
+            if (program.getPrimaryGoal3().length() > publicConfig.getProgramGoalMaxLength()) {
+                throw new ProgramGoalIsTooLongException();
+            }
+        }
+
         if (StringUtils.isBlank(program.getMeasurableOutcome1())) {
             throw new ProgramMeasurableOutcome1RequiredException();
+        }
+
+        if (program.getMeasurableOutcome1().length() > publicConfig.getProgramOutcomeMaxLength()) {
+            throw new ProgramOutcomeIsTooLongException();
+        }
+
+        if (program.getMeasurableOutcome2() != null) {
+            if (program.getMeasurableOutcome2().length() > publicConfig.getProgramOutcomeMaxLength()) {
+                throw new ProgramOutcomeIsTooLongException();
+            }
+        }
+
+        if (program.getMeasurableOutcome3() != null) {
+            if (program.getMeasurableOutcome3().length() > publicConfig.getProgramOutcomeMaxLength()) {
+                throw new ProgramOutcomeIsTooLongException();
+            }
+        }
+
+        if (program.getStartYear() != null) {
+            if (program.getStartYear() < publicConfig.getProgramStartYearMin()) {
+                throw new ProgramStartYearIsTooOldException();
+            }
+        }
+
+        if (StringUtils.isBlank(program.getStreetAddress())) {
+            throw new ProgramStreetAddressRequiredException();
+        }
+
+        if (program.getStreetAddress().length() > publicConfig.getProgramStreetAddressMaxLength()) {
+            throw new ProgramStreetAddressIsTooLongException();
+        }
+
+        if (StringUtils.isBlank(program.getCity())) {
+            throw new ProgramCityRequiredException();
+        }
+
+        if (program.getCity().length() > publicConfig.getProgramCityMaxLength()) {
+            throw new ProgramCityNameIsTooLongException();
         }
 
         if (program.getOrganization() == null) {
@@ -286,10 +354,6 @@ public class DefaultProgramService implements ProgramService {
         } else {
             /* Verify the organization exists and get the updated organization info. */
             program.setOrganization(organizationService.getById(program.getOrganization().getId()));
-        }
-
-        if (StringUtils.isBlank(program.getStreetAddress())) {
-            throw new ProgramStreetAddressRequiredException();
         }
 
         fillCoordinatesAndZip(program);

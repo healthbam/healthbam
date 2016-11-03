@@ -30,7 +30,12 @@ public class DefaultConfigService implements ConfigService {
 
         this.publicConfig = new PublicConfig(
                 environment.getProperty("google.oauth.client.id"),
-                environment.getProperty("hmhb.url.prefix")
+                environment.getProperty("hmhb.url.prefix"),
+                environment.getProperty("hmhb.program.startYear.minValue", Integer.class),
+                environment.getProperty("hmhb.program.streetAddress.maxLength", Integer.class),
+                environment.getProperty("hmhb.program.city.maxLength", Integer.class),
+                environment.getProperty("hmhb.program.goal.maxLength", Integer.class),
+                environment.getProperty("hmhb.program.outcome.maxLength", Integer.class)
         );
 
         this.privateConfig = new PrivateConfig(

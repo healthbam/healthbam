@@ -37,10 +37,20 @@ public class ConfigControllerTest {
 
         String oauthClientId = "test-oauth-client-id";
         String urlPrefix = "test-url-prefix";
+        int programStartYearMin = 1111;
+        int programStreetAddressMaxLen = 2222;
+        int programCityMaxLen = 3333;
+        int programGoalMaxLen = 4444;
+        int programOutcomeMaxLen = 5555;
 
         PublicConfig publicConfig = new PublicConfig(
                 oauthClientId,
-                urlPrefix
+                urlPrefix,
+                programStartYearMin,
+                programStreetAddressMaxLen,
+                programCityMaxLen,
+                programGoalMaxLen,
+                programOutcomeMaxLen
         );
 
         /* Train the mocks. */
@@ -49,9 +59,16 @@ public class ConfigControllerTest {
         /* Make the call. */
         String actual = toTest.getConfigJs();
 
+        String assertErrMsg = "actual is: " + actual;
+
         /* Verify the results. */
-        assertTrue(actual.contains(oauthClientId));
-        assertTrue(actual.contains(urlPrefix));
+        assertTrue(assertErrMsg, actual.contains("\"googleOauthClientId\":\"" + oauthClientId + "\""));
+        assertTrue(assertErrMsg, actual.contains("\"urlPrefix\":\"" + urlPrefix + "\""));
+        assertTrue(assertErrMsg, actual.contains("\"programStartYearMin\":" + programStartYearMin));
+        assertTrue(assertErrMsg, actual.contains("\"programStreetAddressMaxLength\":" + programStreetAddressMaxLen));
+        assertTrue(assertErrMsg, actual.contains("\"programCityMaxLength\":" + programCityMaxLen));
+        assertTrue(assertErrMsg, actual.contains("\"programGoalMaxLength\":" + programGoalMaxLen));
+        assertTrue(assertErrMsg, actual.contains("\"programOutcomeMaxLength\":" + programOutcomeMaxLen));
 
         /* Verify the response wont be cached. */
         verify(response).setHeader("Cache-Control", "max-age=0, must-revalidate");

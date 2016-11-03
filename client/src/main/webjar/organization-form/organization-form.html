@@ -16,6 +16,9 @@
             <input name="organizationName"
                    ng-model="organizationForm.organization.name"
                    required>
+            <div ng-messages="organizationForm.orgForm.organizationName.$error">
+                <div ng-message="required">Organization name is required</div>
+            </div>
         </md-input-container>
 
     </div>
@@ -37,6 +40,9 @@
             <input name="organizationEmail"
                    ng-model="organizationForm.organization.contactEmail"
                    type="email">
+            <div ng-messages="organizationForm.orgForm.organizationEmail.$error">
+                <div ng-message="email">Organization email must be a valid email</div>
+            </div>
         </md-input-container>
 
     </div>
@@ -50,6 +56,9 @@
             <input name="organizationWebsiteUrl"
                    ng-model="organizationForm.organization.websiteUrl"
                    type="url">
+            <div ng-messages="organizationForm.orgForm.organizationWebsiteUrl.$error">
+                <div ng-message="url">Organization website must be a valid url</div>
+            </div>
         </md-input-container>
 
         <md-input-container class="md-block" flex-gt-sm>
@@ -59,6 +68,9 @@
             <input name="organizationFacebook"
                    ng-model="organizationForm.organization.facebookUrl"
                    type="url">
+            <div ng-messages="organizationForm.orgForm.organizationFacebook.$error">
+                <div ng-message="url">Organization Facebook page must be a valid url</div>
+            </div>
         </md-input-container>
 
     </div>
