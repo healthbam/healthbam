@@ -17,6 +17,11 @@ public class DefaultConfigServiceTest {
     private static final String URL_PREFIX = "test-url-prefix";
     private static final String JWT_DOMAIN = "test-jwt-domain";
     private static final String JWT_SECRET = "test-jwt-secret";
+    private static final Integer PROG_START_YEAR_MIN = 1500;
+    private static final Integer PROG_STREET_ADDR_MAX_LEN = 70;
+    private static final Integer PROG_CITY_MAX_LEN = 50;
+    private static final Integer PROG_GOAL_MAX_LEN = 500;
+    private static final Integer PROG_OUTCOME_MAX_LEN = 500;
 
     private DefaultConfigService toTest;
 
@@ -30,6 +35,11 @@ public class DefaultConfigServiceTest {
         when(environment.getProperty("hmhb.url.prefix")).thenReturn(URL_PREFIX);
         when(environment.getProperty("hmhb.jwt.domain")).thenReturn(JWT_DOMAIN);
         when(environment.getProperty("hmhb.jwt.secret")).thenReturn(JWT_SECRET);
+        when(environment.getProperty("hmhb.program.startYear.minValue", Integer.class)).thenReturn(PROG_START_YEAR_MIN);
+        when(environment.getProperty("hmhb.program.streetAddress.maxLength", Integer.class)).thenReturn(PROG_STREET_ADDR_MAX_LEN);
+        when(environment.getProperty("hmhb.program.city.maxLength", Integer.class)).thenReturn(PROG_CITY_MAX_LEN);
+        when(environment.getProperty("hmhb.program.goal.maxLength", Integer.class)).thenReturn(PROG_GOAL_MAX_LEN);
+        when(environment.getProperty("hmhb.program.outcome.maxLength", Integer.class)).thenReturn(PROG_OUTCOME_MAX_LEN);
 
         toTest = new DefaultConfigService(environment);
     }
@@ -38,7 +48,12 @@ public class DefaultConfigServiceTest {
     public void testGetPublicConfig() throws Exception {
         PublicConfig expected = new PublicConfig(
                 OAUTH_ID,
-                URL_PREFIX
+                URL_PREFIX,
+                PROG_START_YEAR_MIN,
+                PROG_STREET_ADDR_MAX_LEN,
+                PROG_CITY_MAX_LEN,
+                PROG_GOAL_MAX_LEN,
+                PROG_OUTCOME_MAX_LEN
         );
 
         /* Make the call. */

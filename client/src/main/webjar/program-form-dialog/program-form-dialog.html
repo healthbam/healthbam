@@ -72,6 +72,9 @@
                             <input name="programName"
                                    ng-model="programFormDialog.program.name"
                                    required>
+                            <div ng-messages="programFormDialog.programForm.programName.$error">
+                                <div ng-message="required">Program name is required</div>
+                            </div>
                         </md-input-container>
 
                         <md-input-container class="md-block">
@@ -81,9 +84,21 @@
                             <input name="programStartYear"
                                    ng-model="programFormDialog.program.startYear"
                                    type="number"
-                                   min="1500"
+                                   min="{{programFormDialog.config.programStartYearMin}}"
                                    max="{{programFormDialog.getCurrentYear()}}"
                                    ng-pattern="/^[0-9]{4}$/">
+                            <div ng-messages="programFormDialog.programForm.programStartYear.$error">
+                                <!-- This isn't reachable in Chrome, however, Firefox allows you to type non-digits. -->
+                                <div ng-message="number">Program start year must be a number</div>
+                                <div ng-message="min">
+                                    Program start year must be at least
+                                    <span ng-bind="programFormDialog.config.programStartYearMin"></span>
+                                </div>
+                                <div ng-message="max">Program start year must not be in the future</div>
+                                <!-- This doesn't seem to be reachable due to type="number" + min + max covering all
+                                     ways we could have something that wouldn't match this pattern. -->
+                                <div ng-message="pattern">Program start year must be in the format YYYY</div>
+                            </div>
                         </md-input-container>
 
                     </div>
@@ -94,7 +109,12 @@
                         </label>
                         <input name="programAddress"
                                ng-model="programFormDialog.program.streetAddress"
+                               md-maxlength="programFormDialog.config.programStreetAddressMaxLength"
                                required>
+                        <div ng-messages="programFormDialog.programForm.programAddress.$error">
+                            <div ng-message="md-maxlength">Address is too long</div>
+                            <div ng-message="required">Address is required</div>
+                        </div>
                     </md-input-container>
 
                     <div layout-gt-sm="row">
@@ -105,7 +125,12 @@
                             </label>
                             <input name="programCity"
                                    ng-model="programFormDialog.program.city"
+                                   md-maxlength="programFormDialog.config.programCityMaxLength"
                                    required>
+                            <div ng-messages="programFormDialog.programForm.programCity.$error">
+                                <div ng-message="md-maxlength">City is too long</div>
+                                <div ng-message="required">City is required</div>
+                            </div>
                         </md-input-container>
 
                         <md-input-container class="md-block" flex-gt-sm>
@@ -125,9 +150,14 @@
                                 Postal code
                             </label>
                             <input name="programZip"
-                                   ng-model="programFormDialog.program.zipCode">
+                                   ng-model="programFormDialog.program.zipCode"
+                                   ng-pattern="/^[0-9]{5}([ \-][0-9]{4})?$/">
+                            <div ng-messages="programFormDialog.programForm.programZip.$error">
+                                <div ng-message="pattern">
+                                    Postal code must be valid US zip code format
+                                </div>
+                            </div>
                         </md-input-container>
-
                     </div>
 
                     <md-checkbox name="servesAllCounties"
@@ -172,6 +202,9 @@
                                 <input name="otherProgramAreaExplanation"
                                        ng-model="programFormDialog.program.otherProgramAreaExplanation"
                                        required>
+                                <div ng-messages="programFormDialog.programForm.otherProgramAreaExplanation.$error">
+                                    <div ng-message="required">Please provide an explanation</div>
+                                </div>
                             </md-input-container>
                         </fieldset>
                     </div>
@@ -182,10 +215,14 @@
                         </label>
                         <textarea name="primaryGoal1"
                                   ng-model="programFormDialog.program.primaryGoal1"
-                                  md-maxlength="500"
+                                  md-maxlength="programFormDialog.config.programGoalMaxLength"
                                   rows="1"
                                   required>
-                    </textarea>
+                        </textarea>
+                        <div ng-messages="programFormDialog.programForm.primaryGoal1.$error">
+                            <div ng-message="md-maxlength">Primary program goal #1 is too long</div>
+                            <div ng-message="required">Primary program goal #1 is required</div>
+                        </div>
                     </md-input-container>
 
                     <md-input-container class="md-block">
@@ -194,9 +231,12 @@
                         </label>
                         <textarea name="primaryGoal2"
                                   ng-model="programFormDialog.program.primaryGoal2"
-                                  md-maxlength="500"
+                                  md-maxlength="programFormDialog.config.programGoalMaxLength"
                                   rows="1">
-                    </textarea>
+                        </textarea>
+                        <div ng-messages="programFormDialog.programForm.primaryGoal2.$error">
+                            <div ng-message="md-maxlength">Primary program goal #2 is too long</div>
+                        </div>
                     </md-input-container>
 
                     <md-input-container class="md-block">
@@ -205,9 +245,12 @@
                         </label>
                         <textarea name="primaryGoal3"
                                   ng-model="programFormDialog.program.primaryGoal3"
-                                  md-maxlength="500"
+                                  md-maxlength="programFormDialog.config.programGoalMaxLength"
                                   rows="1">
-                    </textarea>
+                        </textarea>
+                        <div ng-messages="programFormDialog.programForm.primaryGoal3.$error">
+                            <div ng-message="md-maxlength">Primary program goal #3 is too long</div>
+                        </div>
                     </md-input-container>
 
                     <md-input-container class="md-block">
@@ -216,10 +259,14 @@
                         </label>
                         <textarea name="measurableOutcome1"
                                   ng-model="programFormDialog.program.measurableOutcome1"
-                                  md-maxlength="500"
+                                  md-maxlength="programFormDialog.config.programOutcomeMaxLength"
                                   rows="1"
                                   required>
-                    </textarea>
+                        </textarea>
+                        <div ng-messages="programFormDialog.programForm.measurableOutcome1.$error">
+                            <div ng-message="md-maxlength">Measurable program outcome #1 is too long</div>
+                            <div ng-message="required">Measurable program outcome #1 is required</div>
+                        </div>
                     </md-input-container>
 
                     <md-input-container class="md-block">
@@ -228,9 +275,12 @@
                         </label>
                         <textarea name="measurableOutcome2"
                                   ng-model="programFormDialog.program.measurableOutcome2"
-                                  md-maxlength="500"
+                                  md-maxlength="programFormDialog.config.programOutcomeMaxLength"
                                   rows="1">
-                    </textarea>
+                        </textarea>
+                        <div ng-messages="programFormDialog.programForm.measurableOutcome2.$error">
+                            <div ng-message="md-maxlength">Measurable program outcome #2 is too long</div>
+                        </div>
                     </md-input-container>
 
                     <md-input-container class="md-block">
@@ -239,9 +289,12 @@
                         </label>
                         <textarea name="measurableOutcome3"
                                   ng-model="programFormDialog.program.measurableOutcome3"
-                                  md-maxlength="500"
+                                  md-maxlength="programFormDialog.config.programOutcomeMaxLength"
                                   rows="1">
-                    </textarea>
+                        </textarea>
+                        <div ng-messages="programFormDialog.programForm.measurableOutcome3.$error">
+                            <div ng-message="md-maxlength">Measurable program outcome #3 is too long</div>
+                        </div>
                     </md-input-container>
 
                 </div>

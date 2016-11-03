@@ -18,6 +18,7 @@
         $q,
         Organization,
         ProgramArea,
+        getConfig,
         errorHandlingService,
         $log
     ) {
@@ -188,6 +189,8 @@
          */
         function activate() {
 
+            programFormDialog.config = getConfig();
+
             programFormDialog.otherProgramArea = false;
             programFormDialog.newOrganization = new Organization();
 
@@ -211,6 +214,7 @@
         "$q",
         "Organization",
         "ProgramArea",
+        "getConfig",
         "errorHandlingService",
         "$log"
     ];

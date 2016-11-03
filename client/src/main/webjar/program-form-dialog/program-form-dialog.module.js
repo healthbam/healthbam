@@ -5,7 +5,9 @@
         "healthBam.programFormDialog",
         [
             "ngMaterial",
+            "ngMessages",
             "healthBam.templates",
+            "healthBam.config",
             "healthBam.errorHandling",
             "healthBam.program",
             "healthBam.organization",
