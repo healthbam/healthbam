@@ -6,7 +6,7 @@
     </md-progress-circular>
 </div>
 
-<div ng-if="organizationDetails.organization"
+<div ng-if="!organizationDetails.loading"
      layout="column"
      layout="fill">
 
@@ -64,6 +64,47 @@
         <!-- Organization card -->
         <health-bam-organization-card organization="organizationDetails.organization">
         </health-bam-organization-card>
+
+        <!-- Map of Organization's Programs -->
+        <md-card>
+
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline"
+                          md-colors="{color: 'primary'}">
+                        Programs
+                    </span>
+                </md-card-title-text>
+            </md-card-title>
+
+            <md-card-content>
+
+                <div class="md-media-xl card-media">
+                    <ng-map ng-if="organizationDetails.mapQuery.$resolved"
+                            class="health-bam-mini-map"
+                            default-style=""
+                            styles="{{organizationDetails.mapStyles}}"
+                            zoom-control="true"
+                            zoom-control-options="{style:'LARGE', position:'LEFT_TOP'}"
+                            pan-control="false"
+                            rotate-control="false"
+                            map-type-control="false"
+                            street-view-control="false">
+
+                        <kml-layer url="{{organizationDetails.mapQuery.result.mapLayerUrl}}">
+                        </kml-layer>
+
+                    </ng-map>
+                </div>
+
+            </md-card-content>
+
+        </md-card>
+
+        <!-- Loop for all program cards -->
+        <health-bam-program-card ng-repeat="program in organizationDetails.mapQuery.result.programs"
+                                 program="program">
+        </health-bam-program-card>
 
     </md-content>
 

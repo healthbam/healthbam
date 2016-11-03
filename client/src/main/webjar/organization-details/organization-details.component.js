@@ -14,6 +14,8 @@
      * @param errorHandlingService
      * @param $mdToast
      * @param $mdDialog
+     * @param mapConfig
+     * @param MapQuery
      * @param $log
      * @constructor
      */
@@ -27,6 +29,8 @@
         errorHandlingService,
         $mdToast,
         $mdDialog,
+        mapConfig,
+        MapQuery,
         $log
     ) {
         var organizationDetails = this;
@@ -148,17 +152,6 @@
         }
 
         /**
-         * Handles success loading the organization.
-         */
-        function handleOrgDetailsLoadSuccess() {
-            organizationDetails.organization = new Organization(
-                angular.copy(organizationDetails.organization)
-            );
-
-            $log.debug("success");
-        }
-
-        /**
          * Handles an error loading the organization.
          * @returns rejected promise of error input.
          */
@@ -169,28 +162,62 @@
         }
 
         /**
-         * Initializes the controller.
+         * Loads all needed data from server.
          */
-        function activate() {
-            organizationDetails.edit = edit;
-            organizationDetails.deleteOrganization = deleteOrganization;
-            organizationDetails.isAdmin = authenticationService.isAdmin;
+        function load() {
 
-            organizationDetails.organization = Organization.get({id: $stateParams.orgId});
+            var mapQueryPromise;
 
-            /* Load organization URL from server. */
             organizationDetails.loading = true;
 
-            /* Handle successful or failure server response. */
-            organizationDetails.organization.$promise.then(
-                handleOrgDetailsLoadSuccess
+            /* Fetch Organization. */
+            organizationDetails.organization = Organization.get(
+                {
+                    id: $stateParams.orgId
+                }
+            );
+
+            /* Build MapQuery to send to server. */
+            organizationDetails.mapQuery = new MapQuery(
+                {
+                    search: {
+                        organization: {
+                            id: $stateParams.orgId
+                        }
+                    }
+                }
+            );
+
+            /* Load programs and map URL from server. */
+            mapQueryPromise = organizationDetails.mapQuery.$save();
+
+            $q.all(
+                [
+                    organizationDetails.organization.$promise,
+                    mapQueryPromise
+                ]
             ).catch(
                 handleOrgDetailsLoadError
             ).finally(
                 function () {
                     organizationDetails.loading = false;
+                    $log.debug("Organization details done loading from server");
                 }
             );
+
+        }
+
+        /**
+         * Initializes the controller.
+         */
+        function activate() {
+
+            organizationDetails.edit = edit;
+            organizationDetails.deleteOrganization = deleteOrganization;
+            organizationDetails.isAdmin = authenticationService.isAdmin;
+            organizationDetails.mapStyles = mapConfig.styles;
+
+            load();
 
             $log.debug("OrganizationDetails Controller loaded", organizationDetails);
         }
@@ -210,6 +237,8 @@
         "errorHandlingService",
         "$mdToast",
         "$mdDialog",
+        "mapConfig",
+        "MapQuery",
         "$log"
     ];
 
