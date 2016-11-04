@@ -31,13 +31,18 @@
 
                     <!-- Public information -->
 
+                    <h2>
+                        <span md-colors="{color: 'primary'}">
+                            Organization information
+                        </span>
+                    </h2>
+
                     <md-input-container class="md-block" flex>
                         <label>
                             Company/Organization
                         </label>
                         <md-select name="organization"
                                    ng-model="programFormDialog.program.organization"
-                                   ng-model-options="{trackBy: '$value.id'}"
                                    required>
                             <md-option ng-value="programFormDialog.newOrganization">
                                 Create new organization
@@ -47,6 +52,9 @@
                                        ng-bind="organization.name">
                             </md-option>
                         </md-select>
+                        <div ng-messages="programFormDialog.programForm.organization.$error">
+                            <div ng-message="required">Organization is required</div>
+                        </div>
                     </md-input-container>
 
                     <fieldset ng-if="programFormDialog.isNewOrganization()"
