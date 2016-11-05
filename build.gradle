@@ -60,6 +60,9 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
     compile("org.postgresql:postgresql:9.4-1201-jdbc4")
 
+    /* needed for hibernate second level caching */
+    compile("org.hibernate:hibernate-ehcache")
+
     /* needed for hibernate-validator, which depends on javax.el-api */
     compile("org.glassfish:javax.el")
 

@@ -1,5 +1,6 @@
 package org.hmhb.county;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,6 +15,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * Domain object representing a county of a state.
  */
 @Entity
+@Cacheable
 public class County {
 
     @Id
