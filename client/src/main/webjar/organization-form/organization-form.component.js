@@ -10,6 +10,7 @@
      * @constructor
      */
     function OrganizationFormController(
+        getConfig,
         $log
     ) {
         var organizationForm = this;
@@ -19,6 +20,8 @@
          */
         function activate() {
             $log.debug("OrganizationForm Controller loaded", organizationForm);
+
+            organizationForm.config = getConfig();
         }
 
         /* Run activate when component is loaded. */
@@ -27,6 +30,7 @@
 
     /* Inject dependencies. */
     OrganizationFormController.$inject = [
+        "getConfig",
         "$log"
     ];
 

@@ -64,7 +64,7 @@ public class DefaultAuthenticationServiceTest {
                 gPlusProfile
         );
 
-        PublicConfig publicConfig = new PublicConfig(CLIENT_ID, null, 1, 2, 3, 4, 5);
+        PublicConfig publicConfig = new PublicConfig(CLIENT_ID, null, 1, 2, 3, 4, 5, 6, 7, 8);
         PrivateConfig privateConfig = new PrivateConfig(CLIENT_SECRET, "jwtDomain", "jwtSecret");
 
         /* Train the mocks. */

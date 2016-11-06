@@ -16,9 +16,11 @@ import org.hmhb.exception.program.ProgramCityNameIsTooLongException;
 import org.hmhb.exception.program.ProgramCityRequiredException;
 import org.hmhb.exception.program.ProgramGoalIsTooLongException;
 import org.hmhb.exception.program.ProgramMeasurableOutcome1RequiredException;
+import org.hmhb.exception.program.ProgramNameIsTooLongException;
 import org.hmhb.exception.program.ProgramNameRequiredException;
 import org.hmhb.exception.program.ProgramNotFoundException;
 import org.hmhb.exception.program.ProgramOrganizationRequiredException;
+import org.hmhb.exception.program.ProgramOtherExplanationIsTooLongException;
 import org.hmhb.exception.program.ProgramOutcomeIsTooLongException;
 import org.hmhb.exception.program.ProgramPrimaryGoal1RequiredException;
 import org.hmhb.exception.program.ProgramStartYearIsTooOldException;
@@ -92,6 +94,9 @@ public class DefaultProgramServiceTest {
                 "test-oauth-client-id",
                 "test-url-prefix",
                 MIN_VALUE,
+                MAX_LEN,
+                MAX_LEN,
+                MAX_LEN,
                 MAX_LEN,
                 MAX_LEN,
                 MAX_LEN,
@@ -291,6 +296,30 @@ public class DefaultProgramServiceTest {
     public void testSaveCreateNew_StartYearTooOld() {
         Program input = createFilledInProgram();
         input.setStartYear(TOO_OLD);
+
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
+
+        /* Make the call. */
+        toTest.save(input);
+    }
+
+    @Test(expected = ProgramNameIsTooLongException.class)
+    public void testSaveCreateNew_NameTooLong() {
+        Program input = createFilledInProgram();
+        input.setName(TOO_LONG);
+
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
+
+        /* Make the call. */
+        toTest.save(input);
+    }
+
+    @Test(expected = ProgramOtherExplanationIsTooLongException.class)
+    public void testSaveCreateNew_OtherExplanationTooLong() {
+        Program input = createFilledInProgram();
+        input.setOtherProgramAreaExplanation(TOO_LONG);
 
         /* Train the mocks. */
         when(authorizationService.isAdmin()).thenReturn(true);

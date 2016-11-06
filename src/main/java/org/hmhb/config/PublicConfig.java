@@ -21,12 +21,29 @@ public class PublicConfig {
     private final int programCityMaxLength;
     private final int programGoalMaxLength;
     private final int programOutcomeMaxLength;
+    private final int programNameMaxLength;
+    private final int programAreaExplanationMaxLength;
+    private final int organizationNameMaxLength;
 
     /**
      * Constructs a {@link PublicConfig}.
      *
      * @param googleOauthClientId the google oauth2 client ID
      * @param urlPrefix the configured url prefix
+     * @param programStartYearMin the min start year allowed for a program
+     * @param programStreetAddressMaxLength the max chars allowed for a
+     *                                      program's street address
+     * @param programCityMaxLength the max chars allowed for a program's city
+     * @param programGoalMaxLength the max chars allowed for program's
+     *                             primary goals
+     * @param programOutcomeMaxLength the max chars allowed for a program's
+     *                                measurable outcomes
+     * @param programNameMaxLength the max chars allowed for a program's name
+     * @param programAreaExplanationMaxLength the max chars allowed for a
+     *                                        program's other-program-area
+     *                                        explanation
+     * @param organizationNameMaxLength the max chars allowed for an
+     *                                  organization's name
      */
     public PublicConfig(
             @Nonnull String googleOauthClientId,
@@ -35,7 +52,10 @@ public class PublicConfig {
             int programStreetAddressMaxLength,
             int programCityMaxLength,
             int programGoalMaxLength,
-            int programOutcomeMaxLength
+            int programOutcomeMaxLength,
+            int programNameMaxLength,
+            int programAreaExplanationMaxLength,
+            int organizationNameMaxLength
     ) {
         this.googleOauthClientId = requireNonNull(googleOauthClientId, "googleOauthClientId cannot be null");
         this.urlPrefix = urlPrefix;
@@ -44,6 +64,9 @@ public class PublicConfig {
         this.programCityMaxLength = programCityMaxLength;
         this.programGoalMaxLength = programGoalMaxLength;
         this.programOutcomeMaxLength = programOutcomeMaxLength;
+        this.programNameMaxLength = programNameMaxLength;
+        this.programAreaExplanationMaxLength = programAreaExplanationMaxLength;
+        this.organizationNameMaxLength = organizationNameMaxLength;
     }
 
     /**
@@ -65,24 +88,79 @@ public class PublicConfig {
         return urlPrefix;
     }
 
+    /**
+     * Returns the configured min start year allowed for a program.
+     *
+     * @return the min start year allowed for a program
+     */
     public int getProgramStartYearMin() {
         return programStartYearMin;
     }
 
+    /**
+     * Returns the configured max chars allowed for a program's street address.
+     *
+     * @return the max chars allowed for a program's street address
+     */
     public int getProgramStreetAddressMaxLength() {
         return programStreetAddressMaxLength;
     }
 
+    /**
+     * Returns the configured max chars allowed for a program's city.
+     *
+     * @return the max chars allowed for a program's city
+     */
     public int getProgramCityMaxLength() {
         return programCityMaxLength;
     }
 
+    /**
+     * Returns the configured max chars allowed for program's primary goals.
+     *
+     * @return the max chars allowed for program's primary goals
+     */
     public int getProgramGoalMaxLength() {
         return programGoalMaxLength;
     }
 
+    /**
+     * Returns the configured max chars allowed for program's measurable
+     * outcomes.
+     *
+     * @return the max chars allowed for program's measurable outcomes
+     */
     public int getProgramOutcomeMaxLength() {
         return programOutcomeMaxLength;
+    }
+
+    /**
+     * Returns the configured max chars allowed for a program's name.
+     *
+     * @return the max chars allowed for a program's name
+     */
+    public int getProgramNameMaxLength() {
+        return programNameMaxLength;
+    }
+
+    /**
+     * Returns the configured max chars allowed for a program's
+     * other-program-area explanation.
+     *
+     * @return the max chars allowed for a program's other-program-area
+     * explanation
+     */
+    public int getProgramAreaExplanationMaxLength() {
+        return programAreaExplanationMaxLength;
+    }
+
+    /**
+     * Returns the configured max chars allowed for an organization's name.
+     *
+     * @return the max chars allowed for an organization's name
+     */
+    public int getOrganizationNameMaxLength() {
+        return organizationNameMaxLength;
     }
 
     @Override
