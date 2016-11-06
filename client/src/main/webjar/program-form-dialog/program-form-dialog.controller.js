@@ -149,6 +149,21 @@
         }
 
         /**
+         * Sets program.organization to equal object inside organizations so object equality will work for select field.
+         */
+        function setProgramOrganization() {
+            if (programFormDialog.program.organization && programFormDialog.program.organization.id) {
+                programFormDialog.organizations.forEach(
+                    function (organization) {
+                        if (organization.id === programFormDialog.program.organization.id) {
+                            programFormDialog.program.organization = organization;
+                        }
+                    }
+                );
+            }
+        }
+
+        /**
          * Fetch all initial information from the server.
          */
         function load() {
@@ -176,6 +191,12 @@
                     programFormDialog.programAreas.$promise,
                     programFormDialog.organizations.$promise
                 ]
+            ).then(
+                function (input) {
+                    /* Ensure that program.organization is same object as in organizations. */
+                    programFormDialog.setProgramOrganization();
+                    return input;
+                }
             ).finally(
                 function () {
                     programFormDialog.loading = false;
@@ -194,12 +215,13 @@
             programFormDialog.otherProgramArea = false;
             programFormDialog.newOrganization = new Organization();
 
-            load();
-
+            programFormDialog.setProgramOrganization = setProgramOrganization;
             programFormDialog.cancel = cancel;
             programFormDialog.save = save;
             programFormDialog.getCurrentYear = getCurrentYear;
             programFormDialog.isNewOrganization = isNewOrganization;
+
+            load();
 
             $log.debug("Program Form Dialog Controller loaded", programFormDialog);
         }
