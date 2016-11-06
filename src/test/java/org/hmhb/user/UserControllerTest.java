@@ -1,5 +1,8 @@
 package org.hmhb.user;
 
+import javax.servlet.http.HttpServletResponse;
+
+import java.io.PrintWriter;
 import java.util.Collections;
 import java.util.List;
 
@@ -38,6 +41,28 @@ public class UserControllerTest {
 
         /* Verify the results. */
         assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testGetAllAsCsv() throws Exception {
+        String jwtToken = "test-jwt-token";
+        HttpServletResponse response = mock(HttpServletResponse.class);
+        PrintWriter writer = mock(PrintWriter.class);
+
+        String expected = "test-csv";
+
+        /* Train the mocks. */
+        when(service.getAllAsCsv(jwtToken)).thenReturn(expected);
+        when(response.getWriter()).thenReturn(writer);
+
+        /* Make the call. */
+        toTest.getAllAsCsv(jwtToken, response);
+
+        /* Verify the results. */
+        verify(response).setStatus(200);
+        verify(response).setHeader("Content-Type", "text/csv");
+        verify(response).setHeader("Content-Disposition", "attachment; filename=all-users.csv");
+        verify(writer).append(expected);
     }
 
     @Test

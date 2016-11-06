@@ -9,6 +9,7 @@ import org.hmhb.authorization.AuthorizationService;
 import org.hmhb.config.ConfigService;
 import org.hmhb.config.PublicConfig;
 import org.hmhb.county.County;
+import org.hmhb.csv.CsvService;
 import org.hmhb.exception.program.OnlyAdminCanDeleteProgramException;
 import org.hmhb.exception.program.OnlyAdminCanSaveProgramException;
 import org.hmhb.exception.program.ProgramCityNameIsTooLongException;
@@ -71,6 +72,7 @@ public class DefaultProgramServiceTest {
 
     private AuditHelper auditHelper;
     private AuthorizationService authorizationService;
+    private CsvService csvService;
     private GeocodeService geocodeService;
     private OrganizationService organizationService;
     private ProgramDao dao;
@@ -81,6 +83,7 @@ public class DefaultProgramServiceTest {
         ConfigService configService = mock(ConfigService.class);
         auditHelper = mock(AuditHelper.class);
         authorizationService = mock(AuthorizationService.class);
+        csvService = mock(CsvService.class);
         geocodeService = mock(GeocodeService.class);
         organizationService = mock(OrganizationService.class);
         dao = mock(ProgramDao.class);
@@ -102,6 +105,7 @@ public class DefaultProgramServiceTest {
                 configService,
                 auditHelper,
                 authorizationService,
+                csvService,
                 geocodeService,
                 organizationService,
                 dao
@@ -226,6 +230,23 @@ public class DefaultProgramServiceTest {
 
         /* Make the call. */
         List<Program> actual = toTest.getAll();
+
+        /* Verify the results. */
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testGetAllAsCsv() throws Exception {
+        List<Program> programsFound = Collections.singletonList(createFilledInProgram());
+
+        String expected = "a,b,c\n1,2,3\n";
+
+        /* Train the mocks. */
+        when(dao.findAllByOrderByNameAsc()).thenReturn(programsFound);
+        when(csvService.generateFromPrograms(programsFound, true, true)).thenReturn(expected);
+
+        /* Make the call. */
+        String actual = toTest.getAllAsCsv(true, true);
 
         /* Verify the results. */
         assertEquals(expected, actual);

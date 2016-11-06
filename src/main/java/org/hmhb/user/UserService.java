@@ -42,6 +42,16 @@ public interface UserService {
     List<HmhbUser> getAll();
 
     /**
+     * Retrieves all {@link HmhbUser}s in the system as a CSV.
+     *
+     * @param jwtToken the JWT auth token
+     * @return all {@link HmhbUser}s as CSV
+     */
+    String getAllAsCsv(
+            @Nonnull String jwtToken
+    );
+
+    /**
      * Deletes a {@link HmhbUser} by its database ID.
      *
      * @param id the database ID

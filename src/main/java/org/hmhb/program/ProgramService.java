@@ -1,6 +1,7 @@
 package org.hmhb.program;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import java.util.List;
 
@@ -33,6 +34,20 @@ public interface ProgramService {
      * @return all {@link Program}s
      */
     List<Program> getAll();
+
+    /**
+     * Retrieves all {@link Program}s in the system as a CSV.
+     *
+     * @param expandCounties whether a program's counties should not be
+     *                       flattened into one row (comma delimited)
+     * @param expandProgramAreas whether a program's program areas should not
+     *                           be flattened into one row (comma delimited)
+     * @return all {@link Program}s as CSV
+     */
+    String getAllAsCsv(
+            @Nullable Boolean expandCounties,
+            @Nullable Boolean expandProgramAreas
+    );
 
     /**
      * Searches for {@link Program}s matching criteria in the passed in

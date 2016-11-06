@@ -1,12 +1,16 @@
 package org.hmhb.user;
 
+import javax.servlet.http.HttpServletRequest;
+
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import com.google.api.services.plus.model.Person;
 import org.hmhb.audit.AuditHelper;
+import org.hmhb.authentication.JwtAuthenticationService;
 import org.hmhb.authorization.AuthorizationService;
+import org.hmhb.csv.CsvService;
 import org.hmhb.exception.user.UserCannotDeleteSuperAdminException;
 import org.hmhb.exception.user.UserEmailRequiredException;
 import org.hmhb.exception.user.UserNonAdminCannotEscalateToAdminException;
@@ -37,8 +41,13 @@ public class DefaultUserServiceTest {
     private static final Date BEFORE = new Date(1234567890L);
     private static final Date NOW = new Date(9876543210L);
 
+    private static final String JWT_TOKEN = "test-jwt-tokent";
+
     private AuditHelper auditHelper;
     private AuthorizationService authorizationService;
+    private HttpServletRequest request;
+    private JwtAuthenticationService jwtAuthService;
+    private CsvService csvService;
     private UserDao dao;
     private DefaultUserService toTest;
 
@@ -46,11 +55,17 @@ public class DefaultUserServiceTest {
     public void setUp() throws Exception {
         auditHelper = mock(AuditHelper.class);
         authorizationService = mock(AuthorizationService.class);
+        request = mock(HttpServletRequest.class);
+        jwtAuthService = mock(JwtAuthenticationService.class);
+        csvService = mock(CsvService.class);
         dao = mock(UserDao.class);
 
         toTest = new DefaultUserService(
                 auditHelper,
                 authorizationService,
+                request,
+                jwtAuthService,
+                csvService,
                 dao
         );
     }
@@ -284,6 +299,62 @@ public class DefaultUserServiceTest {
 
         /* Make the call. */
         toTest.getAll();
+    }
+
+    @Test
+    public void testGetAllAsCsv_Admin() throws Exception {
+
+        HmhbUser loggedInUser = new HmhbUser();
+        loggedInUser.setId(OTHER_USER_ID);
+        loggedInUser.setSuperAdmin(false);
+        loggedInUser.setAdmin(true);
+        loggedInUser.setEmail(OTHER_EMAIL);
+
+        HmhbUser expectedUser = new HmhbUser();
+        expectedUser.setId(USER_ID);
+
+        List<HmhbUser> usersFound = Collections.singletonList(expectedUser);
+
+        String expected = "a,b,c\n1,2,3\n";
+
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
+        when(authorizationService.getLoggedInUser()).thenReturn(loggedInUser);
+        when(dao.findAllByOrderByDisplayNameAscEmailAsc()).thenReturn(usersFound);
+        when(csvService.generateFromUsers(usersFound)).thenReturn(expected);
+
+        /* Make the call. */
+        String actual = toTest.getAllAsCsv(JWT_TOKEN);
+
+        /* Verify the results. */
+        assertEquals(expected, actual);
+        verify(jwtAuthService).validateToken(request, JWT_TOKEN);
+    }
+
+    @Test(expected = UserNotAllowedToAccessOtherProfileException.class)
+    public void testGetAllAsCsv_NotLoggedIn() throws Exception {
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(false);
+        when(authorizationService.getLoggedInUser()).thenReturn(null);
+
+        /* Make the call. */
+        toTest.getAllAsCsv(JWT_TOKEN);
+    }
+
+    @Test(expected = UserNotAllowedToAccessOtherProfileException.class)
+    public void testGetAllAsCsv_NonAdmin_AccessingOtherProfile() {
+        HmhbUser loggedInUser = new HmhbUser();
+        loggedInUser.setId(OTHER_USER_ID);
+        loggedInUser.setSuperAdmin(false);
+        loggedInUser.setAdmin(false);
+        loggedInUser.setEmail(OTHER_EMAIL);
+
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(false);
+        when(authorizationService.getLoggedInUser()).thenReturn(loggedInUser);
+
+        /* Make the call. */
+        toTest.getAllAsCsv(JWT_TOKEN);
     }
 
     @Test
