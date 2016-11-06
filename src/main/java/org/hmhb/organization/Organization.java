@@ -1,5 +1,6 @@
 package org.hmhb.organization;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,6 +17,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * Domain object representing an HMHB organization.
  */
 @Entity
+@Cacheable
 public class Organization {
 
     @Id

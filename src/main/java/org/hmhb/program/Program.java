@@ -1,5 +1,6 @@
 package org.hmhb.program;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -25,6 +26,7 @@ import org.hmhb.programarea.ProgramArea;
  * Domain object representing an HMHB program.
  */
 @Entity
+@Cacheable
 public class Program {
 
     @Id
