@@ -1,5 +1,6 @@
 package org.hmhb.programarea;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,6 +15,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * Domain object representing a category of a program.
  */
 @Entity
+@Cacheable
 public class ProgramArea {
 
     @Id
