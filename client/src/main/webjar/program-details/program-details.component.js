@@ -180,6 +180,14 @@
         }
 
         /**
+         * Returns true if counties-served should be displayed.
+         * @returns {boolean} true if counties should be shown, otherwise false.
+         */
+        function showCountiesServed() {
+            return programDetails.program.countiesServed.length > 0 && !programDetails.program.servesAllCounties;
+        }
+
+        /**
          * Toggles the visibility of the served counties list.
          */
         function toggleCounties() {
@@ -194,6 +202,7 @@
             var mapQueryPromise;
 
             programDetails.countiesHidden = true;
+            programDetails.showCountiesServed = showCountiesServed;
             programDetails.toggleCounties = toggleCounties;
             programDetails.edit = edit;
             programDetails.deleteProgram = deleteProgram;
