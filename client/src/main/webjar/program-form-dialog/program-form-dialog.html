@@ -79,9 +79,11 @@
                             </label>
                             <input name="programName"
                                    ng-model="programFormDialog.program.name"
+                                   md-maxlength="programFormDialog.config.programNameMaxLength"
                                    required>
                             <div ng-messages="programFormDialog.programForm.programName.$error">
                                 <div ng-message="required">Program name is required</div>
+                                <div ng-message="md-maxlength">Program name is too long</div>
                             </div>
                         </md-input-container>
 
@@ -209,9 +211,11 @@
                                 </label>
                                 <input name="otherProgramAreaExplanation"
                                        ng-model="programFormDialog.program.otherProgramAreaExplanation"
+                                       md-maxlength="programFormDialog.config.programAreaExplanationMaxLength"
                                        required>
                                 <div ng-messages="programFormDialog.programForm.otherProgramAreaExplanation.$error">
                                     <div ng-message="required">Please provide an explanation</div>
+                                    <div ng-message="md-maxlength">Explanation is too long</div>
                                 </div>
                             </md-input-container>
                         </fieldset>

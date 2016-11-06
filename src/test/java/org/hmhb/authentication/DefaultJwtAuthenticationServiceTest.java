@@ -44,7 +44,7 @@ public class DefaultJwtAuthenticationServiceTest {
         user.setEmail(USER_EMAIL);
         user.setAdmin(false);
 
-        PublicConfig publicConfig = new PublicConfig("oauthClientId", null, 1, 2, 3, 4, 5);
+        PublicConfig publicConfig = new PublicConfig("oauthClientId", null, 1, 2, 3, 4, 5, 6, 7, 8);
         PrivateConfig privateConfig = new PrivateConfig("oauthClientSecret", TEST_DOMAIN, TEST_SECRET);
 
         /* Train the config. */
@@ -71,7 +71,7 @@ public class DefaultJwtAuthenticationServiceTest {
         user.setEmail(USER_EMAIL);
         user.setAdmin(false);
 
-        PublicConfig publicConfig = new PublicConfig("oauthClientId", null, 1, 2, 3, 4, 5);
+        PublicConfig publicConfig = new PublicConfig("oauthClientId", null, 1, 2, 3, 4, 5, 6, 7, 8);
         PrivateConfig privateConfig = new PrivateConfig("oauthClientSecret", TEST_DOMAIN, TEST_SECRET);
 
         /* Train the config. */
@@ -121,7 +121,7 @@ public class DefaultJwtAuthenticationServiceTest {
         user.setEmail(USER_EMAIL);
         user.setAdmin(false);
 
-        PublicConfig publicConfig = new PublicConfig("oauthClientId", null, 1, 2, 3, 4, 5);
+        PublicConfig publicConfig = new PublicConfig("oauthClientId", null, 1, 2, 3, 4, 5, 6, 7, 8);
         PrivateConfig privateConfig = new PrivateConfig("oauthClientSecret", TEST_DOMAIN, TEST_SECRET);
 
         /* Train the config. */
@@ -145,7 +145,7 @@ public class DefaultJwtAuthenticationServiceTest {
         user.setEmail(USER_EMAIL);
         user.setAdmin(false);
 
-        PublicConfig publicConfig = new PublicConfig("oauthClientId", null, 1, 2, 3, 4, 5);
+        PublicConfig publicConfig = new PublicConfig("oauthClientId", null, 1, 2, 3, 4, 5, 6, 7, 8);
         PrivateConfig privateConfig = new PrivateConfig("oauthClientSecret", TEST_DOMAIN, TEST_SECRET);
 
         /* Train the config. */

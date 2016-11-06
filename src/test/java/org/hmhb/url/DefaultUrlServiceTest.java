@@ -32,7 +32,7 @@ public class DefaultUrlServiceTest {
     public void testGetUrlPrefix() throws Exception {
         String expected = "https://hmhb.herokuapp.com:443";
 
-        PublicConfig publicConfig = new PublicConfig("oauthClientId", null, 1, 2, 3, 4, 5);
+        PublicConfig publicConfig = new PublicConfig("oauthClientId", null, 1, 2, 3, 4, 5, 6, 7, 8);
         PrivateConfig privateConfig = new PrivateConfig("oauthClientSecret", "jwtDomain", "jwtSecret");
 
         /* Train the config. */
@@ -55,7 +55,7 @@ public class DefaultUrlServiceTest {
     public void testGetUrlPrefixNoPortSpecified() throws Exception {
         String expected = "https://hmhb.herokuapp.com";
 
-        PublicConfig publicConfig = new PublicConfig("oauthClientId", null, 1, 2, 3, 4, 5);
+        PublicConfig publicConfig = new PublicConfig("oauthClientId", null, 1, 2, 3, 4, 5, 6, 7, 8);
         PrivateConfig privateConfig = new PrivateConfig("oauthClientSecret", "jwtDomain", "jwtSecret");
 
         /* Train the config. */
@@ -78,7 +78,7 @@ public class DefaultUrlServiceTest {
     public void testGetUrlPrefixConfigOverride() throws Exception {
         String expected = "https://hmhb.herokuapp.com";
 
-        PublicConfig publicConfig = new PublicConfig("oauthClientId", expected, 1, 2, 3, 4, 5);
+        PublicConfig publicConfig = new PublicConfig("oauthClientId", expected, 1, 2, 3, 4, 5, 6, 7, 8);
         PrivateConfig privateConfig = new PrivateConfig("oauthClientSecret", "jwtDomain", "jwtSecret");
 
         /* Train the config. */
@@ -101,7 +101,7 @@ public class DefaultUrlServiceTest {
     public void testGetUrlPrefixConfigOverrideIsEmpty() throws Exception {
         String expected = "http://localhost:8080";
 
-        PublicConfig publicConfig = new PublicConfig("oauthClientId", "", 1, 2, 3, 4, 5);
+        PublicConfig publicConfig = new PublicConfig("oauthClientId", "", 1, 2, 3, 4, 5, 6, 7, 8);
         PrivateConfig privateConfig = new PrivateConfig("oauthClientSecret", "jwtDomain", "jwtSecret");
 
         /* Train the config. */
@@ -124,7 +124,7 @@ public class DefaultUrlServiceTest {
     public void testGetUrlPrefixConfigOverrideIsSpace() throws Exception {
         String expected = "http://localhost:8080";
 
-        PublicConfig publicConfig = new PublicConfig("oauthClientId", "   ", 1, 2, 3, 4, 5);
+        PublicConfig publicConfig = new PublicConfig("oauthClientId", "   ", 1, 2, 3, 4, 5, 6, 7, 8);
         PrivateConfig privateConfig = new PrivateConfig("oauthClientSecret", "jwtDomain", "jwtSecret");
 
         /* Train the config. */

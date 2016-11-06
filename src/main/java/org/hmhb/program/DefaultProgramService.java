@@ -21,9 +21,11 @@ import org.hmhb.exception.program.ProgramCityNameIsTooLongException;
 import org.hmhb.exception.program.ProgramCityRequiredException;
 import org.hmhb.exception.program.ProgramGoalIsTooLongException;
 import org.hmhb.exception.program.ProgramMeasurableOutcome1RequiredException;
+import org.hmhb.exception.program.ProgramNameIsTooLongException;
 import org.hmhb.exception.program.ProgramNameRequiredException;
 import org.hmhb.exception.program.ProgramNotFoundException;
 import org.hmhb.exception.program.ProgramOrganizationRequiredException;
+import org.hmhb.exception.program.ProgramOtherExplanationIsTooLongException;
 import org.hmhb.exception.program.ProgramOutcomeIsTooLongException;
 import org.hmhb.exception.program.ProgramPrimaryGoal1RequiredException;
 import org.hmhb.exception.program.ProgramStartYearIsTooOldException;
@@ -304,6 +306,15 @@ public class DefaultProgramService implements ProgramService {
 
         if (StringUtils.isBlank(program.getName())) {
             throw new ProgramNameRequiredException();
+        }
+
+        if (program.getName().length() > publicConfig.getProgramNameMaxLength()) {
+            throw new ProgramNameIsTooLongException();
+        }
+
+        String other = program.getOtherProgramAreaExplanation();
+        if (other != null && other.length() > publicConfig.getProgramAreaExplanationMaxLength()) {
+            throw new ProgramOtherExplanationIsTooLongException();
         }
 
         if (StringUtils.isBlank(program.getState())) {

@@ -9,9 +9,11 @@
             </label>
             <input name="organizationName"
                    ng-model="organizationForm.organization.name"
+                   md-maxlength="organizationForm.config.organizationNameMaxLength"
                    required>
             <div ng-messages="organizationForm.orgForm.organizationName.$error">
                 <div ng-message="required">Organization name is required</div>
+                <div ng-message="md-maxlength">Organization name is too long</div>
             </div>
         </md-input-container>
 

@@ -5,6 +5,7 @@
         "healthBam.organizationForm",
         [
             "ngMaterial",
+            "healthBam.config",
             "healthBam.templates"
         ]
     );

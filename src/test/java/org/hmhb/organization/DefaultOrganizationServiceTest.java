@@ -6,11 +6,15 @@ import java.util.List;
 
 import org.hmhb.audit.AuditHelper;
 import org.hmhb.authorization.AuthorizationService;
+import org.hmhb.config.ConfigService;
+import org.hmhb.config.PublicConfig;
 import org.hmhb.exception.organization.CannotDeleteOrganizationWithProgramsException;
 import org.hmhb.exception.organization.OnlyAdminCanDeleteOrgException;
 import org.hmhb.exception.organization.OnlyAdminCanUpdateOrgException;
+import org.hmhb.exception.organization.OrganizationNameIsTooLongException;
 import org.hmhb.exception.organization.OrganizationNameRequiredException;
 import org.hmhb.exception.organization.OrganizationNotFoundException;
+import org.hmhb.exception.organization.OrganizationUrlIsTooLongException;
 import org.hmhb.program.Program;
 import org.hmhb.program.ProgramDao;
 import org.junit.Before;
@@ -35,6 +39,10 @@ public class DefaultOrganizationServiceTest {
     private static final String WEBSITE_URL = "http://www.test-website-url.com";
     private static final String FACEBOOK_URL = "http://www.facebook.com/TestFacebook";
 
+    private static final int MIN_VALUE = 1500;
+    private static final int MAX_LEN = 50;
+    private static final String TOO_LONG = "1234567890-1234567890-1234567890-1234567890-1234567890";
+
     private AuditHelper auditHelper;
     private AuthorizationService authorizationService;
     private ProgramDao programDao;
@@ -48,12 +56,37 @@ public class DefaultOrganizationServiceTest {
         programDao = mock(ProgramDao.class);
         dao = mock(OrganizationDao.class);
 
+        PublicConfig publicConfig = new PublicConfig(
+                "test-oauth-client-id",
+                "test-url-prefix",
+                MIN_VALUE,
+                MAX_LEN,
+                MAX_LEN,
+                MAX_LEN,
+                MAX_LEN,
+                MAX_LEN,
+                MAX_LEN,
+                MAX_LEN
+        );
+
+        ConfigService configService = mock(ConfigService.class);
+        when(configService.getPublicConfig()).thenReturn(publicConfig);
+
         toTest = new DefaultOrganizationService(
+                configService,
                 auditHelper,
                 authorizationService,
                 programDao,
                 dao
         );
+    }
+
+    private String generateString(int numChars) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < numChars; i++) {
+            sb.append('Z');
+        }
+        return sb.toString();
     }
 
     private Organization createFilledInOrg() {
@@ -84,7 +117,7 @@ public class DefaultOrganizationServiceTest {
     }
 
     @Test(expected = OrganizationNotFoundException.class)
-    public void testGetByIdNotFound() throws Exception {
+    public void testGetById_NotFound() throws Exception {
         /* Train the mocks. */
         when(dao.findOne(ORG_ID)).thenReturn(null);
 
@@ -124,7 +157,7 @@ public class DefaultOrganizationServiceTest {
     }
 
     @Test(expected = OrganizationNotFoundException.class)
-    public void testDeleteNotFound() throws Exception {
+    public void testDelete_NotFound() throws Exception {
         /* Train the mocks. */
         when(authorizationService.isAdmin()).thenReturn(true);
         when(dao.findOne(ORG_ID)).thenReturn(null);
@@ -134,7 +167,7 @@ public class DefaultOrganizationServiceTest {
     }
 
     @Test(expected = OnlyAdminCanDeleteOrgException.class)
-    public void testDeleteNotAdmin() throws Exception {
+    public void testDelete_NotAdmin() throws Exception {
         /* Train the mocks. */
         when(authorizationService.isAdmin()).thenReturn(false);
 
@@ -143,7 +176,7 @@ public class DefaultOrganizationServiceTest {
     }
 
     @Test(expected = CannotDeleteOrganizationWithProgramsException.class)
-    public void testDeleteForeignKeyViolation() throws Exception {
+    public void testDelete_ForeignKeyViolation() throws Exception {
         Organization orgInDb = createFilledInOrg();
 
         /* Train the mocks. */
@@ -156,7 +189,7 @@ public class DefaultOrganizationServiceTest {
     }
 
     @Test(expected = OrganizationNameRequiredException.class)
-    public void testSaveCreateNewNullOrgName() throws Exception {
+    public void testSaveCreateNew_NullOrgName() throws Exception {
         Organization input = createFilledInOrg();
         input.setName(null);
 
@@ -165,7 +198,7 @@ public class DefaultOrganizationServiceTest {
     }
 
     @Test(expected = OrganizationNameRequiredException.class)
-    public void testSaveCreateNewEmptyOrgName() throws Exception {
+    public void testSaveCreateNew_EmptyOrgName() throws Exception {
         Organization input = createFilledInOrg();
         input.setName("");
 
@@ -174,9 +207,36 @@ public class DefaultOrganizationServiceTest {
     }
 
     @Test(expected = OrganizationNameRequiredException.class)
-    public void testSaveCreateNewOnlyWhitespaceOrgName() throws Exception {
+    public void testSaveCreateNew_OnlyWhitespaceOrgName() throws Exception {
         Organization input = createFilledInOrg();
         input.setName(" ");
+
+        /* Make the call. */
+        toTest.save(input);
+    }
+
+    @Test(expected = OrganizationNameIsTooLongException.class)
+    public void testSaveCreateNew_OrgNameTooLong() throws Exception {
+        Organization input = createFilledInOrg();
+        input.setName(TOO_LONG);
+
+        /* Make the call. */
+        toTest.save(input);
+    }
+
+    @Test(expected = OrganizationUrlIsTooLongException.class)
+    public void testSaveCreateNew_FacebookUrlTooLong() throws Exception {
+        Organization input = createFilledInOrg();
+        input.setFacebookUrl(generateString(2001));
+
+        /* Make the call. */
+        toTest.save(input);
+    }
+
+    @Test(expected = OrganizationUrlIsTooLongException.class)
+    public void testSaveCreateNew_WebsiteUrlTooLong() throws Exception {
+        Organization input = createFilledInOrg();
+        input.setWebsiteUrl(generateString(2001));
 
         /* Make the call. */
         toTest.save(input);
@@ -254,7 +314,7 @@ public class DefaultOrganizationServiceTest {
     }
 
     @Test(expected = OrganizationNotFoundException.class)
-    public void testSaveUpdateExistingOrgNotFound() throws Exception {
+    public void testSaveUpdateExisting_OrgNotFound() throws Exception {
         Organization input = createFilledInOrg();
         input.setId(ORG_ID);
         input.setName(ORG_NAME);
@@ -268,7 +328,7 @@ public class DefaultOrganizationServiceTest {
     }
 
     @Test(expected = OnlyAdminCanUpdateOrgException.class)
-    public void testSaveUpdateExistingOrgNotAdmin() throws Exception {
+    public void testSaveUpdateExisting_OrgNotAdmin() throws Exception {
         Organization input = createFilledInOrg();
         input.setId(ORG_ID);
         input.setName(ORG_NAME);

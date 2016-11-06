@@ -35,7 +35,10 @@ public class DefaultConfigService implements ConfigService {
                 environment.getProperty("hmhb.program.streetAddress.maxLength", Integer.class),
                 environment.getProperty("hmhb.program.city.maxLength", Integer.class),
                 environment.getProperty("hmhb.program.goal.maxLength", Integer.class),
-                environment.getProperty("hmhb.program.outcome.maxLength", Integer.class)
+                environment.getProperty("hmhb.program.outcome.maxLength", Integer.class),
+                environment.getProperty("hmhb.program.name.maxLength", Integer.class),
+                environment.getProperty("hmhb.program.otherProgramArea.explanation.maxLength", Integer.class),
+                environment.getProperty("hmhb.organization.name.maxLength", Integer.class)
         );
 
         this.privateConfig = new PrivateConfig(

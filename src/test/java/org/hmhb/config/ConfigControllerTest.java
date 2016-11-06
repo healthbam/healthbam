@@ -42,6 +42,9 @@ public class ConfigControllerTest {
         int programCityMaxLen = 3333;
         int programGoalMaxLen = 4444;
         int programOutcomeMaxLen = 5555;
+        int programNameMaxLen = 6666;
+        int programOtherExplanationMaxLen = 7777;
+        int orgNameMaxLen = 8888;
 
         PublicConfig publicConfig = new PublicConfig(
                 oauthClientId,
@@ -50,7 +53,10 @@ public class ConfigControllerTest {
                 programStreetAddressMaxLen,
                 programCityMaxLen,
                 programGoalMaxLen,
-                programOutcomeMaxLen
+                programOutcomeMaxLen,
+                programNameMaxLen,
+                programOtherExplanationMaxLen,
+                orgNameMaxLen
         );
 
         /* Train the mocks. */
@@ -69,6 +75,12 @@ public class ConfigControllerTest {
         assertTrue(assertErrMsg, actual.contains("\"programCityMaxLength\":" + programCityMaxLen));
         assertTrue(assertErrMsg, actual.contains("\"programGoalMaxLength\":" + programGoalMaxLen));
         assertTrue(assertErrMsg, actual.contains("\"programOutcomeMaxLength\":" + programOutcomeMaxLen));
+        assertTrue(assertErrMsg, actual.contains("\"programNameMaxLength\":" + programNameMaxLen));
+        assertTrue(
+                assertErrMsg,
+                actual.contains("\"programAreaExplanationMaxLength\":" + programOtherExplanationMaxLen)
+        );
+        assertTrue(assertErrMsg, actual.contains("\"organizationNameMaxLength\":" + orgNameMaxLen));
 
         /* Verify the response wont be cached. */
         verify(response).setHeader("Cache-Control", "max-age=0, must-revalidate");

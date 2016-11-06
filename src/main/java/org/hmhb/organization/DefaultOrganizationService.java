@@ -9,11 +9,15 @@ import com.codahale.metrics.annotation.Timed;
 import org.apache.commons.lang3.StringUtils;
 import org.hmhb.audit.AuditHelper;
 import org.hmhb.authorization.AuthorizationService;
+import org.hmhb.config.ConfigService;
+import org.hmhb.config.PublicConfig;
 import org.hmhb.exception.organization.CannotDeleteOrganizationWithProgramsException;
 import org.hmhb.exception.organization.OnlyAdminCanDeleteOrgException;
 import org.hmhb.exception.organization.OnlyAdminCanUpdateOrgException;
+import org.hmhb.exception.organization.OrganizationNameIsTooLongException;
 import org.hmhb.exception.organization.OrganizationNameRequiredException;
 import org.hmhb.exception.organization.OrganizationNotFoundException;
+import org.hmhb.exception.organization.OrganizationUrlIsTooLongException;
 import org.hmhb.program.ProgramDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +34,9 @@ public class DefaultOrganizationService implements OrganizationService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultOrganizationService.class);
 
+    private static final int URL_MAX_LEN = 2000;
+
+    private final PublicConfig publicConfig;
     private final AuditHelper auditHelper;
     private final AuthorizationService authorizationService;
     private final OrganizationDao dao;
@@ -38,6 +45,7 @@ public class DefaultOrganizationService implements OrganizationService {
     /**
      * An injectable constructor.
      *
+     * @param configService the {@link ConfigService} to get public config from
      * @param auditHelper the {@link AuditHelper} to get audit information
      * @param authorizationService the {@link AuthorizationService} to verify a
      *                             user is allowed to do certain operations
@@ -50,6 +58,7 @@ public class DefaultOrganizationService implements OrganizationService {
      */
     @Autowired
     public DefaultOrganizationService(
+            @Nonnull ConfigService configService,
             @Nonnull AuditHelper auditHelper,
             @Nonnull AuthorizationService authorizationService,
             /* I'm injecting ProgramDao instead of ProgramService to avoid a circular dependency. */
@@ -57,6 +66,8 @@ public class DefaultOrganizationService implements OrganizationService {
             @Nonnull OrganizationDao dao
     ) {
         LOGGER.debug("constructed");
+        requireNonNull(configService, "configService cannot be null");
+        this.publicConfig = configService.getPublicConfig();
         this.auditHelper = requireNonNull(auditHelper, "auditHelper cannot be null");
         this.authorizationService = requireNonNull(authorizationService, "authorizationService cannot be null");
         this.programDao = requireNonNull(programDao, "programDao cannot be null");
@@ -120,6 +131,18 @@ public class DefaultOrganizationService implements OrganizationService {
 
         if (StringUtils.isBlank(organization.getName())) {
             throw new OrganizationNameRequiredException();
+        }
+
+        if (organization.getName().length() > publicConfig.getOrganizationNameMaxLength()) {
+            throw new OrganizationNameIsTooLongException();
+        }
+
+        if (organization.getFacebookUrl() != null && organization.getFacebookUrl().length() > URL_MAX_LEN) {
+            throw new OrganizationUrlIsTooLongException();
+        }
+
+        if (organization.getWebsiteUrl() != null && organization.getWebsiteUrl().length() > URL_MAX_LEN) {
+            throw new OrganizationUrlIsTooLongException();
         }
 
         if (organization.getId() == null) {
