@@ -56,7 +56,19 @@
                         new Organization(
                             {
                                 id: 100,
-                                name: "Org-1"
+                                name: "Org-100"
+                            }
+                        ),
+                        new Organization(
+                            {
+                                id: 101,
+                                name: "Org-101"
+                            }
+                        ),
+                        new Organization(
+                            {
+                                id: 102,
+                                name: "Org-102"
                             }
                         )
                     ];
@@ -367,6 +379,41 @@
 
                     expect(locals.$mdToast.show).toHaveBeenCalled();
 
+                });
+
+            });
+
+            describe("programFormDialog.setProgramOrganization", function () {
+
+                beforeEach(initController);
+
+                it("should exist", function () {
+                    expect(programFormDialog.setProgramOrganization).toEqual(jasmine.any(Function));
+                });
+
+                it("should not alter program when no existing organization", function () {
+                    delete programFormDialog.program.organization;
+                    programFormDialog.setProgramOrganization();
+                    expect(programFormDialog.program.organization).toBeUndefined();
+                });
+
+                it("should set program's organization if IDs match", function () {
+                    programFormDialog.program.organization = {
+                        id: organizations[1].id
+                    };
+                    programFormDialog.setProgramOrganization();
+                    expect(programFormDialog.program.organization).toEqual(organizations[1]);
+                });
+
+                it("should set not alter program if no IDs match", function () {
+
+                    var originalOrg = {
+                        id: 7890
+                    };
+
+                    programFormDialog.program.organization = angular.copy(originalOrg);
+                    programFormDialog.setProgramOrganization();
+                    expect(programFormDialog.program.organization).toEqual(originalOrg);
                 });
 
             });
