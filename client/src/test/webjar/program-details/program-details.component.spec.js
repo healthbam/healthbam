@@ -243,6 +243,48 @@
 
             });
 
+            describe("showCountiesServed", function () {
+
+                beforeEach(initController);
+
+                it("should be exposed", function () {
+                    expect(programDetails.showCountiesServed).toEqual(jasmine.any(Function));
+                });
+
+                it("should return true if program serves any counties and servesAllCounties is false", function () {
+                    programDetails.program.servesAllCounties = false;
+                    programDetails.program.countiesServed = [
+                        {
+                            mock: "county"
+                        }
+                    ];
+                    expect(programDetails.showCountiesServed()).toEqual(true);
+                });
+
+                it("should return false if program serves any counties and servesAllCounties is true", function () {
+                    programDetails.program.servesAllCounties = true;
+                    programDetails.program.countiesServed = [
+                        {
+                            mock: "county"
+                        }
+                    ];
+                    expect(programDetails.showCountiesServed()).toEqual(false);
+                });
+
+                it("should return false if program serves no counties and servesAllCounties is false", function () {
+                    programDetails.program.servesAllCounties = false;
+                    programDetails.program.countiesServed = [];
+                    expect(programDetails.showCountiesServed()).toEqual(false);
+                });
+
+                it("should return false if program serves no counties and servesAllCounties is true", function () {
+                    programDetails.program.servesAllCounties = true;
+                    programDetails.program.countiesServed = [];
+                    expect(programDetails.showCountiesServed()).toEqual(false);
+                });
+
+            });
+
             describe("toggleCounties", function () {
 
                 beforeEach(initController);

@@ -165,7 +165,7 @@
                         </div>
                     </md-list-item>
 
-                    <md-list-item ng-if="!programDetails.program.servesAllCounties"
+                    <md-list-item ng-if="programDetails.showCountiesServed()"
                                   ng-click="programDetails.toggleCounties()">
                         <md-icon ng-if="programDetails.countiesHidden"
                                  md-font-library="material-icons">
