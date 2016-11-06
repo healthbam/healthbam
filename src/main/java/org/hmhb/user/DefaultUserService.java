@@ -1,6 +1,7 @@
 package org.hmhb.user;
 
 import javax.annotation.Nonnull;
+import javax.servlet.http.HttpServletRequest;
 
 import java.util.List;
 
@@ -8,7 +9,9 @@ import com.codahale.metrics.annotation.Timed;
 import com.google.api.services.plus.model.Person;
 import org.apache.commons.lang3.StringUtils;
 import org.hmhb.audit.AuditHelper;
+import org.hmhb.authentication.JwtAuthenticationService;
 import org.hmhb.authorization.AuthorizationService;
+import org.hmhb.csv.CsvService;
 import org.hmhb.exception.user.UserCannotDeleteSuperAdminException;
 import org.hmhb.exception.user.UserEmailRequiredException;
 import org.hmhb.exception.user.UserNonAdminCannotEscalateToAdminException;
@@ -32,6 +35,9 @@ public class DefaultUserService implements UserService {
 
     private final AuditHelper auditHelper;
     private final AuthorizationService authorizationService;
+    private final HttpServletRequest request;
+    private final JwtAuthenticationService jwtAuthService;
+    private final CsvService csvService;
     private final UserDao dao;
 
     /**
@@ -41,16 +47,26 @@ public class DefaultUserService implements UserService {
      * @param authorizationService the {@link AuthorizationService} to verify
      *                             that the logged in user is allowed to do
      *                             the operations attempted
+     * @param request TODO.
+     * @param jwtAuthService TODO.
+     * @param csvService the {@link CsvService} for exporting/importing to/from
+     *                   CSV
      * @param dao the {@link UserDao} to save and retrieve {@link HmhbUser}s
      */
     @Autowired
     public DefaultUserService(
             @Nonnull AuditHelper auditHelper,
             @Nonnull AuthorizationService authorizationService,
+            @Nonnull HttpServletRequest request,
+            @Nonnull JwtAuthenticationService jwtAuthService,
+            @Nonnull CsvService csvService,
             @Nonnull UserDao dao
     ) {
         this.auditHelper = requireNonNull(auditHelper, "auditHelper cannot be null");
         this.authorizationService = requireNonNull(authorizationService, "authorizationService cannot be null");
+        this.request = requireNonNull(request, "request cannot be null");
+        this.jwtAuthService = requireNonNull(jwtAuthService, "jwtAuthService cannot be null");
+        this.csvService = requireNonNull(csvService, "csvService cannot be null");
         this.dao = requireNonNull(dao, "dao cannot be null");
     }
 
@@ -142,6 +158,24 @@ public class DefaultUserService implements UserService {
         }
 
         return dao.findAllByOrderByDisplayNameAscEmailAsc();
+    }
+
+    @Timed
+    @Override
+    public String getAllAsCsv(
+            @Nonnull String jwtToken
+    ) {
+        LOGGER.debug("getAllAsCsv called");
+
+        /*
+         * Since this was called with window.open, it doesn't have the auth
+         * headers, so we must manually authenticate the user.
+         */
+        jwtAuthService.validateToken(request, jwtToken);
+
+        return csvService.generateFromUsers(
+                getAll()
+        );
     }
 
     @Timed

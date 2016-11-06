@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.codahale.metrics.annotation.Timed;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -62,10 +63,13 @@ public class DefaultJwtAuthenticationService implements JwtAuthenticationService
         return new Date(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000);
     }
 
+    @Timed
     @Override
     public String generateJwtToken(
             @Nonnull HmhbUser user
     ) {
+        LOGGER.debug("generateJwtToken called: user={}", user);
+
         Map<String, Object> claims = new HashMap<>();
         claims.put("admin", user.isAdmin());
         claims.put("email", user.getEmail());
@@ -98,10 +102,12 @@ public class DefaultJwtAuthenticationService implements JwtAuthenticationService
         return token;
     }
 
+    @Timed
     @Override
     public void validateAuthentication(
             @Nonnull HttpServletRequest request
     ) {
+        LOGGER.debug("validateAuthentication called");
         requireNonNull(request, "request cannot be null");
 
         String authHeader = request.getHeader("Authorization");
@@ -126,85 +132,97 @@ public class DefaultJwtAuthenticationService implements JwtAuthenticationService
 
             String authToken = authHeaderInfo[1];
 
-            if (!Jwts.parser().isSigned(authToken)) {
-                throw new JwtTokenNotSignedException();
-            }
-
-            String domainId = getDomain();
-            String secret = getSecret();
-
-            byte[] keyBytes = DatatypeConverter.parseBase64Binary(secret);
-            /* I'm using setSigningKey with the SecretKeySpec so I can enforce which algorithm to use. */
-            SecretKeySpec secretKey = new SecretKeySpec(keyBytes, SignatureAlgorithm.HS256.getJcaName());
-
-            LOGGER.debug("authHeader is: {}", authHeader);
-            LOGGER.debug("authToken is: {}", authToken);
-
-            Claims claims = Jwts.parser()
-                    .requireAudience(domainId)
-                    .requireIssuer(domainId)
-                    .setSigningKey(secretKey)
-                    .parseClaimsJws(authToken)
-                    .getBody();
-
-            String username = claims.getSubject();
-            Date issuedAt = claims.getIssuedAt();
-            Date expirationDate = claims.getExpiration();
-            String issuer = claims.getIssuer();
-            String audience = claims.getAudience();
-            boolean admin = claims.get("admin", Boolean.class);
-            String email = claims.get("email", String.class);
-            Long userId = claims.get("userId", Integer.class).longValue();
-            String displayName = claims.get("displayName", String.class);
-            String imageUrl = claims.get("imageUrl", String.class);
-            String profileUrl = claims.get("profileUrl", String.class);
-            String firstName = claims.get("firstName", String.class);
-            String lastName = claims.get("lastName", String.class);
-            String middleName = claims.get("middleName", String.class);
-            String prefix = claims.get("prefix", String.class);
-            String suffix = claims.get("suffix", String.class);
-
-            Date now = new Date();
-
-            if (issuedAt.after(now)) {
-                throw new JwtTokenNotActiveYetException(issuedAt);
-            }
-
-            if (expirationDate.before(now)) {
-                throw new JwtTokenExpiredException(expirationDate);
-            }
-
-            LOGGER.debug(
-                    "token accepted, standard info: issuer={}, audience={}, username={}, issuedAt={}, expiresOn={}",
-                    issuer,
-                    audience,
-                    username,
-                    issuedAt,
-                    expirationDate
-            );
-
-            LOGGER.debug(
-                    "token accepted, custom info: admin={}, email={}, userId={}",
-                    admin,
-                    email,
-                    userId
-            );
-
-            HmhbUser user = new HmhbUser();
-            user.setAdmin(admin);
-            user.setEmail(email);
-            user.setId(userId);
-            user.setDisplayName(displayName);
-            user.setImageUrl(imageUrl);
-            user.setProfileUrl(profileUrl);
-            user.setFirstName(firstName);
-            user.setLastName(lastName);
-            user.setMiddleName(middleName);
-            user.setPrefix(prefix);
-            user.setSuffix(suffix);
-
-            request.setAttribute("loggedInUser", user);
+            validateToken(request, authToken);
         }
+    }
+
+    @Timed
+    @Override
+    public void validateToken(
+            @Nonnull HttpServletRequest request,
+            @Nonnull String authToken
+    ) {
+        LOGGER.debug("validateToken called");
+        requireNonNull(request, "request cannot be null");
+        requireNonNull(authToken, "authToken cannot be null");
+
+        if (!Jwts.parser().isSigned(authToken)) {
+            throw new JwtTokenNotSignedException();
+        }
+
+        String domainId = getDomain();
+        String secret = getSecret();
+
+        byte[] keyBytes = DatatypeConverter.parseBase64Binary(secret);
+        /* I'm using setSigningKey with the SecretKeySpec so I can enforce which algorithm to use. */
+        SecretKeySpec secretKey = new SecretKeySpec(keyBytes, SignatureAlgorithm.HS256.getJcaName());
+
+        LOGGER.debug("authToken is: {}", authToken);
+
+        Claims claims = Jwts.parser()
+                .requireAudience(domainId)
+                .requireIssuer(domainId)
+                .setSigningKey(secretKey)
+                .parseClaimsJws(authToken)
+                .getBody();
+
+        String username = claims.getSubject();
+        Date issuedAt = claims.getIssuedAt();
+        Date expirationDate = claims.getExpiration();
+        String issuer = claims.getIssuer();
+        String audience = claims.getAudience();
+        boolean admin = claims.get("admin", Boolean.class);
+        String email = claims.get("email", String.class);
+        Long userId = claims.get("userId", Integer.class).longValue();
+        String displayName = claims.get("displayName", String.class);
+        String imageUrl = claims.get("imageUrl", String.class);
+        String profileUrl = claims.get("profileUrl", String.class);
+        String firstName = claims.get("firstName", String.class);
+        String lastName = claims.get("lastName", String.class);
+        String middleName = claims.get("middleName", String.class);
+        String prefix = claims.get("prefix", String.class);
+        String suffix = claims.get("suffix", String.class);
+
+        Date now = new Date();
+
+        if (issuedAt.after(now)) {
+            throw new JwtTokenNotActiveYetException(issuedAt);
+        }
+
+        if (expirationDate.before(now)) {
+            throw new JwtTokenExpiredException(expirationDate);
+        }
+
+        LOGGER.debug(
+                "token accepted, standard info: issuer={}, audience={}, username={}, issuedAt={}, expiresOn={}",
+                issuer,
+                audience,
+                username,
+                issuedAt,
+                expirationDate
+        );
+
+        LOGGER.debug(
+                "token accepted, custom info: admin={}, email={}, userId={}",
+                admin,
+                email,
+                userId
+        );
+
+        HmhbUser user = new HmhbUser();
+        user.setAdmin(admin);
+        user.setEmail(email);
+        user.setId(userId);
+        user.setDisplayName(displayName);
+        user.setImageUrl(imageUrl);
+        user.setProfileUrl(profileUrl);
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setMiddleName(middleName);
+        user.setPrefix(prefix);
+        user.setSuffix(suffix);
+
+        request.setAttribute("loggedInUser", user);
     }
 
 }

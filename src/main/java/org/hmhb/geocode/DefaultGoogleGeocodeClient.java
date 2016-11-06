@@ -26,6 +26,7 @@ public class DefaultGoogleGeocodeClient implements GoogleGeocodeClient {
      * An injectable constructor.
      */
     public DefaultGoogleGeocodeClient() {
+        LOGGER.debug("constructed");
         // TODO - I created a different unrestricted key for this; figure out the right way later
         this.context = new GeoApiContext().setApiKey("AIzaSyCZWf5alpEBF39ae49x1KIaDuMA8JiSa4o");
     }

@@ -1,7 +1,9 @@
 package org.hmhb.user;
 
 import javax.annotation.Nonnull;
+import javax.servlet.http.HttpServletResponse;
 
+import java.io.IOException;
 import java.util.List;
 
 import com.codahale.metrics.annotation.Timed;
@@ -9,11 +11,13 @@ import org.hmhb.exception.user.UserIdMismatchException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import static java.util.Objects.requireNonNull;
@@ -56,6 +60,38 @@ public class UserController {
     public List<HmhbUser> getAll() {
         LOGGER.debug("getAll called");
         return service.getAll();
+    }
+
+    /**
+     * Retrieves all {@link HmhbUser}s in the system and exports them to a
+     * CSV file.
+     *
+     * @param jwtToken the JWT auth token (needed in a query param because this
+     *                 method will be called via $window.open).
+     * @param response the {@link HttpServletResponse} to send the results to
+     */
+    @Timed
+    @RequestMapping(
+            method = RequestMethod.GET,
+            path = "/api/users/csv"
+    )
+    public void getAllAsCsv(
+            @RequestParam("token") String jwtToken,
+            HttpServletResponse response
+    ) throws IOException {
+        LOGGER.debug("getAllAsCsv called");
+
+        String csvContent = service.getAllAsCsv(jwtToken);
+
+        /* Must set the status and headers after the call succeeds or else confusing errors are passed back. */
+        response.setStatus(HttpStatus.OK.value());
+        response.setHeader("Content-Type", "text/csv");
+
+        /* Have the browser prompt the user for download rather than try to open the csv. */
+        response.setHeader("Content-Disposition", "attachment; filename=all-users.csv");
+
+        response.getWriter()
+                .append(csvContent);
     }
 
     /**

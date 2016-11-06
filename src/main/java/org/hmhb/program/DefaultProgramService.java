@@ -1,6 +1,7 @@
 package org.hmhb.program;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.transaction.Transactional;
 
 import java.util.Collections;
@@ -13,6 +14,7 @@ import org.hmhb.authorization.AuthorizationService;
 import org.hmhb.config.ConfigService;
 import org.hmhb.config.PublicConfig;
 import org.hmhb.county.County;
+import org.hmhb.csv.CsvService;
 import org.hmhb.exception.program.OnlyAdminCanDeleteProgramException;
 import org.hmhb.exception.program.OnlyAdminCanSaveProgramException;
 import org.hmhb.exception.program.ProgramCityNameIsTooLongException;
@@ -54,6 +56,7 @@ public class DefaultProgramService implements ProgramService {
     private final PublicConfig publicConfig;
     private final AuditHelper auditHelper;
     private final AuthorizationService authorizationService;
+    private final CsvService csvService;
     private final GeocodeService geocodeService;
     private final OrganizationService organizationService;
     private final ProgramDao dao;
@@ -66,6 +69,8 @@ public class DefaultProgramService implements ProgramService {
      * @param auditHelper the {@link AuditHelper} to get audit information
      * @param authorizationService the {@link AuthorizationService} to verify a
      *                             user is allowed to do certain operations
+     * @param csvService the {@link CsvService} for exporting/importing to/from
+     *                   CSV
      * @param geocodeService the {@link GeocodeService} to lookup location info
      * @param organizationService the {@link OrganizationService} to save
      *                            inline {@link Organization} info and lookup
@@ -78,6 +83,7 @@ public class DefaultProgramService implements ProgramService {
             @Nonnull ConfigService configService,
             @Nonnull AuditHelper auditHelper,
             @Nonnull AuthorizationService authorizationService,
+            @Nonnull CsvService csvService,
             @Nonnull GeocodeService geocodeService,
             @Nonnull OrganizationService organizationService,
             @Nonnull ProgramDao dao
@@ -87,6 +93,7 @@ public class DefaultProgramService implements ProgramService {
         this.publicConfig = requireNonNull(configService.getPublicConfig(), "publicConfig cannot be null");
         this.authorizationService = requireNonNull(authorizationService, "authorizationService cannot be null");
         this.auditHelper = requireNonNull(auditHelper, "auditHelper cannot be null");
+        this.csvService = requireNonNull(csvService, "csvService cannot be null");
         this.geocodeService = requireNonNull(geocodeService, "geocodeService cannot be null");
         this.organizationService = requireNonNull(organizationService, "organizationService cannot be null");
         this.dao = requireNonNull(dao, "dao cannot be null");
@@ -121,6 +128,25 @@ public class DefaultProgramService implements ProgramService {
     public List<Program> getAll() {
         LOGGER.debug("getAll called");
         return dao.findAllByOrderByNameAsc();
+    }
+
+    @Timed
+    @Override
+    public String getAllAsCsv(
+            @Nullable Boolean expandCounties,
+            @Nullable Boolean expandProgramAreas
+    ) {
+        LOGGER.debug(
+                "getAllAsCsv called: expandCounties={}, expandProgramAreas={}",
+                expandCounties,
+                expandProgramAreas
+        );
+
+        return csvService.generateFromPrograms(
+                getAll(),
+                expandCounties,
+                expandProgramAreas
+        );
     }
 
     @Timed

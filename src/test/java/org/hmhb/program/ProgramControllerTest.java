@@ -1,5 +1,8 @@
 package org.hmhb.program;
 
+import javax.servlet.http.HttpServletResponse;
+
+import java.io.PrintWriter;
 import java.util.Collections;
 import java.util.List;
 
@@ -42,6 +45,27 @@ public class ProgramControllerTest {
 
         /* Verify the results. */
         assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testGetAllAsCsv() throws Exception {
+        HttpServletResponse response = mock(HttpServletResponse.class);
+        PrintWriter writer = mock(PrintWriter.class);
+
+        String expected = "test-csv";
+
+        /* Train the mocks. */
+        when(service.getAllAsCsv(true, true)).thenReturn(expected);
+        when(response.getWriter()).thenReturn(writer);
+
+        /* Make the call. */
+        toTest.getAllAsCsv(true, true, response);
+
+        /* Verify the results. */
+        verify(response).setStatus(200);
+        verify(response).setHeader("Content-Type", "text/csv");
+        verify(response).setHeader("Content-Disposition", "attachment; filename=all-programs.csv");
+        verify(writer).append(expected);
     }
 
     @Test

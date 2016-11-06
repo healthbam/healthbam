@@ -33,4 +33,17 @@ public interface JwtAuthenticationService {
             @Nonnull HttpServletRequest request
     );
 
+    /**
+     * Validate the JWT token and put the {@link HmhbUser}'s info in the
+     * {@link HttpServletRequest}.
+     *
+     * @param request the {@link HttpServletRequest} to potentially put
+     *                the {@link HmhbUser} into
+     * @param authToken the JWT to validate
+     */
+    void validateToken(
+            @Nonnull HttpServletRequest request,
+            @Nonnull String authToken
+    );
+
 }
