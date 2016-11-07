@@ -28,24 +28,8 @@ public class DefaultConfigService implements ConfigService {
     ) {
         requireNonNull(environment, "environment cannot be null");
 
-        this.publicConfig = new PublicConfig(
-                environment.getProperty("google.oauth.client.id"),
-                environment.getProperty("hmhb.url.prefix"),
-                environment.getProperty("hmhb.program.startYear.minValue", Integer.class),
-                environment.getProperty("hmhb.program.streetAddress.maxLength", Integer.class),
-                environment.getProperty("hmhb.program.city.maxLength", Integer.class),
-                environment.getProperty("hmhb.program.goal.maxLength", Integer.class),
-                environment.getProperty("hmhb.program.outcome.maxLength", Integer.class),
-                environment.getProperty("hmhb.program.name.maxLength", Integer.class),
-                environment.getProperty("hmhb.program.otherProgramArea.explanation.maxLength", Integer.class),
-                environment.getProperty("hmhb.organization.name.maxLength", Integer.class)
-        );
-
-        this.privateConfig = new PrivateConfig(
-                environment.getProperty("google.oauth.client.secret"),
-                environment.getProperty("hmhb.jwt.domain"),
-                environment.getProperty("hmhb.jwt.secret")
-        );
+        this.publicConfig = new PublicConfig(environment);
+        this.privateConfig = new PrivateConfig(environment);
     }
 
     @Override

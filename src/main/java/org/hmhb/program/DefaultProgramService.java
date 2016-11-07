@@ -29,9 +29,11 @@ import org.hmhb.exception.program.ProgramOtherExplanationIsTooLongException;
 import org.hmhb.exception.program.ProgramOutcomeIsTooLongException;
 import org.hmhb.exception.program.ProgramPrimaryGoal1RequiredException;
 import org.hmhb.exception.program.ProgramStartYearIsTooOldException;
+import org.hmhb.exception.program.ProgramStateIsInvalidException;
 import org.hmhb.exception.program.ProgramStateRequiredException;
 import org.hmhb.exception.program.ProgramStreetAddressIsTooLongException;
 import org.hmhb.exception.program.ProgramStreetAddressRequiredException;
+import org.hmhb.exception.program.ProgramZipCodeIsInvalidException;
 import org.hmhb.exception.program.ProgramZipCodeRequiredException;
 import org.hmhb.geocode.GeocodeService;
 import org.hmhb.geocode.LocationInfo;
@@ -321,6 +323,10 @@ public class DefaultProgramService implements ProgramService {
             throw new ProgramStateRequiredException();
         }
 
+        if (!program.getState().matches("^[A-Z]{2}$")) {
+            throw new ProgramStateIsInvalidException();
+        }
+
         if (StringUtils.isBlank(program.getPrimaryGoal1())) {
             throw new ProgramPrimaryGoal1RequiredException();
         }
@@ -399,6 +405,10 @@ public class DefaultProgramService implements ProgramService {
             throw new ProgramZipCodeRequiredException();
         }
 
+        if (!program.getZipCode().matches("^[0-9]{5}([ -][0-9]{4})?$")) {
+            throw new ProgramZipCodeIsInvalidException();
+        }
+
         if (program.getId() == null) {
             /* They aren't allowed to set created* or updated* in a create. */
             program.setCreatedBy(auditHelper.getCurrentUserEmail());
@@ -422,8 +432,10 @@ public class DefaultProgramService implements ProgramService {
 
     private void fillCoordinatesAndZip(Program program) {
         LocationInfo locationInfo = geocodeService.getLocationInfo(program);
-        program.setZipCode(locationInfo.getZipCode());
-        program.setCoordinates(locationInfo.getLngLat());
+        if (locationInfo != null) {
+            program.setZipCode(locationInfo.getZipCode());
+            program.setCoordinates(locationInfo.getLngLat());
+        }
     }
 
 }

@@ -12,6 +12,7 @@ import org.hmhb.exception.authentication.AuthHeaderUnknownException;
 import org.hmhb.user.HmhbUser;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.core.env.Environment;
 
 import static org.mockito.Mockito.*;
 
@@ -25,6 +26,7 @@ public class DefaultJwtAuthenticationServiceTest {
     private static final Long USER_ID = 123L;
     private static final String USER_EMAIL = "john.doe@mailinator.com";
 
+    private Environment environment;
     private HttpServletRequest request;
     private ConfigService configService;
 
@@ -35,6 +37,14 @@ public class DefaultJwtAuthenticationServiceTest {
         configService = mock(ConfigService.class);
         request = mock(HttpServletRequest.class);
         toTest = new DefaultJwtAuthenticationService(configService);
+
+        environment = mock(Environment.class);
+
+        /* Train the config. */
+        when(environment.getProperty("google.oauth.client.id")).thenReturn("oauthClientId");
+        when(environment.getProperty("google.oauth.client.secret")).thenReturn("oauthClientSecret");
+        when(environment.getProperty("hmhb.jwt.domain")).thenReturn(TEST_DOMAIN);
+        when(environment.getProperty("hmhb.jwt.secret")).thenReturn(TEST_SECRET);
     }
 
     @Test
@@ -44,8 +54,8 @@ public class DefaultJwtAuthenticationServiceTest {
         user.setEmail(USER_EMAIL);
         user.setAdmin(false);
 
-        PublicConfig publicConfig = new PublicConfig("oauthClientId", null, 1, 2, 3, 4, 5, 6, 7, 8);
-        PrivateConfig privateConfig = new PrivateConfig("oauthClientSecret", TEST_DOMAIN, TEST_SECRET);
+        PublicConfig publicConfig = new PublicConfig(environment);
+        PrivateConfig privateConfig = new PrivateConfig(environment);
 
         /* Train the config. */
         when(configService.getPublicConfig()).thenReturn(publicConfig);
@@ -71,8 +81,8 @@ public class DefaultJwtAuthenticationServiceTest {
         user.setEmail(USER_EMAIL);
         user.setAdmin(false);
 
-        PublicConfig publicConfig = new PublicConfig("oauthClientId", null, 1, 2, 3, 4, 5, 6, 7, 8);
-        PrivateConfig privateConfig = new PrivateConfig("oauthClientSecret", TEST_DOMAIN, TEST_SECRET);
+        PublicConfig publicConfig = new PublicConfig(environment);
+        PrivateConfig privateConfig = new PrivateConfig(environment);
 
         /* Train the config. */
         when(configService.getPublicConfig()).thenReturn(publicConfig);
@@ -121,8 +131,8 @@ public class DefaultJwtAuthenticationServiceTest {
         user.setEmail(USER_EMAIL);
         user.setAdmin(false);
 
-        PublicConfig publicConfig = new PublicConfig("oauthClientId", null, 1, 2, 3, 4, 5, 6, 7, 8);
-        PrivateConfig privateConfig = new PrivateConfig("oauthClientSecret", TEST_DOMAIN, TEST_SECRET);
+        PublicConfig publicConfig = new PublicConfig(environment);
+        PrivateConfig privateConfig = new PrivateConfig(environment);
 
         /* Train the config. */
         when(configService.getPublicConfig()).thenReturn(publicConfig);
@@ -145,8 +155,8 @@ public class DefaultJwtAuthenticationServiceTest {
         user.setEmail(USER_EMAIL);
         user.setAdmin(false);
 
-        PublicConfig publicConfig = new PublicConfig("oauthClientId", null, 1, 2, 3, 4, 5, 6, 7, 8);
-        PrivateConfig privateConfig = new PrivateConfig("oauthClientSecret", TEST_DOMAIN, TEST_SECRET);
+        PublicConfig publicConfig = new PublicConfig(environment);
+        PrivateConfig privateConfig = new PrivateConfig(environment);
 
         /* Train the config. */
         when(configService.getPublicConfig()).thenReturn(publicConfig);

@@ -26,7 +26,11 @@
                 Company/Organization phone
             </label>
             <input name="organizationPhone"
-                   ng-model="organizationForm.organization.contactPhone">
+                   ng-model="organizationForm.organization.contactPhone"
+                   md-maxlength="organizationForm.config.phoneMaxLength">
+            <div ng-messages="organizationForm.orgForm.organizationPhone.$error">
+                <div ng-message="md-maxlength">Organization phone is too long</div>
+            </div>
         </md-input-container>
 
         <md-input-container class="md-block" flex-gt-sm>
@@ -35,9 +39,11 @@
             </label>
             <input name="organizationEmail"
                    ng-model="organizationForm.organization.contactEmail"
+                   md-maxlength="organizationForm.config.emailMaxLength"
                    type="email">
             <div ng-messages="organizationForm.orgForm.organizationEmail.$error">
                 <div ng-message="email">Organization email must be a valid email</div>
+                <div ng-message="md-maxlength">Organization email is too long</div>
             </div>
         </md-input-container>
 
@@ -51,9 +57,11 @@
             </label>
             <input name="organizationWebsiteUrl"
                    ng-model="organizationForm.organization.websiteUrl"
+                   md-maxlength="organizationForm.config.urlMaxLength"
                    type="url">
             <div ng-messages="organizationForm.orgForm.organizationWebsiteUrl.$error">
                 <div ng-message="url">Organization website must be a valid url</div>
+                <div ng-message="md-maxlength">Organization website is too long</div>
             </div>
         </md-input-container>
 
@@ -63,9 +71,11 @@
             </label>
             <input name="organizationFacebook"
                    ng-model="organizationForm.organization.facebookUrl"
+                   md-maxlength="organizationForm.config.urlMaxLength"
                    type="url">
             <div ng-messages="organizationForm.orgForm.organizationFacebook.$error">
                 <div ng-message="url">Organization Facebook page must be a valid url</div>
+                <div ng-message="md-maxlength">Organization Facebook page is too long</div>
             </div>
         </md-input-container>
 

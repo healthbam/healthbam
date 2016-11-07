@@ -1,5 +1,7 @@
 package org.hmhb.organization;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -14,9 +16,12 @@ import org.hmhb.config.PublicConfig;
 import org.hmhb.exception.organization.CannotDeleteOrganizationWithProgramsException;
 import org.hmhb.exception.organization.OnlyAdminCanDeleteOrgException;
 import org.hmhb.exception.organization.OnlyAdminCanUpdateOrgException;
+import org.hmhb.exception.organization.OrganizationEmailIsTooLongException;
 import org.hmhb.exception.organization.OrganizationNameIsTooLongException;
 import org.hmhb.exception.organization.OrganizationNameRequiredException;
 import org.hmhb.exception.organization.OrganizationNotFoundException;
+import org.hmhb.exception.organization.OrganizationPhoneIsTooLongException;
+import org.hmhb.exception.organization.OrganizationUrlIsInvalidException;
 import org.hmhb.exception.organization.OrganizationUrlIsTooLongException;
 import org.hmhb.program.ProgramDao;
 import org.slf4j.Logger;
@@ -33,8 +38,6 @@ import static java.util.Objects.requireNonNull;
 public class DefaultOrganizationService implements OrganizationService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultOrganizationService.class);
-
-    private static final int URL_MAX_LEN = 2000;
 
     private final PublicConfig publicConfig;
     private final AuditHelper auditHelper;
@@ -137,12 +140,36 @@ public class DefaultOrganizationService implements OrganizationService {
             throw new OrganizationNameIsTooLongException();
         }
 
-        if (organization.getFacebookUrl() != null && organization.getFacebookUrl().length() > URL_MAX_LEN) {
-            throw new OrganizationUrlIsTooLongException();
+        if (organization.getContactPhone() != null
+                && organization.getContactPhone().length() > publicConfig.getPhoneMaxLength()) {
+            throw new OrganizationPhoneIsTooLongException();
         }
 
-        if (organization.getWebsiteUrl() != null && organization.getWebsiteUrl().length() > URL_MAX_LEN) {
-            throw new OrganizationUrlIsTooLongException();
+        if (organization.getContactEmail() != null
+                && organization.getContactEmail().length() > publicConfig.getPhoneMaxLength()) {
+            throw new OrganizationEmailIsTooLongException();
+        }
+
+        if (organization.getFacebookUrl() != null) {
+            if (organization.getFacebookUrl().length() > publicConfig.getUrlMaxLength()) {
+                throw new OrganizationUrlIsTooLongException();
+            }
+            try {
+                new URL(organization.getFacebookUrl());
+            } catch (MalformedURLException e) {
+                throw new OrganizationUrlIsInvalidException(e);
+            }
+        }
+
+        if (organization.getWebsiteUrl() != null) {
+            if (organization.getWebsiteUrl().length() > publicConfig.getUrlMaxLength()) {
+                throw new OrganizationUrlIsTooLongException();
+            }
+            try {
+                new URL(organization.getWebsiteUrl());
+            } catch (MalformedURLException e) {
+                throw new OrganizationUrlIsInvalidException(e);
+            }
         }
 
         if (organization.getId() == null) {

@@ -16,6 +16,7 @@ import org.hmhb.user.HmhbUser;
 import org.hmhb.user.UserService;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.core.env.Environment;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -64,8 +65,16 @@ public class DefaultAuthenticationServiceTest {
                 gPlusProfile
         );
 
-        PublicConfig publicConfig = new PublicConfig(CLIENT_ID, null, 1, 2, 3, 4, 5, 6, 7, 8);
-        PrivateConfig privateConfig = new PrivateConfig(CLIENT_SECRET, "jwtDomain", "jwtSecret");
+        Environment environment = mock(Environment.class);
+
+        /* Train the config. */
+        when(environment.getProperty("google.oauth.client.id")).thenReturn(CLIENT_ID);
+        when(environment.getProperty("google.oauth.client.secret")).thenReturn(CLIENT_SECRET);
+        when(environment.getProperty("hmhb.jwt.domain")).thenReturn("jwtDomain");
+        when(environment.getProperty("hmhb.jwt.secret")).thenReturn("jwtSecret");
+
+        PublicConfig publicConfig = new PublicConfig(environment);
+        PrivateConfig privateConfig = new PrivateConfig(environment);
 
         /* Train the mocks. */
         when(configService.getPublicConfig()).thenReturn(publicConfig);

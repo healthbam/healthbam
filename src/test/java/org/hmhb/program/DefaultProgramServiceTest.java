@@ -24,9 +24,11 @@ import org.hmhb.exception.program.ProgramOtherExplanationIsTooLongException;
 import org.hmhb.exception.program.ProgramOutcomeIsTooLongException;
 import org.hmhb.exception.program.ProgramPrimaryGoal1RequiredException;
 import org.hmhb.exception.program.ProgramStartYearIsTooOldException;
+import org.hmhb.exception.program.ProgramStateIsInvalidException;
 import org.hmhb.exception.program.ProgramStateRequiredException;
 import org.hmhb.exception.program.ProgramStreetAddressIsTooLongException;
 import org.hmhb.exception.program.ProgramStreetAddressRequiredException;
+import org.hmhb.exception.program.ProgramZipCodeIsInvalidException;
 import org.hmhb.exception.program.ProgramZipCodeRequiredException;
 import org.hmhb.geocode.GeocodeService;
 import org.hmhb.geocode.LocationInfo;
@@ -37,6 +39,7 @@ import org.hmhb.organization.OrganizationService;
 import org.hmhb.programarea.ProgramArea;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.core.env.Environment;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -61,8 +64,8 @@ public class DefaultProgramServiceTest {
     private static final int START_YEAR = 1999;
     private static final String STREET_ADDRESS = "test-street-address";
     private static final String CITY = "test-city";
-    private static final String STATE = "test-state";
-    private static final String ZIP_CODE = "test-zip-code";
+    private static final String STATE = "GA";
+    private static final String ZIP_CODE = "12345";
     private static final String PRIMARY_GOAL = "test-primary-goal-1";
     private static final String MEASURABLE_OUTCOME = "test-measurable-outcome-1";
     private static final String GEO_CODE = "-1.00000000,1.00000000";
@@ -90,18 +93,19 @@ public class DefaultProgramServiceTest {
         organizationService = mock(OrganizationService.class);
         dao = mock(ProgramDao.class);
 
-        PublicConfig publicConfig = new PublicConfig(
-                "test-oauth-client-id",
-                "test-url-prefix",
-                MIN_VALUE,
-                MAX_LEN,
-                MAX_LEN,
-                MAX_LEN,
-                MAX_LEN,
-                MAX_LEN,
-                MAX_LEN,
-                MAX_LEN
-        );
+        Environment environment = mock(Environment.class);
+
+        when(environment.getProperty("hmhb.program.startYear.minValue", Integer.class)).thenReturn(MIN_VALUE);
+        when(environment.getProperty("hmhb.program.streetAddress.maxLength", Integer.class))
+                .thenReturn(MAX_LEN);
+        when(environment.getProperty("hmhb.program.city.maxLength", Integer.class)).thenReturn(MAX_LEN);
+        when(environment.getProperty("hmhb.program.goal.maxLength", Integer.class)).thenReturn(MAX_LEN);
+        when(environment.getProperty("hmhb.program.outcome.maxLength", Integer.class)).thenReturn(MAX_LEN);
+        when(environment.getProperty("hmhb.program.name.maxLength", Integer.class)).thenReturn(MAX_LEN);
+        when(environment.getProperty("hmhb.program.otherProgramArea.explanation.maxLength", Integer.class))
+                .thenReturn(MAX_LEN);
+
+        PublicConfig publicConfig = new PublicConfig(environment);
 
         /* Train the config. */
         when(configService.getPublicConfig()).thenReturn(publicConfig);
@@ -292,9 +296,68 @@ public class DefaultProgramServiceTest {
         toTest.delete(PROGRAM_ID);
     }
 
+    @Test(expected = ProgramZipCodeIsInvalidException.class)
+    public void testSaveCreateNew_ZipCodeIsInvalid() {
+        Program input = createFilledInProgram();
+        input.setId(null);
+        input.setZipCode("abc");
+
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
+
+        /* Make the call. */
+        toTest.save(input);
+    }
+
+    @Test
+    public void testSaveCreateNew_ValidZipCode_Normal() {
+        Program input = createFilledInProgram();
+        input.setId(null);
+        input.setZipCode("12345");
+
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
+
+        /* Make the call. */
+        toTest.save(input);
+
+        /* The call should not fail. */
+    }
+
+    @Test
+    public void testSaveCreateNew_ValidZipCode_ExtendedWithSpace() {
+        Program input = createFilledInProgram();
+        input.setId(null);
+        input.setZipCode("12345 1234");
+
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
+
+        /* Make the call. */
+        toTest.save(input);
+
+        /* The call should not fail. */
+    }
+
+    @Test
+    public void testSaveCreateNew_ValidZipCode_ExtendedWithHyphen() {
+        Program input = createFilledInProgram();
+        input.setId(null);
+        input.setZipCode("12345-1234");
+
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
+
+        /* Make the call. */
+        toTest.save(input);
+
+        /* The call should not fail. */
+    }
+
     @Test(expected = ProgramStartYearIsTooOldException.class)
     public void testSaveCreateNew_StartYearTooOld() {
         Program input = createFilledInProgram();
+        input.setId(null);
         input.setStartYear(TOO_OLD);
 
         /* Train the mocks. */
@@ -307,6 +370,7 @@ public class DefaultProgramServiceTest {
     @Test(expected = ProgramNameIsTooLongException.class)
     public void testSaveCreateNew_NameTooLong() {
         Program input = createFilledInProgram();
+        input.setId(null);
         input.setName(TOO_LONG);
 
         /* Train the mocks. */
@@ -319,6 +383,7 @@ public class DefaultProgramServiceTest {
     @Test(expected = ProgramOtherExplanationIsTooLongException.class)
     public void testSaveCreateNew_OtherExplanationTooLong() {
         Program input = createFilledInProgram();
+        input.setId(null);
         input.setOtherProgramAreaExplanation(TOO_LONG);
 
         /* Train the mocks. */
@@ -331,6 +396,7 @@ public class DefaultProgramServiceTest {
     @Test(expected = ProgramStreetAddressIsTooLongException.class)
     public void testSaveCreateNew_StreetAddressTooLong() {
         Program input = createFilledInProgram();
+        input.setId(null);
         input.setStreetAddress(TOO_LONG);
 
         /* Train the mocks. */
@@ -343,6 +409,7 @@ public class DefaultProgramServiceTest {
     @Test(expected = ProgramCityNameIsTooLongException.class)
     public void testSaveCreateNew_CityNameTooLong() {
         Program input = createFilledInProgram();
+        input.setId(null);
         input.setCity(TOO_LONG);
 
         /* Train the mocks. */
@@ -355,6 +422,7 @@ public class DefaultProgramServiceTest {
     @Test(expected = ProgramGoalIsTooLongException.class)
     public void testSaveCreateNew_Goal1TooLong() {
         Program input = createFilledInProgram();
+        input.setId(null);
         input.setPrimaryGoal1(TOO_LONG);
 
         /* Train the mocks. */
@@ -367,6 +435,7 @@ public class DefaultProgramServiceTest {
     @Test(expected = ProgramGoalIsTooLongException.class)
     public void testSaveCreateNew_Goal2TooLong() {
         Program input = createFilledInProgram();
+        input.setId(null);
         input.setPrimaryGoal2(TOO_LONG);
 
         /* Train the mocks. */
@@ -379,6 +448,7 @@ public class DefaultProgramServiceTest {
     @Test(expected = ProgramGoalIsTooLongException.class)
     public void testSaveCreateNew_Goal3TooLong() {
         Program input = createFilledInProgram();
+        input.setId(null);
         input.setPrimaryGoal3(TOO_LONG);
 
         /* Train the mocks. */
@@ -391,6 +461,7 @@ public class DefaultProgramServiceTest {
     @Test(expected = ProgramOutcomeIsTooLongException.class)
     public void testSaveCreateNew_Outcome1TooLong() {
         Program input = createFilledInProgram();
+        input.setId(null);
         input.setMeasurableOutcome1(TOO_LONG);
 
         /* Train the mocks. */
@@ -403,6 +474,7 @@ public class DefaultProgramServiceTest {
     @Test(expected = ProgramOutcomeIsTooLongException.class)
     public void testSaveCreateNew_Outcome2TooLong() {
         Program input = createFilledInProgram();
+        input.setId(null);
         input.setMeasurableOutcome2(TOO_LONG);
 
         /* Train the mocks. */
@@ -415,6 +487,7 @@ public class DefaultProgramServiceTest {
     @Test(expected = ProgramOutcomeIsTooLongException.class)
     public void testSaveCreateNew_Outcome3TooLong() {
         Program input = createFilledInProgram();
+        input.setId(null);
         input.setMeasurableOutcome3(TOO_LONG);
 
         /* Train the mocks. */
@@ -637,6 +710,19 @@ public class DefaultProgramServiceTest {
         Program input = createFilledInProgram();
         input.setId(null);
         input.setState(null);
+
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
+
+        /* Make the call. */
+        toTest.save(input);
+    }
+
+    @Test(expected = ProgramStateIsInvalidException.class)
+    public void testSaveCreateNew_InvalidState() throws Exception {
+        Program input = createFilledInProgram();
+        input.setId(null);
+        input.setState("invalid");
 
         /* Train the mocks. */
         when(authorizationService.isAdmin()).thenReturn(true);
