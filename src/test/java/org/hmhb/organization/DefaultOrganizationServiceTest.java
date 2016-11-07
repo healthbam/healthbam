@@ -252,6 +252,36 @@ public class DefaultOrganizationServiceTest {
         toTest.save(input);
     }
 
+    @Test
+    public void testSaveCreateNew_NullFacebookUrl() throws Exception {
+        Organization input = createFilledInOrg();
+        input.setId(null);
+        input.setFacebookUrl(null);
+
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
+
+        /* Make the call. */
+        toTest.save(input);
+
+        /* This should not blow up. */
+    }
+
+    @Test
+    public void testSaveCreateNew_EmptyStringFacebookUrl() throws Exception {
+        Organization input = createFilledInOrg();
+        input.setId(null);
+        input.setFacebookUrl("");
+
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
+
+        /* Make the call. */
+        toTest.save(input);
+
+        /* This should not blow up. */
+    }
+
     @Test(expected = OrganizationUrlIsInvalidException.class)
     public void testSaveCreateNew_FacebookUrlInvalid() throws Exception {
         Organization input = createFilledInOrg();
@@ -277,6 +307,36 @@ public class DefaultOrganizationServiceTest {
 
         /* Make the call. */
         toTest.save(input);
+    }
+
+    @Test
+    public void testSaveCreateNew_NullWebsiteUrl() throws Exception {
+        Organization input = createFilledInOrg();
+        input.setId(null);
+        input.setWebsiteUrl(null);
+
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
+
+        /* Make the call. */
+        toTest.save(input);
+
+        /* This should not blow up. */
+    }
+
+    @Test
+    public void testSaveCreateNew_EmptyStringWebsiteUrl() throws Exception {
+        Organization input = createFilledInOrg();
+        input.setId(null);
+        input.setWebsiteUrl("");
+
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
+
+        /* Make the call. */
+        toTest.save(input);
+
+        /* This should not blow up. */
     }
 
     @Test

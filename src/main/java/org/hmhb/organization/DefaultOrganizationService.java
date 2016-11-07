@@ -150,7 +150,7 @@ public class DefaultOrganizationService implements OrganizationService {
             throw new OrganizationEmailIsTooLongException();
         }
 
-        if (organization.getFacebookUrl() != null) {
+        if (StringUtils.isNotBlank(organization.getFacebookUrl())) {
             if (organization.getFacebookUrl().length() > publicConfig.getUrlMaxLength()) {
                 throw new OrganizationUrlIsTooLongException();
             }
@@ -161,7 +161,7 @@ public class DefaultOrganizationService implements OrganizationService {
             }
         }
 
-        if (organization.getWebsiteUrl() != null) {
+        if (StringUtils.isNotBlank(organization.getWebsiteUrl())) {
             if (organization.getWebsiteUrl().length() > publicConfig.getUrlMaxLength()) {
                 throw new OrganizationUrlIsTooLongException();
             }
