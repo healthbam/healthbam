@@ -5,6 +5,7 @@ import javax.annotation.Nonnull;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.springframework.core.env.Environment;
 
 import static java.util.Objects.requireNonNull;
 
@@ -14,26 +15,17 @@ import static java.util.Objects.requireNonNull;
  */
 public class PrivateConfig {
 
-    private final String googleOauthSecret;
-    private final String jwtDomain;
-    private final String jwtSecret;
+    private final Environment environment;
 
     /**
      * Constructs a {@link PrivateConfig}.
      *
-     * @param googleOauthSecret the google oauth2 client secret
-     * @param jwtDomain the base domain used as issuer and audience for our
-     *                  JWT tokens
-     * @param jwtSecret the secret to sign our JWT tokens
+     * @param environment the {@link Environment} to get config values from
      */
     public PrivateConfig(
-            @Nonnull String googleOauthSecret,
-            @Nonnull String jwtDomain,
-            @Nonnull String jwtSecret
+            @Nonnull Environment environment
     ) {
-        this.googleOauthSecret = requireNonNull(googleOauthSecret, "googleOauthSecret cannot be null");
-        this.jwtDomain = requireNonNull(jwtDomain, "jwtDomain cannot be null");
-        this.jwtSecret = requireNonNull(jwtSecret, "jwtSecret cannot be null");
+        this.environment = requireNonNull(environment, "environment cannot be null");
     }
 
     /**
@@ -43,7 +35,7 @@ public class PrivateConfig {
      * @return the google oauth2 client secret
      */
     public String getGoogleOauthSecret() {
-        return googleOauthSecret;
+        return environment.getProperty("google.oauth.client.secret");
     }
 
     /**
@@ -53,7 +45,7 @@ public class PrivateConfig {
      * @return the base domain used as issuer and audience for our JWT tokens
      */
     public String getJwtDomain() {
-        return jwtDomain;
+        return environment.getProperty("hmhb.jwt.domain");
     }
 
     /**
@@ -62,7 +54,7 @@ public class PrivateConfig {
      * @return the secret to sign our JWT tokens
      */
     public String getJwtSecret() {
-        return jwtSecret;
+        return environment.getProperty("hmhb.jwt.secret");
     }
 
     @Override

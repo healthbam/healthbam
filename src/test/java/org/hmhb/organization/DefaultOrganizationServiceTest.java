@@ -11,14 +11,18 @@ import org.hmhb.config.PublicConfig;
 import org.hmhb.exception.organization.CannotDeleteOrganizationWithProgramsException;
 import org.hmhb.exception.organization.OnlyAdminCanDeleteOrgException;
 import org.hmhb.exception.organization.OnlyAdminCanUpdateOrgException;
+import org.hmhb.exception.organization.OrganizationEmailIsTooLongException;
 import org.hmhb.exception.organization.OrganizationNameIsTooLongException;
 import org.hmhb.exception.organization.OrganizationNameRequiredException;
 import org.hmhb.exception.organization.OrganizationNotFoundException;
+import org.hmhb.exception.organization.OrganizationPhoneIsTooLongException;
+import org.hmhb.exception.organization.OrganizationUrlIsInvalidException;
 import org.hmhb.exception.organization.OrganizationUrlIsTooLongException;
 import org.hmhb.program.Program;
 import org.hmhb.program.ProgramDao;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.core.env.Environment;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -39,7 +43,6 @@ public class DefaultOrganizationServiceTest {
     private static final String WEBSITE_URL = "http://www.test-website-url.com";
     private static final String FACEBOOK_URL = "http://www.facebook.com/TestFacebook";
 
-    private static final int MIN_VALUE = 1500;
     private static final int MAX_LEN = 50;
     private static final String TOO_LONG = "1234567890-1234567890-1234567890-1234567890-1234567890";
 
@@ -56,18 +59,15 @@ public class DefaultOrganizationServiceTest {
         programDao = mock(ProgramDao.class);
         dao = mock(OrganizationDao.class);
 
-        PublicConfig publicConfig = new PublicConfig(
-                "test-oauth-client-id",
-                "test-url-prefix",
-                MIN_VALUE,
-                MAX_LEN,
-                MAX_LEN,
-                MAX_LEN,
-                MAX_LEN,
-                MAX_LEN,
-                MAX_LEN,
-                MAX_LEN
-        );
+        Environment environment = mock(Environment.class);
+
+        /* Train the config. */
+        when(environment.getProperty("hmhb.organization.name.maxLength", Integer.class)).thenReturn(MAX_LEN);
+        when(environment.getProperty("hmhb.phone.maxLength", Integer.class)).thenReturn(MAX_LEN);
+        when(environment.getProperty("hmhb.email.maxLength", Integer.class)).thenReturn(MAX_LEN);
+        when(environment.getProperty("hmhb.url.maxLength", Integer.class)).thenReturn(MAX_LEN);
+
+        PublicConfig publicConfig = new PublicConfig(environment);
 
         ConfigService configService = mock(ConfigService.class);
         when(configService.getPublicConfig()).thenReturn(publicConfig);
@@ -82,10 +82,11 @@ public class DefaultOrganizationServiceTest {
     }
 
     private String generateString(int numChars) {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder("http://www.");
         for (int i = 0; i < numChars; i++) {
-            sb.append('Z');
+            sb.append('z');
         }
+        sb.append(".com");
         return sb.toString();
     }
 
@@ -224,6 +225,24 @@ public class DefaultOrganizationServiceTest {
         toTest.save(input);
     }
 
+    @Test(expected = OrganizationPhoneIsTooLongException.class)
+    public void testSaveCreateNew_PhoneTooLong() throws Exception {
+        Organization input = createFilledInOrg();
+        input.setContactPhone(TOO_LONG);
+
+        /* Make the call. */
+        toTest.save(input);
+    }
+
+    @Test(expected = OrganizationEmailIsTooLongException.class)
+    public void testSaveCreateNew_EmailTooLong() throws Exception {
+        Organization input = createFilledInOrg();
+        input.setContactEmail(TOO_LONG);
+
+        /* Make the call. */
+        toTest.save(input);
+    }
+
     @Test(expected = OrganizationUrlIsTooLongException.class)
     public void testSaveCreateNew_FacebookUrlTooLong() throws Exception {
         Organization input = createFilledInOrg();
@@ -233,10 +252,28 @@ public class DefaultOrganizationServiceTest {
         toTest.save(input);
     }
 
+    @Test(expected = OrganizationUrlIsInvalidException.class)
+    public void testSaveCreateNew_FacebookUrlInvalid() throws Exception {
+        Organization input = createFilledInOrg();
+        input.setFacebookUrl("not-a-url");
+
+        /* Make the call. */
+        toTest.save(input);
+    }
+
     @Test(expected = OrganizationUrlIsTooLongException.class)
     public void testSaveCreateNew_WebsiteUrlTooLong() throws Exception {
         Organization input = createFilledInOrg();
         input.setWebsiteUrl(generateString(2001));
+
+        /* Make the call. */
+        toTest.save(input);
+    }
+
+    @Test(expected = OrganizationUrlIsInvalidException.class)
+    public void testSaveCreateNew_WebsiteUrlInvalid() throws Exception {
+        Organization input = createFilledInOrg();
+        input.setWebsiteUrl("not-a-url");
 
         /* Make the call. */
         toTest.save(input);

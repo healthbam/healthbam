@@ -1,11 +1,11 @@
 package org.hmhb.config;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.springframework.core.env.Environment;
 
 import static java.util.Objects.requireNonNull;
 
@@ -14,59 +14,17 @@ import static java.util.Objects.requireNonNull;
  */
 public class PublicConfig {
 
-    private final String googleOauthClientId;
-    private final String urlPrefix;
-    private final int programStartYearMin;
-    private final int programStreetAddressMaxLength;
-    private final int programCityMaxLength;
-    private final int programGoalMaxLength;
-    private final int programOutcomeMaxLength;
-    private final int programNameMaxLength;
-    private final int programAreaExplanationMaxLength;
-    private final int organizationNameMaxLength;
+    private final Environment environment;
 
     /**
      * Constructs a {@link PublicConfig}.
      *
-     * @param googleOauthClientId the google oauth2 client ID
-     * @param urlPrefix the configured url prefix
-     * @param programStartYearMin the min start year allowed for a program
-     * @param programStreetAddressMaxLength the max chars allowed for a
-     *                                      program's street address
-     * @param programCityMaxLength the max chars allowed for a program's city
-     * @param programGoalMaxLength the max chars allowed for program's
-     *                             primary goals
-     * @param programOutcomeMaxLength the max chars allowed for a program's
-     *                                measurable outcomes
-     * @param programNameMaxLength the max chars allowed for a program's name
-     * @param programAreaExplanationMaxLength the max chars allowed for a
-     *                                        program's other-program-area
-     *                                        explanation
-     * @param organizationNameMaxLength the max chars allowed for an
-     *                                  organization's name
+     * @param environment the {@link Environment} to get config values from
      */
     public PublicConfig(
-            @Nonnull String googleOauthClientId,
-            @Nullable String urlPrefix,
-            int programStartYearMin,
-            int programStreetAddressMaxLength,
-            int programCityMaxLength,
-            int programGoalMaxLength,
-            int programOutcomeMaxLength,
-            int programNameMaxLength,
-            int programAreaExplanationMaxLength,
-            int organizationNameMaxLength
+            @Nonnull Environment environment
     ) {
-        this.googleOauthClientId = requireNonNull(googleOauthClientId, "googleOauthClientId cannot be null");
-        this.urlPrefix = urlPrefix;
-        this.programStartYearMin = programStartYearMin;
-        this.programStreetAddressMaxLength = programStreetAddressMaxLength;
-        this.programCityMaxLength = programCityMaxLength;
-        this.programGoalMaxLength = programGoalMaxLength;
-        this.programOutcomeMaxLength = programOutcomeMaxLength;
-        this.programNameMaxLength = programNameMaxLength;
-        this.programAreaExplanationMaxLength = programAreaExplanationMaxLength;
-        this.organizationNameMaxLength = organizationNameMaxLength;
+        this.environment = requireNonNull(environment, "environment cannot be null");
     }
 
     /**
@@ -75,7 +33,7 @@ public class PublicConfig {
      * @return the google oauth2 client ID
      */
     public String getGoogleOauthClientId() {
-        return googleOauthClientId;
+        return environment.getProperty("google.oauth.client.id");
     }
 
     /**
@@ -85,7 +43,7 @@ public class PublicConfig {
      * @return the configured url prefix
      */
     public String getUrlPrefix() {
-        return urlPrefix;
+        return environment.getProperty("hmhb.url.prefix");
     }
 
     /**
@@ -94,7 +52,7 @@ public class PublicConfig {
      * @return the min start year allowed for a program
      */
     public int getProgramStartYearMin() {
-        return programStartYearMin;
+        return environment.getProperty("hmhb.program.startYear.minValue", Integer.class);
     }
 
     /**
@@ -103,7 +61,7 @@ public class PublicConfig {
      * @return the max chars allowed for a program's street address
      */
     public int getProgramStreetAddressMaxLength() {
-        return programStreetAddressMaxLength;
+        return environment.getProperty("hmhb.program.streetAddress.maxLength", Integer.class);
     }
 
     /**
@@ -112,7 +70,7 @@ public class PublicConfig {
      * @return the max chars allowed for a program's city
      */
     public int getProgramCityMaxLength() {
-        return programCityMaxLength;
+        return environment.getProperty("hmhb.program.city.maxLength", Integer.class);
     }
 
     /**
@@ -121,7 +79,7 @@ public class PublicConfig {
      * @return the max chars allowed for program's primary goals
      */
     public int getProgramGoalMaxLength() {
-        return programGoalMaxLength;
+        return environment.getProperty("hmhb.program.goal.maxLength", Integer.class);
     }
 
     /**
@@ -131,7 +89,7 @@ public class PublicConfig {
      * @return the max chars allowed for program's measurable outcomes
      */
     public int getProgramOutcomeMaxLength() {
-        return programOutcomeMaxLength;
+        return environment.getProperty("hmhb.program.outcome.maxLength", Integer.class);
     }
 
     /**
@@ -140,7 +98,7 @@ public class PublicConfig {
      * @return the max chars allowed for a program's name
      */
     public int getProgramNameMaxLength() {
-        return programNameMaxLength;
+        return environment.getProperty("hmhb.program.name.maxLength", Integer.class);
     }
 
     /**
@@ -151,7 +109,7 @@ public class PublicConfig {
      * explanation
      */
     public int getProgramAreaExplanationMaxLength() {
-        return programAreaExplanationMaxLength;
+        return environment.getProperty("hmhb.program.otherProgramArea.explanation.maxLength", Integer.class);
     }
 
     /**
@@ -160,7 +118,37 @@ public class PublicConfig {
      * @return the max chars allowed for an organization's name
      */
     public int getOrganizationNameMaxLength() {
-        return organizationNameMaxLength;
+        return environment.getProperty("hmhb.organization.name.maxLength", Integer.class);
+    }
+
+    /**
+     * Returns the configured max chars allowed for a URL (an org's facebook
+     * or website).
+     *
+     * @return the max chars allowed for a URL
+     */
+    public int getUrlMaxLength() {
+        return environment.getProperty("hmhb.url.maxLength", Integer.class);
+    }
+
+    /**
+     * Returns the configured max chars allowed for an email (an org's email
+     * contact).
+     *
+     * @return the max chars allowed for an email
+     */
+    public int getEmailMaxLength() {
+        return environment.getProperty("hmhb.email.maxLength", Integer.class);
+    }
+
+    /**
+     * Returns the configured max chars allowed for a phone number (an org's
+     * phone contact).
+     *
+     * @return the max chars allowed for a phone number
+     */
+    public int getPhoneMaxLength() {
+        return environment.getProperty("hmhb.phone.maxLength", Integer.class);
     }
 
     @Override
