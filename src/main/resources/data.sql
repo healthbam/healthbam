@@ -360,6 +360,12 @@ INSERT INTO program_area (
 ) VALUES (
     'Perinatal Mood and Anxiety Disorders (Mental Health)'
 );
+
+INSERT INTO program_area (
+    name
+) VALUES (
+    'Dental and Oral Health'
+);
 /**********************************
  * End ProgramAreas.
  **********************************/
