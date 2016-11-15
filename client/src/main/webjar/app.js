@@ -71,7 +71,7 @@
             "healthBam.organizationList",
             "healthBam.programDetails",
             "healthBam.programList",
-            "healthBam.user"
+            "healthBam.userList"
         ]
     );
 

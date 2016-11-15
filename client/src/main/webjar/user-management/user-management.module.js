@@ -2,12 +2,13 @@
     "use strict";
 
     angular.module(
-        "healthBam.navigationList",
+        "healthBam.userManagement",
         [
             "ngMaterial",
-            "healthBam.templates",
             "ui.router",
-            "healthBam.authentication"
+            "healthBam.authentication",
+            "healthBam.errorHandling",
+            "healthBam.user"
         ]
     );
 
