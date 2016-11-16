@@ -135,6 +135,29 @@
 
             });
 
+            describe("viewUsers", function () {
+
+                beforeEach(
+                    function () {
+                        navigationList.$onInit();
+                    }
+                );
+
+                it("should be exposed", function () {
+                    expect(navigationList.viewUsers).toEqual(jasmine.any(Function));
+                });
+
+                it("should navigate to the userList state", function () {
+                    navigationList.viewUsers();
+                    expect(
+                        locals.$state.go
+                    ).toHaveBeenCalledWith(
+                        "userList"
+                    );
+                });
+
+            });
+
         });
 
     });

@@ -39,4 +39,18 @@
         </div>
     </md-list-item>
 
+    <md-list-item ng-if="navigationList.isAdmin()"
+                  ng-click="navigationList.viewUsers()">
+        <md-icon md-font-library="material-icons">
+            people
+        </md-icon>
+        <div class="md-list-item-text"
+             layout="column"
+             flex>
+            <h3>
+                Users
+            </h3>
+        </div>
+    </md-list-item>
+
 </md-list>
