@@ -46,7 +46,7 @@ CREATE TABLE organization (
 );
 
 CREATE TABLE county (
-    id BIGSERIAL PRIMARY KEY,
+    id BIGINT PRIMARY KEY,
     name TEXT NOT NULL,
     state TEXT NOT NULL,
     outer_boundary1 TEXT NOT NULL,
@@ -57,7 +57,7 @@ CREATE TABLE county (
 );
 
 CREATE TABLE program_area (
-    id BIGSERIAL PRIMARY KEY,
+    id BIGINT PRIMARY KEY,
     name TEXT NOT NULL
 );
 
