@@ -1,0 +1,11 @@
+<md-button ng-if="createUser.isAdmin()"
+           class="md-fab health-bam-create-user"
+           aria-label="Create New Admin"
+           ng-click="createUser.openUserForm($event)">
+    <md-icon md-font-library="material-icons">
+        add
+    </md-icon>
+    <md-tooltip md-direction="top">
+        Create New Admin
+    </md-tooltip>
+</md-button>

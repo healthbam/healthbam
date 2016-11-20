@@ -11,9 +11,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.hmhb.audit.AuditHelper;
 import org.hmhb.authentication.JwtAuthenticationService;
 import org.hmhb.authorization.AuthorizationService;
+import org.hmhb.config.ConfigService;
+import org.hmhb.config.PublicConfig;
 import org.hmhb.csv.CsvService;
 import org.hmhb.exception.user.UserCannotDeleteSuperAdminException;
 import org.hmhb.exception.user.UserEmailRequiredException;
+import org.hmhb.exception.user.UserEmailTooLongException;
 import org.hmhb.exception.user.UserNonAdminCannotEscalateToAdminException;
 import org.hmhb.exception.user.UserNotAllowedToAccessOtherProfileException;
 import org.hmhb.exception.user.UserNotFoundException;
@@ -33,6 +36,7 @@ public class DefaultUserService implements UserService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultUserService.class);
 
+    private final PublicConfig publicConfig;
     private final AuditHelper auditHelper;
     private final AuthorizationService authorizationService;
     private final HttpServletRequest request;
@@ -43,18 +47,22 @@ public class DefaultUserService implements UserService {
     /**
      * An injectable constructor.
      *
+     * @param configService the {@link ConfigService} to get public config from
      * @param auditHelper the {@link AuditHelper} to get useful audit info
      * @param authorizationService the {@link AuthorizationService} to verify
      *                             that the logged in user is allowed to do
      *                             the operations attempted
-     * @param request TODO.
-     * @param jwtAuthService TODO.
+     * @param request the {@link HttpServletRequest} so the JWT token can be
+     *                validated for CSV download.
+     * @param jwtAuthService the {@link JwtAuthenticationService} so the JWT
+     *                       token can be validated for CSV download.
      * @param csvService the {@link CsvService} for exporting/importing to/from
      *                   CSV
      * @param dao the {@link UserDao} to save and retrieve {@link HmhbUser}s
      */
     @Autowired
     public DefaultUserService(
+            @Nonnull ConfigService configService,
             @Nonnull AuditHelper auditHelper,
             @Nonnull AuthorizationService authorizationService,
             @Nonnull HttpServletRequest request,
@@ -62,6 +70,8 @@ public class DefaultUserService implements UserService {
             @Nonnull CsvService csvService,
             @Nonnull UserDao dao
     ) {
+        requireNonNull(configService, "configService cannot be null");
+        this.publicConfig = configService.getPublicConfig();
         this.auditHelper = requireNonNull(auditHelper, "auditHelper cannot be null");
         this.authorizationService = requireNonNull(authorizationService, "authorizationService cannot be null");
         this.request = requireNonNull(request, "request cannot be null");
@@ -212,6 +222,10 @@ public class DefaultUserService implements UserService {
 
         if (StringUtils.isBlank(user.getEmail())) {
             throw new UserEmailRequiredException();
+        }
+
+        if (user.getEmail().length() > publicConfig.getEmailMaxLength()) {
+            throw new UserEmailTooLongException();
         }
 
         HmhbUser userInDb = null;

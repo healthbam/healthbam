@@ -35,7 +35,8 @@
 
     <md-content flex>
 
-        <md-list flex>
+        <md-list class="user-list"
+                 flex>
 
             <md-list-item ng-repeat="user in userList.list"
                           class="md-3-line">
@@ -125,5 +126,7 @@
         </md-list>
 
     </md-content>
+
+    <health-bam-create-user></health-bam-create-user>
 
 </div>

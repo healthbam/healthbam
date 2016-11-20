@@ -9,6 +9,7 @@
      * @param $q
      * @param Organization
      * @param ProgramArea
+     * @param getConfig
      * @param errorHandlingService
      * @param $log
      * @constructor

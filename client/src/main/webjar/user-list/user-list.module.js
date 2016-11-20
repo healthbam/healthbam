@@ -8,6 +8,7 @@
             "ui.router",
             "healthBam.authentication",
             "healthBam.errorHandling",
+            "healthBam.createUser",
             "healthBam.user",
             "healthBam.userManagement"
         ]
