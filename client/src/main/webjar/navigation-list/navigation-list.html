@@ -53,4 +53,18 @@
         </div>
     </md-list-item>
 
+    <md-list-item ng-if="navigationList.isAdmin()"
+                  ng-click="navigationList.viewReports()">
+        <md-icon md-font-library="material-icons">
+            cloud_download
+        </md-icon>
+        <div class="md-list-item-text"
+             layout="column"
+             flex>
+            <h3>
+                Reports
+            </h3>
+        </div>
+    </md-list-item>
+
 </md-list>

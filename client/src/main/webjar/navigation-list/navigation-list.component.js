@@ -55,6 +55,15 @@
         }
 
         /**
+         * Navigates to the reports state.
+         */
+        function viewReports() {
+            $state.go(
+                "reportList"
+            );
+        }
+
+        /**
          * Initializes the controller.
          */
         function activate() {
@@ -63,6 +72,7 @@
             navigationList.viewOrganizations = viewOrganizations;
             navigationList.viewPrograms = viewPrograms;
             navigationList.viewUsers = viewUsers;
+            navigationList.viewReports = viewReports;
             $log.debug("NavigationList Controller loaded", navigationList);
         }
 

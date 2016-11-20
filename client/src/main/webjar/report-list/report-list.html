@@ -1,0 +1,63 @@
+<div layout="column"
+     layout="fill">
+
+    <md-toolbar class="md-hue-2">
+        <div class="md-toolbar-tools">
+
+            <md-button class="md-icon-button"
+                       aria-label="Back to map"
+                       ui-sref="map">
+                <md-icon md-font-library="material-icons">
+                    arrow_back
+                </md-icon>
+                <md-tooltip md-direction="bottom">
+                    Back to map
+                </md-tooltip>
+            </md-button>
+
+            <h2>
+                Reports
+            </h2>
+
+            <span flex></span>
+
+        </div>
+    </md-toolbar>
+
+    <md-content flex>
+
+        <md-list flex>
+
+            <md-list-item ng-click="reportList.downloadProgramReport()">
+                <md-icon md-font-library="material-icons">
+                    pregnant_woman
+                </md-icon>
+                <div class="md-list-item-text"
+                     layout="column"
+                     flex>
+                    <h3>
+                        Program report
+                    </h3>
+                </div>
+                <md-divider></md-divider>
+            </md-list-item>
+
+            <md-list-item ng-click="reportList.downloadUserReport()">
+                <md-icon md-font-library="material-icons">
+                    people
+                </md-icon>
+                <div class="md-list-item-text"
+                     layout="column"
+                     flex>
+                    <h3>
+                        User report
+                    </h3>
+                </div>
+                <md-divider></md-divider>
+            </md-list-item>
+
+        </md-list>
+
+    </md-content>
+
+</div>
