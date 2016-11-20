@@ -10,15 +10,19 @@ import com.google.api.services.plus.model.Person;
 import org.hmhb.audit.AuditHelper;
 import org.hmhb.authentication.JwtAuthenticationService;
 import org.hmhb.authorization.AuthorizationService;
+import org.hmhb.config.ConfigService;
+import org.hmhb.config.PublicConfig;
 import org.hmhb.csv.CsvService;
 import org.hmhb.exception.user.UserCannotDeleteSuperAdminException;
 import org.hmhb.exception.user.UserEmailRequiredException;
+import org.hmhb.exception.user.UserEmailTooLongException;
 import org.hmhb.exception.user.UserNonAdminCannotEscalateToAdminException;
 import org.hmhb.exception.user.UserNotAllowedToAccessOtherProfileException;
 import org.hmhb.exception.user.UserNotFoundException;
 import org.hmhb.exception.user.UserSuperAdminCannotBeModifiedByOthers;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.core.env.Environment;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -43,6 +47,9 @@ public class DefaultUserServiceTest {
 
     private static final String JWT_TOKEN = "test-jwt-tokent";
 
+    private static final int MAX_LEN = 50;
+    private static final String TOO_LONG = "1234567890-1234567890-1234567890-1234567890-1234567890";
+
     private AuditHelper auditHelper;
     private AuthorizationService authorizationService;
     private HttpServletRequest request;
@@ -60,7 +67,18 @@ public class DefaultUserServiceTest {
         csvService = mock(CsvService.class);
         dao = mock(UserDao.class);
 
+        Environment environment = mock(Environment.class);
+
+        /* Train the config. */
+        when(environment.getProperty("hmhb.email.maxLength", Integer.class)).thenReturn(MAX_LEN);
+
+        PublicConfig publicConfig = new PublicConfig(environment);
+
+        ConfigService configService = mock(ConfigService.class);
+        when(configService.getPublicConfig()).thenReturn(publicConfig);
+
         toTest = new DefaultUserService(
+                configService,
                 auditHelper,
                 authorizationService,
                 request,
@@ -532,6 +550,27 @@ public class DefaultUserServiceTest {
 
         /* Verify the results. */
         assertEquals(expected, actual);
+    }
+
+    @Test(expected = UserEmailTooLongException.class)
+    public void testSave_Admin_CreateNewUser_EmailTooLong() throws Exception {
+        HmhbUser input = new HmhbUser();
+        input.setId(null);
+        input.setAdmin(true);
+        input.setEmail(TOO_LONG);
+
+        HmhbUser loggedInUser = new HmhbUser();
+        loggedInUser.setId(OTHER_USER_ID);
+        loggedInUser.setSuperAdmin(false);
+        loggedInUser.setAdmin(true);
+        loggedInUser.setEmail(OTHER_EMAIL);
+
+        /* Train the mocks. */
+        when(authorizationService.isAdmin()).thenReturn(true);
+        when(authorizationService.getLoggedInUser()).thenReturn(loggedInUser);
+
+        /* Make the call. */
+        toTest.save(input);
     }
 
     @Test(expected = UserEmailRequiredException.class)

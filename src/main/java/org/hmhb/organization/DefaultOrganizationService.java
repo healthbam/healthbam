@@ -146,7 +146,7 @@ public class DefaultOrganizationService implements OrganizationService {
         }
 
         if (organization.getContactEmail() != null
-                && organization.getContactEmail().length() > publicConfig.getPhoneMaxLength()) {
+                && organization.getContactEmail().length() > publicConfig.getEmailMaxLength()) {
             throw new OrganizationEmailIsTooLongException();
         }
 
