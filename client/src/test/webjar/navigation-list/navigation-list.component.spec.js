@@ -158,6 +158,29 @@
 
             });
 
+            describe("viewReports", function () {
+
+                beforeEach(
+                    function () {
+                        navigationList.$onInit();
+                    }
+                );
+
+                it("should be exposed", function () {
+                    expect(navigationList.viewReports).toEqual(jasmine.any(Function));
+                });
+
+                it("should navigate to the reportList state", function () {
+                    navigationList.viewReports();
+                    expect(
+                        locals.$state.go
+                    ).toHaveBeenCalledWith(
+                        "reportList"
+                    );
+                });
+
+            });
+
         });
 
     });
