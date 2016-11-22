@@ -1,8 +1,15 @@
+project.ext.springBootVersion = "1.4.0.RELEASE"
+
 buildscript {
     repositories {
         mavenCentral()
     }
     dependencies {
+        /*
+         * For some reason, I cannot define a variable common between
+         * buildscript and the project, so keep this version in sync with
+         * project.ext.springBootVersion above.
+         */
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.0.RELEASE")
     }
 }
@@ -48,23 +55,23 @@ dependencies {
     compile project(':client')
 
     /* brings in what spring-boot needs for a webapp (we'll be running tomcat) */
-    compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.boot:spring-boot-starter-web:${project.springBootVersion}")
 
     /* brings in the spring-boot "actuators" -- production ready servlets offering metrics, etc. */
-    compile("org.springframework.boot:spring-boot-starter-actuator")
+    compile("org.springframework.boot:spring-boot-starter-actuator:${project.springBootVersion}")
 
     /* allows us to have the /docs that explains spring-boots' actuators */
-    compile("org.springframework.boot:spring-boot-actuator-docs")
+    compile("org.springframework.boot:spring-boot-actuator-docs:${project.springBootVersion}")
 
     /* brings in most of what's needed for JPA in spring-boot */
-    compile("org.springframework.boot:spring-boot-starter-data-jpa")
+    compile("org.springframework.boot:spring-boot-starter-data-jpa:${project.springBootVersion}")
     compile("org.postgresql:postgresql:9.4-1201-jdbc4")
 
     /* needed for hibernate second level caching */
-    compile("org.hibernate:hibernate-ehcache")
+    compile("org.hibernate:hibernate-ehcache:5.0.9.Final")
 
     /* needed for hibernate-validator, which depends on javax.el-api */
-    compile("org.glassfish:javax.el")
+    compile("org.glassfish:javax.el:3.0.0")
 
     /* slf4j logging */
     compile("org.slf4j:slf4j-api:1.7.21")
@@ -96,6 +103,6 @@ dependencies {
     testCompile("junit:junit:4.12")
     testCompile("org.hamcrest:hamcrest-core:1.3")
     testCompile("org.mockito:mockito-all:1.10.19")
-    testCompile("org.springframework.boot:spring-boot-starter-test")
+    testCompile("org.springframework.boot:spring-boot-starter-test:${project.springBootVersion}")
 
 }
