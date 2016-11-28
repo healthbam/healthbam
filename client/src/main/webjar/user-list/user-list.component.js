@@ -26,28 +26,6 @@
         var userList = this;
 
         /**
-         * Return the role that this user holds.
-         * @param user - User instance to inspect.
-         * @returns {string} name of the role the user holds.
-         */
-        function getRole(user) {
-
-            var role;
-
-            if (user.superAdmin) {
-                role = "Super admin";
-
-            } else if (user.admin) {
-                role = "Admin";
-
-            } else {
-                role = "General user";
-            }
-
-            return role;
-        }
-
-        /**
          * Handles an error loading the User List.
          * @param error that occurred.
          * @returns rejected promise of error input.
@@ -89,7 +67,7 @@
          */
         function activate() {
 
-            userList.getRole = getRole;
+            userList.getRole = userManagementService.getRole;
             userList.grantAdmin = userManagementService.grantAdmin;
             userList.revokeAdmin = userManagementService.revokeAdmin;
             userList.deleteUser = userManagementService.deleteUser;
