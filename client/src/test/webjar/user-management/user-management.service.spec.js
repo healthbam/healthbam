@@ -64,6 +64,32 @@
                 }
             );
 
+            describe("getRole", function () {
+
+                it("should exist", function () {
+                    expect(userManagementService.getRole).toEqual(jasmine.any(Function));
+                });
+
+                it("should return 'Super admin' when superAdmin is true", function () {
+                    user.superAdmin = true;
+                    user.admin = true;
+                    expect(userManagementService.getRole(user)).toEqual("Super admin");
+                });
+
+                it("should return 'Admin' when superAdmin is false and admin is true", function () {
+                    user.superAdmin = false;
+                    user.admin = true;
+                    expect(userManagementService.getRole(user)).toEqual("Admin");
+                });
+
+                it("should return 'General user' when both superAdmin and admin are false", function () {
+                    user.superAdmin = false;
+                    user.admin = false;
+                    expect(userManagementService.getRole(user)).toEqual("General user");
+                });
+
+            });
+
             describe("grantAdmin", function () {
 
                 it("should exist", function () {

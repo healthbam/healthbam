@@ -1,0 +1,56 @@
+<md-dialog aria-label="User account details dialog">
+
+    <md-dialog-content>
+
+        <div class="md-dialog-content">
+
+            <md-list flex>
+
+                <md-list-item class="md-3-line">
+
+                    <img ng-if="userAccountDetails.user.imageUrl"
+                         ng-src="{{userAccountDetails.user.imageUrl}}"
+                         class="md-avatar"
+                         alt="{{userAccountDetails.user.displayName}}" />
+
+                    <md-icon ng-if="!userAccountDetails.user.imageUrl"
+                             md-font-library="material-icons">
+                        account_circle
+                    </md-icon>
+
+                    <div class="md-list-item-text"
+                         layout="column"
+                         flex>
+
+                        <h3 ng-bind="userAccountDetails.user.displayName"></h3>
+                        <h4 ng-bind="userAccountDetails.user.email"></h4>
+                        <p ng-bind="userAccountDetails.getRole(userAccountDetails.user)"></p>
+
+                    </div>
+
+                </md-list-item>
+            </md-list>
+
+            <md-button ng-if="!userAccountDetails.user.superAdmin"
+                       class="md-warn"
+                       ng-click="userAccountDetails.deleteUser(userAccountDetails.user, $event)"
+                       aria-label="Cancel">
+                Delete Account
+            </md-button>
+
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions>
+
+        <span flex></span>
+
+        <md-button ng-click="userAccountDetails.close()"
+                   aria-label="Cancel">
+            Close
+        </md-button>
+
+    </md-dialog-actions>
+
+</md-dialog>

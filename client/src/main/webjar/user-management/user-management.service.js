@@ -23,6 +23,28 @@
         }
 
         /**
+         * Return the role that this user holds.
+         * @param user - User instance to inspect.
+         * @returns {string} name of the role the user holds.
+         */
+        function getRole(user) {
+
+            var role;
+
+            if (user.superAdmin) {
+                role = "Super admin";
+
+            } else if (user.admin) {
+                role = "Admin";
+
+            } else {
+                role = "General user";
+            }
+
+            return role;
+        }
+
+        /**
          * Handles an error granting the user admin access.
          * @param error that occurred.
          * @returns rejected promise of error input.
@@ -198,6 +220,7 @@
 
         /* Return service instance. */
         return {
+            getRole: getRole,
             grantAdmin: grantAdmin,
             revokeAdmin: revokeAdmin,
             deleteUser: deleteUser
