@@ -6,8 +6,11 @@ import com.codahale.metrics.annotation.Timed;
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
 import com.google.maps.model.GeocodingResult;
+import org.hmhb.config.ConfigService;
+import org.hmhb.config.PublicConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import static java.util.Objects.requireNonNull;
@@ -24,11 +27,18 @@ public class DefaultGoogleGeocodeClient implements GoogleGeocodeClient {
 
     /**
      * An injectable constructor.
+     *
+     * @param configService the {@link ConfigService} for config
      */
-    public DefaultGoogleGeocodeClient() {
+    @Autowired
+    public DefaultGoogleGeocodeClient(
+            @Nonnull ConfigService configService
+    ) {
         LOGGER.debug("constructed");
+        requireNonNull(configService, "configService cannot be null");
+        String googleMapsApiKey = configService.getPublicConfig().getGoogleGeocodeClientId();
         // TODO - I created a different unrestricted key for this; figure out the right way later
-        this.context = new GeoApiContext().setApiKey("AIzaSyCZWf5alpEBF39ae49x1KIaDuMA8JiSa4o");
+        this.context = new GeoApiContext().setApiKey(googleMapsApiKey);
     }
 
     @Timed

@@ -28,6 +28,16 @@ public class PublicConfig {
     }
 
     /**
+     * Returns the Geocode client ID for our client's communication with google
+     * maps API.
+     *
+     * @return the google geocode client ID
+     */
+    public String getGoogleGeocodeClientId() {
+        return environment.getProperty("google.geocode.client.id");
+    }
+
+    /**
      * Returns the Oauth2 client ID for our server's communication with google.
      *
      * @return the google oauth2 client ID
