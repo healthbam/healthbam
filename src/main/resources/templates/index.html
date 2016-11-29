@@ -1,39 +1,41 @@
 <!DOCTYPE html>
 
 <html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
       ng-app="healthBam">
 
     <head>
 
-        <meta charset="UTF-8">
+        <meta charset="UTF-8" />
+
         <title>
             Healthy Mothers, Healthy Babies Coalition of Georgia
         </title>
 
         <base href="/" />
 
-        <link rel="icon" href="/images/favicon.ico">
+        <link rel="icon" href="/images/favicon.ico" />
 
         <link rel="stylesheet"
-              href="https://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic">
+              href="https://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic" />
 
         <link rel="stylesheet"
-              href="https://fonts.googleapis.com/icon?family=Material+Icons">
+              href="https://fonts.googleapis.com/icon?family=Material+Icons" />
 
         <link rel="stylesheet"
-              href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.1/angular-material.min.css">
+              href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.1/angular-material.min.css" />
 
         <link rel="stylesheet"
-              href="/webjars/hmhb-client/1.0-SNAPSHOT/health-bam.all.min.css">
+              href="/webjars/hmhb-client/1.0-SNAPSHOT/health-bam.all.min.css" />
 
     </head>
 
     <body>
 
-        <div ui-view
-             flex
+        <div ui-view=""
+             flex=""
              layout="column"
-             layout-fill>
+             layout-fill="">
         </div>
 
         <!-- Load Library Scripts. -->
@@ -50,7 +52,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/satellizer/0.14.1/satellizer.js"></script>
 
         <!-- TODO: API KEY? -->
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA_WiLcsn_2Z26Jo8eZwPOxl74zSkjhSFQ"></script>
+        <script th:src=" 'https://maps.googleapis.com/maps/api/js?key=' + ${googleMapsApiKey}"></script>
 
         <!-- Load the server's public config. -->
         <script src="/config.js"></script>

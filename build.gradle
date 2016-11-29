@@ -63,6 +63,9 @@ dependencies {
     /* allows us to have the /docs that explains spring-boots' actuators */
     compile("org.springframework.boot:spring-boot-actuator-docs:${project.springBootVersion}")
 
+    /* allows us to use templates instead of only static html */
+    compile("org.springframework.boot:spring-boot-starter-thymeleaf:${project.springBootVersion}");
+
     /* brings in most of what's needed for JPA in spring-boot */
     compile("org.springframework.boot:spring-boot-starter-data-jpa:${project.springBootVersion}")
     compile("org.postgresql:postgresql:9.4-1201-jdbc4")
