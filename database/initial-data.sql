@@ -16,20 +16,6 @@ INSERT INTO hmhb_user (
     CURRENT_TIMESTAMP,
     'initial data script'
 );
-
-INSERT INTO hmhb_user (
-    email,
-    admin,
-    super_admin,
-    created_on,
-    created_by
-) VALUES (
-    'john.ryan.bard@gmail.com',
-    TRUE,
-    FALSE,
-    CURRENT_TIMESTAMP,
-    'initial data script'
-);
 /**********************************
  * End Users.
  **********************************/
