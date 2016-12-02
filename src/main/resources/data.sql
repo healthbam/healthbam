@@ -10,57 +10,23 @@ INSERT INTO hmhb_user (
     created_on,
     created_by
 ) VALUES (
+    'hmhbga@gmail.com',
+    TRUE,
+    TRUE,
+    CURRENT_TIMESTAMP,
+    'initial data script'
+);
+
+INSERT INTO hmhb_user (
+    email,
+    admin,
+    super_admin,
+    created_on,
+    created_by
+) VALUES (
     'john.ryan.bard@gmail.com',
     TRUE,
-    TRUE,
-    CURRENT_TIMESTAMP,
-    'initial data script'
-);
-
-INSERT INTO hmhb_user (
-    email,
-    admin,
-    created_on,
-    created_by
-) VALUES (
-    'mckoon@gmail.com',
-    TRUE,
-    CURRENT_TIMESTAMP,
-    'initial data script'
-);
-
-INSERT INTO hmhb_user (
-    email,
-    admin,
-    created_on,
-    created_by
-) VALUES (
-    'jlgett@gmail.com',
-    TRUE,
-    CURRENT_TIMESTAMP,
-    'initial data script'
-);
-
-INSERT INTO hmhb_user (
-    email,
-    admin,
-    created_on,
-    created_by
-) VALUES (
-    'jslide07@gmail.com',
-    TRUE,
-    CURRENT_TIMESTAMP,
-    'initial data script'
-);
-
-INSERT INTO hmhb_user (
-    email,
-    admin,
-    created_on,
-    created_by
-) VALUES (
-    'contactkaranpratap@gmail.com',
-    TRUE,
+    FALSE,
     CURRENT_TIMESTAMP,
     'initial data script'
 );
