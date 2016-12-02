@@ -36,12 +36,13 @@ public class AuthenticationFilter implements Filter {
     public AuthenticationFilter(
             @Nonnull JwtAuthenticationService authenticationService
     ) {
+        LOGGER.debug("constructed");
         this.authenticationService = requireNonNull(authenticationService, "authenticationService cannot be null");
     }
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        LOGGER.info("init called");
+        LOGGER.debug("init called");
     }
 
     @Override
@@ -50,7 +51,7 @@ public class AuthenticationFilter implements Filter {
             ServletResponse servletResponse,
             FilterChain chain
     ) throws IOException, ServletException {
-        LOGGER.info("doFilter called");
+        LOGGER.debug("doFilter called");
 
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
@@ -68,7 +69,7 @@ public class AuthenticationFilter implements Filter {
 
     @Override
     public void destroy() {
-        LOGGER.info("destroy called");
+        LOGGER.debug("destroy called");
     }
 
 }
