@@ -111,7 +111,7 @@ public class DefaultAuthenticationService implements AuthenticationService {
                 jwtAuthenticationService.generateJwtToken(user)
         );
 
-        LOGGER.info("tokenResponse: {}", tokenResponse);
+        LOGGER.debug("tokenResponse: {}", tokenResponse);
         return tokenResponse;
     }
 
