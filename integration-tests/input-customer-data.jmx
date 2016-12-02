@@ -29,7 +29,7 @@
         <stringProp name="HTTPSampler.port">8080</stringProp>
         <stringProp name="HTTPSampler.connect_timeout"></stringProp>
         <stringProp name="HTTPSampler.response_timeout"></stringProp>
-        <stringProp name="HTTPSampler.protocol"></stringProp>
+        <stringProp name="HTTPSampler.protocol">http</stringProp>
         <stringProp name="HTTPSampler.contentEncoding"></stringProp>
         <stringProp name="HTTPSampler.path"></stringProp>
         <stringProp name="HTTPSampler.concurrentPool">4</stringProp>
@@ -47,7 +47,7 @@
           </elementProp>
           <elementProp name="" elementType="Header">
             <stringProp name="Header.name">Authorization</stringProp>
-            <stringProp name="Header.value">Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiYXVkIjoiaG1oYi5oZXJva3VhcHAuY29tIiwiaXNzIjoiaG1oYi5oZXJva3VhcHAuY29tIiwiYWRtaW4iOnRydWUsImV4cCI6MTQ3Nzg3Njg3MywiaWF0IjoxNDc3MjcyMDczLCJlbWFpbCI6ImpvaG4ucnlhbi5iYXJkQGdtYWlsLmNvbSJ9.hT8L3A0RVswzCbiGOi392tk5Ougwkjs8N1ff5N0J-98</stringProp>
+            <stringProp name="Header.value">Bearer eyJhbGciOiJIUzI1NiJ9.eyJwcm9maWxlVXJsIjoiaHR0cHM6Ly9wbHVzLmdvb2dsZS5jb20vMTE3ODA3NjYyNDE0NDc4MTQxNDQ2IiwibGFzdE5hbWUiOiJCYXJkIiwic3ViIjoiMiIsImRpc3BsYXlOYW1lIjoiUnlhbiBCYXJkIiwicHJlZml4IjpudWxsLCJpc3MiOiJobWhiLmhlcm9rdWFwcC5jb20iLCJhZG1pbiI6dHJ1ZSwic3VmZml4IjpudWxsLCJ1c2VySWQiOjIsImZpcnN0TmFtZSI6IlJ5YW4iLCJhdWQiOiJobWhiLmhlcm9rdWFwcC5jb20iLCJpbWFnZVVybCI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS8tRXlWWGp0ekVON2svQUFBQUFBQUFBQUkvQUFBQUFBQUFBRmMvemtfTE5nb0RUeXcvcGhvdG8uanBnP3N6PTUwIiwibWlkZGxlTmFtZSI6bnVsbCwiZXhwIjoxNDgxMzIyMzQ2LCJpYXQiOjE0ODA3MTc1NDYsImVtYWlsIjoiam9obi5yeWFuLmJhcmRAZ21haWwuY29tIn0.OMorZr7mZUR79pR_DVkotVqj1iZYFPSVfPwjTPaN2vo</stringProp>
           </elementProp>
         </collectionProp>
       </HeaderManager>
@@ -173,6 +173,7 @@ vars.put(&quot;orgId&quot;, responseData.id);
         <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Create Org" enabled="false"/>
         <hashTree>
           <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="createNewOrg" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
               <collectionProp name="Arguments.arguments">
                 <elementProp name="" elementType="HTTPArgument">
@@ -188,7 +189,6 @@ vars.put(&quot;orgId&quot;, responseData.id);
                 </elementProp>
               </collectionProp>
             </elementProp>
-            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
             <stringProp name="HTTPSampler.domain"></stringProp>
             <stringProp name="HTTPSampler.port"></stringProp>
             <stringProp name="HTTPSampler.connect_timeout"></stringProp>
@@ -1113,7 +1113,7 @@ vars.put(&quot;programId&quot;, responseData.id);
             </ModuleController>
             <hashTree/>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Create Leopoldo’s Pizza Napoletana" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Create Leopoldo&apos;s Pizza Napoletana" enabled="true"/>
           <hashTree>
             <UserParameters guiclass="UserParametersGui" testclass="UserParameters" testname="Set Params" enabled="true">
               <collectionProp name="UserParameters.names">
@@ -1134,8 +1134,8 @@ vars.put(&quot;programId&quot;, responseData.id);
                 <stringProp name="-1002474523">progCity</stringProp>
               </collectionProp>
               <collectionProp name="UserParameters.thread_values">
-                <collectionProp name="-318024608">
-                  <stringProp name="1178239847">Leopoldo’s Pizza Napoletana</stringProp>
+                <collectionProp name="-1252217775">
+                  <stringProp name="961788917">Leopoldo&apos;s Pizza Napoletana</stringProp>
                   <stringProp name="3392903">null</stringProp>
                   <stringProp name="-1205670329">102 Adamson Square</stringProp>
                   <stringProp name="2266">GA</stringProp>
@@ -1633,7 +1633,7 @@ vars.put(&quot;programId&quot;, responseData.id);
             </ModuleController>
             <hashTree/>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Create Taziki’s Mediterranean Cafe" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Create Taziki&apos;s Mediterranean Cafe" enabled="true"/>
           <hashTree>
             <UserParameters guiclass="UserParametersGui" testclass="UserParameters" testname="Set Params" enabled="true">
               <collectionProp name="UserParameters.names">
@@ -1654,8 +1654,8 @@ vars.put(&quot;programId&quot;, responseData.id);
                 <stringProp name="-1002474523">progCity</stringProp>
               </collectionProp>
               <collectionProp name="UserParameters.thread_values">
-                <collectionProp name="-526908099">
-                  <stringProp name="1270361970">Taziki’s Mediterranean Cafe</stringProp>
+                <collectionProp name="835294156">
+                  <stringProp name="-580551552">Taziki&apos;s Mediterranean Cafe</stringProp>
                   <stringProp name="3392903">null</stringProp>
                   <stringProp name="1820405993">319 W Ponce de Leon Ave #40</stringProp>
                   <stringProp name="2266">GA</stringProp>
@@ -1889,7 +1889,7 @@ vars.put(&quot;programId&quot;, responseData.id);
           </DebugSampler>
           <hashTree/>
         </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Create Serves All Counties Program" enabled="true"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Create Serves All Counties Program" enabled="false"/>
         <hashTree>
           <DebugSampler guiclass="TestBeanGUI" testclass="DebugSampler" testname="-- End Ryan Org Data --" enabled="true">
             <boolProp name="displayJMeterProperties">false</boolProp>
