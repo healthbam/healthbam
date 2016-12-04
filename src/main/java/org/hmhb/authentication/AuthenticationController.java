@@ -53,7 +53,7 @@ public class AuthenticationController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             path = "/auth/google"
     )
-    public TokenResponse create(
+    public TokenResponse authenticate(
             @RequestBody GoogleOauthAccessRequestInfo request
     ) {
         LOGGER.debug("authenticate called: request={}", request);
