@@ -22,7 +22,7 @@ public class AuthenticationControllerTest {
     }
 
     @Test
-    public void testCreate() throws Exception {
+    public void testAuthenticate() throws Exception {
         GoogleOauthAccessRequestInfo input = new GoogleOauthAccessRequestInfo();
         input.setClientId("test-clientId");
 
@@ -32,7 +32,7 @@ public class AuthenticationControllerTest {
         when(service.authenticate(input)).thenReturn(expected);
 
         /* Make the call. */
-        TokenResponse actual = toTest.create(input);
+        TokenResponse actual = toTest.authenticate(input);
 
         /* Verify the results. */
         assertEquals(expected, actual);
