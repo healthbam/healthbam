@@ -9,8 +9,6 @@ Making an **impact** on the health of Babies And Mothers
 
 ## Getting Started
 
-TODO - put the rest of this README in a development section?
-
 ### Setting Up IDE
 
 If using IntelliJ, "Import Project", and select the build.gradle file.
@@ -32,6 +30,18 @@ Alternative method: you can run this command to generate an "ipr" file that can 
 
 You must have a postgres DB to use when running locally.
 
+That local DBMS must have A healthbam_sql user:
+
+~~~~sql
+CREATE USER healthbam_sql PASSWORD 'changeit';
+~~~~
+
+And A hmhb_db database:
+
+~~~~sql
+CREATE DATABASE hmhb_db WITH OWNER healthbam_sql;
+~~~~
+
 Create a .env file to the top level directory of this project with the PORT to serve and JDBC_DATABASE_URL:
 
 ~~~~shell
@@ -46,100 +56,6 @@ Now you can run the latest code you have built locally with:
 
 ~~~~shell
 heroku local
-~~~~
-
-### Testing In The Console
-
-#### Organization REST Calls
-
-##### Get All Example
-
-~~~~shell
-curl -v \
-     -X GET \
-     'http://localhost:8080/api/organizations'
-~~~~
-
-##### Get Single Example
-
-~~~~shell
-curl -v \
-     -X GET \
-     'http://localhost:8080/api/organizations/1001'
-~~~~
-
-##### Create Example
-
-~~~~shell
-curl -v \
-     -X POST \
-     -H 'Content-Type: application/json' \
-     -d '{ "name": "Test Org", "contactPhone": "800-555-1234", "contactEmail": "test.org@mailinator.com", "websiteUrl": "http://www.test-org.com", "facebookUrl": "http://www.facebook.com/TestOrg" }' \
-     'http://localhost:8080/api/organizations'
-~~~~
-
-##### Update Example
-
-~~~~shell
-curl -v \
-     -X POST \
-     -H 'Content-Type: application/json' \
-     -d '{ "id": 1001, "name": "Updated Test Org", "contactPhone": "800-555-1234", "contactEmail": "test.org@mailinator.com", "websiteUrl": "http://www.test-org.com", "facebookUrl": "http://www.facebook.com/TestOrg" }' \
-     'http://localhost:8080/api/organizations/1001'
-~~~~
-
-##### Delete Example
-
-~~~~shell
-curl -v \
-     -X DELETE \
-     'http://localhost:8080/api/organizations/1001'
-~~~~
-
-#### Program REST Calls
-
-##### Get All Example
-
-~~~~shell
-curl -v \
-     -X GET \
-     'http://localhost:8080/api/programs'
-~~~~
-
-##### Get Single Example
-
-~~~~shell
-curl -v \
-     -X GET \
-     'http://localhost:8080/api/programs/1001'
-~~~~
-
-##### Create Example
-
-~~~~shell
-curl -v \
-     -X POST \
-     -H 'Content-Type: application/json' \
-     -d '{ "name": "Test Program", "organization": { "id": 1 }, "startYear": 2005, "streetAddress": "456 Peachtree St.", "state": "GA", "zipCode": "30332" }' \
-     'http://localhost:8080/api/programs'
-~~~~
-
-##### Update Example
-
-~~~~shell
-curl -v \
-     -X POST \
-     -H 'Content-Type: application/json' \
-     -d '{ "id": 1001, "name": "Updated Test Program", "organization": { "id": 1 }, "startYear": 2005, "streetAddress": "456 Peachtree St.", "state": "GA", "zipCode": "30332" }' \
-     'http://localhost:8080/api/programs/1001'
-~~~~
-
-##### Delete Example
-
-~~~~shell
-curl -v \
-     -X DELETE \
-     'http://localhost:8080/api/programs/1001'
 ~~~~
 
 ### Perks Offered By Spring Boot
