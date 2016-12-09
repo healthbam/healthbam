@@ -6,5 +6,5 @@ CREATE DATABASE hmhb_db WITH OWNER healthbam_sql;
 \i database/initial-schema.sql
 \i database/initial-data.sql
 
-GRANT SELECT ON ALL SEQUENCES IN SCHEMA public TO healthbam_sql;
-GRANT SELECT ON ALL TABLES IN SCHEMA public TO healthbam_sql;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO healthbam_sql;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO healthbam_sql;
