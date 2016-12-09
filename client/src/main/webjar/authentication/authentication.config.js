@@ -4,12 +4,15 @@
     var module = angular.module("healthBam.authentication");
 
     /**
-     * Returns the protocol, host, and port part of our single-page-app's URL.
+     * Generates the Google OAuth callback redirect URI.
      *
      * Right now, this has to match what the server is sending to google, so it
-     * has to be explicit with the port.
+     * is passed to the server to use.
+     *
+     * This must also be configured in:
+     * https://console.developers.google.com/apis/credentials
      */
-    function getUrlPrefix() {
+    function getRedirectUri() {
         /* location.protocol includes the colon */
         var urlPrefix = location.protocol + "//" + location.hostname,
             port = location.port;
@@ -25,7 +28,7 @@
             }
         }
 
-        return urlPrefix + ":" + port + "/";
+        return urlPrefix + ":" + port + "/views/oauth-callback";
     }
 
     /**
@@ -35,7 +38,7 @@
         getConfig,
         $authProvider
     ) {
-        var redirectUri = getUrlPrefix() + "views/oauth-callback";
+        var redirectUri = getRedirectUri();
 
         window.console.log("Registering google oauth with: redirectUri = ", redirectUri);
 
@@ -51,8 +54,7 @@
                     "email"
                 ],
                 url: "/auth/google", /* posts to our server */
-                /* TODO: get the redirectUrl from the server */
-                redirectUri: redirectUri, /* redirects to the angular app; this has to match what the server uses */
+                redirectUri: redirectUri,
                 clientId: getConfig().googleOauthClientId
             }
         );

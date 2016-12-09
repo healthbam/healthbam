@@ -37,7 +37,6 @@ public class DefaultGoogleGeocodeClient implements GoogleGeocodeClient {
         LOGGER.debug("constructed");
         requireNonNull(configService, "configService cannot be null");
         String googleMapsApiKey = configService.getPublicConfig().getGoogleGeocodeClientId();
-        // TODO - I created a different unrestricted key for this; figure out the right way later
         this.context = new GeoApiContext().setApiKey(googleMapsApiKey);
     }
 
