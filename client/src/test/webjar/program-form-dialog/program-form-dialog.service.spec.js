@@ -74,7 +74,7 @@
                     );
 
                     dialogOptions = {
-                        templateUrl: "program-form-dialog.html",
+                        templateUrl: "/program-form-dialog.html",
                         controller: "ProgramFormDialogController",
                         controllerAs: "programFormDialog",
                         targetEvent: $event,

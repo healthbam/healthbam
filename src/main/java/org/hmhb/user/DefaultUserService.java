@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import com.codahale.metrics.annotation.Timed;
-import com.google.api.services.plus.model.Person;
 import org.apache.commons.lang3.StringUtils;
 import org.hmhb.audit.AuditHelper;
 import org.hmhb.authentication.JwtAuthenticationService;
@@ -21,6 +20,7 @@ import org.hmhb.exception.user.UserNonAdminCannotEscalateToAdminException;
 import org.hmhb.exception.user.UserNotAllowedToAccessOtherProfileException;
 import org.hmhb.exception.user.UserNotFoundException;
 import org.hmhb.exception.user.UserSuperAdminCannotBeModifiedByOthers;
+import org.hmhb.oauth.GoogleUserInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,7 +84,7 @@ public class DefaultUserService implements UserService {
     @Override
     public HmhbUser saveWithGoogleData(
             @Nonnull String email,
-            @Nonnull Person profile
+            @Nonnull GoogleUserInfo profile
     ) {
         LOGGER.debug("saveWithGoogleData called: email={}, profile={}", email, profile);
         requireNonNull(email, "email cannot be null");
@@ -106,14 +106,10 @@ public class DefaultUserService implements UserService {
             user.setUpdatedOn(auditHelper.getCurrentTime());
         }
 
-        user.setProfileUrl(profile.getUrl());
-        user.setDisplayName(profile.getDisplayName());
-        user.setImageUrl(profile.getImage().getUrl());
-        user.setLastName(profile.getName().getFamilyName());
-        user.setFirstName(profile.getName().getGivenName());
-        user.setMiddleName(profile.getName().getMiddleName());
-        user.setPrefix(profile.getName().getHonorificPrefix());
-        user.setSuffix(profile.getName().getHonorificSuffix());
+        user.setDisplayName(profile.getName());
+        user.setImageUrl(profile.getPicture());
+        user.setLastName(profile.getFamilyName());
+        user.setFirstName(profile.getGivenName());
 
         LOGGER.debug("updating user info: user={}", user);
 

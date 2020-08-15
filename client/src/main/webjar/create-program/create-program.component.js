@@ -51,7 +51,7 @@
     module.component(
         "healthBamCreateProgram",
         {
-            templateUrl: "create-program.html",
+            templateUrl: "/create-program.html",
             controller: CreateProgramController,
             controllerAs: "createProgram"
         }

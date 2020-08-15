@@ -26,7 +26,7 @@
         function viewAccount($event) {
 
             var dialogOptions = {
-                templateUrl: "user-account-details.html",
+                templateUrl: "/user-account-details.html",
                 controller: "UserAccountDetailsController",
                 controllerAs: "userAccountDetails",
                 targetEvent: $event,
@@ -67,7 +67,7 @@
     module.component(
         "healthBamUserAccountActions",
         {
-            templateUrl: "user-account-actions.html",
+            templateUrl: "/user-account-actions.html",
             controller: UserAccountActionsController,
             controllerAs: "userAccountActions"
         }

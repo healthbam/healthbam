@@ -39,14 +39,6 @@ public class HmhbUser {
 
     private String firstName;
 
-    private String middleName;
-
-    private String prefix;
-
-    private String suffix;
-
-    private String profileUrl;
-
     @NotNull
     private Date createdOn;
 
@@ -134,38 +126,6 @@ public class HmhbUser {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
-    }
-
-    public String getMiddleName() {
-        return middleName;
-    }
-
-    public void setMiddleName(String middleName) {
-        this.middleName = middleName;
-    }
-
-    public String getPrefix() {
-        return prefix;
-    }
-
-    public void setPrefix(String prefix) {
-        this.prefix = prefix;
-    }
-
-    public String getSuffix() {
-        return suffix;
-    }
-
-    public void setSuffix(String suffix) {
-        this.suffix = suffix;
-    }
-
-    public String getProfileUrl() {
-        return profileUrl;
-    }
-
-    public void setProfileUrl(String profileUrl) {
-        this.profileUrl = profileUrl;
     }
 
     public Date getCreatedOn() {

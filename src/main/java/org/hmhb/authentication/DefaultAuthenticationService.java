@@ -104,7 +104,7 @@ public class DefaultAuthenticationService implements AuthenticationService {
 
         HmhbUser user = userService.saveWithGoogleData(
                 email,
-                googleResponseData.getGooglePlusProfile()
+                googleResponseData.getGoogleUserInfo()
         );
 
         TokenResponse tokenResponse = new TokenResponse(

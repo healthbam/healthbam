@@ -4,7 +4,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
-import com.google.api.services.plus.model.Person;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -18,28 +17,28 @@ import static java.util.Objects.requireNonNull;
 public class GoogleResponseData {
 
     private final GoogleTokenResponse googleOauthToken;
-    private final Person googlePlusProfile;
+    private final GoogleUserInfo googleUserInfo;
 
     /**
      * Constructs a {@link GoogleResponseData}.
      *
      * @param googleOauthToken google's oauth token response
-     * @param googlePlusProfile google's g+ profile response
+     * @param googleUserInfo google's user info response
      */
     public GoogleResponseData(
             @Nonnull GoogleTokenResponse googleOauthToken,
-            @Nonnull Person googlePlusProfile
+            @Nonnull GoogleUserInfo googleUserInfo
     ) {
         this.googleOauthToken = requireNonNull(googleOauthToken, "googleOauthToken cannot be null");
-        this.googlePlusProfile = requireNonNull(googlePlusProfile, "googlePlusProfile cannot be null");
+        this.googleUserInfo = requireNonNull(googleUserInfo, "googleUserInfo cannot be null");
     }
 
     public GoogleTokenResponse getGoogleOauthToken() {
         return googleOauthToken;
     }
 
-    public Person getGooglePlusProfile() {
-        return googlePlusProfile;
+    public GoogleUserInfo getGoogleUserInfo() {
+        return googleUserInfo;
     }
 
     @Override

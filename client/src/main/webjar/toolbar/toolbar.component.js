@@ -47,7 +47,7 @@
     module.component(
         "healthBamToolbar",
         {
-            templateUrl: "toolbar.html",
+            templateUrl: "/toolbar.html",
             controller: ToolbarController,
             controllerAs: "toolbar"
         }

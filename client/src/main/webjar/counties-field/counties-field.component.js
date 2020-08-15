@@ -51,7 +51,7 @@
     module.component(
         "healthBamCountiesField",
         {
-            templateUrl: "counties-field.html",
+            templateUrl: "/counties-field.html",
             controller: CountiesFieldController,
             controllerAs: "countiesField",
             bindings: {

@@ -3,25 +3,29 @@ package org.hmhb.oauth;
 import javax.annotation.Nonnull;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeTokenRequest;
-import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
-import com.google.api.client.http.HttpRequest;
-import com.google.api.client.http.HttpRequestInitializer;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.services.plus.Plus;
-import com.google.api.services.plus.model.Person;
 import org.hmhb.exception.oauth.GoogleOauthException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestOperations;
 
 /**
  * Default implementation of {@link GoogleOauthService}.
  */
 @Service
 public class DefaultGoogleOauthService implements GoogleOauthService {
+
+    private final RestOperations restOperations;
+
+    @Autowired
+    public DefaultGoogleOauthService(@Nonnull RestOperations restOperations) {
+        this.restOperations = restOperations;
+    }
 
     @Override
     public GoogleResponseData getUserDataFromGoogle(
@@ -42,31 +46,21 @@ public class DefaultGoogleOauthService implements GoogleOauthService {
                     redirectUri
             ).execute();
 
-            GoogleCredential credential = new GoogleCredential()
-                    .setAccessToken(
-                            oauthResponse.getAccessToken()
-                    );
+            GoogleWellKnownResponse wellKnown = restOperations.getForObject(
+                    "https://accounts.google.com/.well-known/openid-configuration",
+                    GoogleWellKnownResponse.class
+            );
 
-            Plus plus = new Plus.Builder(
-                    new NetHttpTransport(),
-                    new JacksonFactory(),
-                    new HttpRequestInitializer() {
-                        @Override
-                        public void initialize(HttpRequest request) throws IOException {
-                            // empty
-                        }
-                    }
-            ).setHttpRequestInitializer(
-                    credential
-            ).build();
-
-            Person gPlusResponse = plus.people()
-                    .get("me")
-                    .execute();
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.set("Authorization", "Bearer " + oauthResponse.getAccessToken());
+            HttpEntity<String> entity = new HttpEntity<>(headers);
+            // getUserinfoEndpoint is currently: https://openidconnect.googleapis.com/v1/userinfo
+            ResponseEntity<GoogleUserInfo> result = restOperations.exchange(wellKnown.getUserinfoEndpoint(), HttpMethod.GET, entity, GoogleUserInfo.class);
 
             return new GoogleResponseData(
                     oauthResponse,
-                    gPlusResponse
+                    result.getBody()
             );
 
         } catch (IOException e) {

@@ -24,8 +24,8 @@ allprojects {
     apply plugin: 'idea'
     apply plugin: 'eclipse'
 
-    sourceCompatibility = 1.7
-    targetCompatibility = 1.7
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
 
     group = 'org.hmhb'
     version = '1.0-SNAPSHOT'
@@ -96,9 +96,7 @@ dependencies {
     compile("org.eclipse.persistence:org.eclipse.persistence.moxy:2.6.4")
 
     /* libraries to call into google for user information */
-    compile("com.google.api-client:google-api-client:1.22.0")
-    compile("com.google.apis:google-api-services-plus:v1-rev455-1.22.0")
-    compile("com.google.apis:google-api-services-gmail:v1-rev48-1.22.0")
+    compile("com.google.api-client:google-api-client:1.23.0")
 
     /* libraries for jwt token generation and verification */
     compile("io.jsonwebtoken:jjwt:0.7.0")

@@ -137,7 +137,7 @@
                         };
 
                         dialogOptions = {
-                            templateUrl: "user-account-details.html",
+                            templateUrl: "/user-account-details.html",
                             controller: "UserAccountDetailsController",
                             controllerAs: "userAccountDetails",
                             targetEvent: event,

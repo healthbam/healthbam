@@ -219,22 +219,22 @@ public class DefaultCsvService implements CsvService {
             toReturn.append(handleString(user.getFirstName()));
             toReturn.append(',');
 
-            toReturn.append(handleString(user.getMiddleName()));
+            // removed middleName, but kept old csv format
             toReturn.append(',');
 
             toReturn.append(handleString(user.getLastName()));
             toReturn.append(',');
 
-            toReturn.append(handleString(user.getPrefix()));
+            // removed prefix, but kept old csv format
             toReturn.append(',');
 
-            toReturn.append(handleString(user.getSuffix()));
+            // removed suffix, but kept old csv format
             toReturn.append(',');
 
             toReturn.append(handleString(user.getImageUrl()));
             toReturn.append(',');
 
-            toReturn.append(handleString(user.getProfileUrl()));
+            // removed profileUrl, but kept old csv format
             toReturn.append('\n');
 
         }

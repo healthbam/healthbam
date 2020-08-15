@@ -59,7 +59,7 @@
     module.component(
         "healthBamMap",
         {
-            templateUrl: "map.html",
+            templateUrl: "/map.html",
             controller: MapController,
             controllerAs: "map"
         }

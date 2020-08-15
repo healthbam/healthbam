@@ -97,7 +97,7 @@
     module.component(
         "healthBamReportList",
         {
-            templateUrl: "report-list.html",
+            templateUrl: "/report-list.html",
             controller: ReportListController,
             controllerAs: "reportList"
         }

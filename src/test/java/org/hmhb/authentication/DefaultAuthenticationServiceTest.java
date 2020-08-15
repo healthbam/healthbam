@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
-import com.google.api.services.plus.model.Person;
 import org.hmhb.config.ConfigService;
 import org.hmhb.config.PrivateConfig;
 import org.hmhb.config.PublicConfig;
@@ -12,6 +11,7 @@ import org.hmhb.exception.authentication.ClientIdMismatchException;
 import org.hmhb.exception.oauth.GoogleOauthException;
 import org.hmhb.oauth.GoogleOauthService;
 import org.hmhb.oauth.GoogleResponseData;
+import org.hmhb.oauth.GoogleUserInfo;
 import org.hmhb.user.HmhbUser;
 import org.hmhb.user.UserService;
 import org.junit.Before;
@@ -59,10 +59,18 @@ public class DefaultAuthenticationServiceTest {
         GoogleTokenResponse googleTokenResponse = mock(GoogleTokenResponse.class);
         GoogleIdToken googleIdToken = mock(GoogleIdToken.class);
         GoogleIdToken.Payload payload = mock(GoogleIdToken.Payload.class);
-        Person gPlusProfile = new Person();
         GoogleResponseData googleData = new GoogleResponseData(
                 googleTokenResponse,
-                gPlusProfile
+                new GoogleUserInfo(
+                        "sub",
+                        "name",
+                        "givenName",
+                        "familyName",
+                        "picture",
+                        USER_EMAIL,
+                        true,
+                        "en"
+                )
         );
 
         Environment environment = mock(Environment.class);
@@ -117,7 +125,16 @@ public class DefaultAuthenticationServiceTest {
         GoogleTokenResponse googleTokenResponse = mock(GoogleTokenResponse.class);
         GoogleResponseData googleData = new GoogleResponseData(
                 googleTokenResponse,
-                new Person()
+                new GoogleUserInfo(
+                        "sub",
+                        "name",
+                        "givenName",
+                        "familyName",
+                        "picture",
+                        USER_EMAIL,
+                        true,
+                        "en"
+                )
         );
 
         /* Train the mocks. */
@@ -149,7 +166,7 @@ public class DefaultAuthenticationServiceTest {
         user.setAdmin(true);
 
         /* Finish training the mocks. */
-        when(userService.saveWithGoogleData(eq(USER_EMAIL), any(Person.class))).thenReturn(user);
+        when(userService.saveWithGoogleData(eq(USER_EMAIL), any(GoogleUserInfo.class))).thenReturn(user);
         when(jwtAuthService.generateJwtToken(user)).thenReturn(TOKEN);
 
         /* Make the call. */

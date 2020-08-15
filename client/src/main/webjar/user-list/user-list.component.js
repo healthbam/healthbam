@@ -102,7 +102,7 @@
     module.component(
         "healthBamUserList",
         {
-            templateUrl: "user-list.html",
+            templateUrl: "/user-list.html",
             controller: UserListController,
             controllerAs: "userList"
         }

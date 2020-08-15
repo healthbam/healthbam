@@ -62,12 +62,8 @@ public class DefaultCsvServiceTest {
         user.setAdmin(true);
         user.setDisplayName(prefix + "display-name");
         user.setFirstName(prefix + "first-name");
-        user.setMiddleName(prefix + "middle-name");
         user.setLastName(prefix + "last-name");
-        user.setPrefix(prefix + "prefix");
-        user.setSuffix(prefix + "suffix");
         user.setImageUrl(prefix + "image-url");
-        user.setProfileUrl(prefix + "profile-url");
 
         return user;
     }
@@ -463,8 +459,8 @@ public class DefaultCsvServiceTest {
         assertEquals(
                 USER_HEADER
                         + "first-email,true,true,first-display-name,"
-                        + "first-first-name,first-middle-name,first-last-name,first-prefix,first-suffix,"
-                        + "first-image-url,first-profile-url\n",
+                        + "first-first-name,,first-last-name,,,"
+                        + "first-image-url,\n",
                 actual
         );
     }
@@ -479,12 +475,12 @@ public class DefaultCsvServiceTest {
                 USER_HEADER
                         /* first */
                         + "first-email,true,true,first-display-name,"
-                        + "first-first-name,first-middle-name,first-last-name,first-prefix,first-suffix,"
-                        + "first-image-url,first-profile-url\n"
+                        + "first-first-name,,first-last-name,,,"
+                        + "first-image-url,\n"
                         /* second */
                         + "second-email,false,false,second-display-name,"
-                        + "second-first-name,second-middle-name,second-last-name,second-prefix,second-suffix,"
-                        + "second-image-url,second-profile-url\n",
+                        + "second-first-name,,second-last-name,,,"
+                        + "second-image-url,\n",
                 actual
         );
     }

@@ -76,12 +76,8 @@ public class DefaultJwtAuthenticationService implements JwtAuthenticationService
         claims.put("userId", user.getId());
         claims.put("displayName", user.getDisplayName());
         claims.put("imageUrl", user.getImageUrl());
-        claims.put("profileUrl", user.getProfileUrl());
         claims.put("firstName", user.getFirstName());
         claims.put("lastName", user.getLastName());
-        claims.put("middleName", user.getMiddleName());
-        claims.put("prefix", user.getPrefix());
-        claims.put("suffix", user.getSuffix());
 
         String domainId = getDomain();
         String secret = getSecret();
@@ -176,12 +172,8 @@ public class DefaultJwtAuthenticationService implements JwtAuthenticationService
         Long userId = claims.get("userId", Integer.class).longValue();
         String displayName = claims.get("displayName", String.class);
         String imageUrl = claims.get("imageUrl", String.class);
-        String profileUrl = claims.get("profileUrl", String.class);
         String firstName = claims.get("firstName", String.class);
         String lastName = claims.get("lastName", String.class);
-        String middleName = claims.get("middleName", String.class);
-        String prefix = claims.get("prefix", String.class);
-        String suffix = claims.get("suffix", String.class);
 
         Date now = new Date();
 
@@ -215,12 +207,8 @@ public class DefaultJwtAuthenticationService implements JwtAuthenticationService
         user.setId(userId);
         user.setDisplayName(displayName);
         user.setImageUrl(imageUrl);
-        user.setProfileUrl(profileUrl);
         user.setFirstName(firstName);
         user.setLastName(lastName);
-        user.setMiddleName(middleName);
-        user.setPrefix(prefix);
-        user.setSuffix(suffix);
 
         request.setAttribute("loggedInUser", user);
     }

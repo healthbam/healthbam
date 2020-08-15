@@ -33,7 +33,7 @@
     module.component(
         "healthBamMain",
         {
-            templateUrl: "main.html",
+            templateUrl: "/main.html",
             controller: MainController,
             controllerAs: "main"
         }

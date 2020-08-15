@@ -4,7 +4,7 @@ import javax.annotation.Nonnull;
 
 import java.util.List;
 
-import com.google.api.services.plus.model.Person;
+import org.hmhb.oauth.GoogleUserInfo;
 
 /**
  * Service to create and retrieve {@link HmhbUser}s.
@@ -21,7 +21,7 @@ public interface UserService {
      */
     HmhbUser saveWithGoogleData(
             @Nonnull String email,
-            @Nonnull Person profile
+            @Nonnull GoogleUserInfo profile
     );
 
     /**
