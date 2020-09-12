@@ -91,7 +91,7 @@
     module.component(
         "healthBamNavigationList",
         {
-            templateUrl: "navigation-list.html",
+            templateUrl: "/navigation-list.html",
             controller: NavigationListController,
             controllerAs: "navigationList"
         }

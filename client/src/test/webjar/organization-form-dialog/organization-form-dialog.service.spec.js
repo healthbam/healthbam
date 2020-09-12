@@ -68,7 +68,7 @@
                     organization = new Organization();
 
                     dialogOptions = {
-                        templateUrl: "organization-form-dialog.html",
+                        templateUrl: "/organization-form-dialog.html",
                         controller: "OrganizationFormDialogController",
                         controllerAs: "organizationFormDialog",
                         targetEvent: $event,

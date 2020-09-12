@@ -47,7 +47,7 @@
     module.component(
         "healthBamSidenav",
         {
-            templateUrl: "sidenav.html",
+            templateUrl: "/sidenav.html",
             controller: SidenavController,
             controllerAs: "sidenav"
         }

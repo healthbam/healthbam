@@ -150,7 +150,7 @@
     module.component(
         "healthBamMapQueryForm",
         {
-            templateUrl: "map-query-form.html",
+            templateUrl: "/map-query-form.html",
             controller: MapQueryFormController,
             controllerAs: "mapQueryForm"
         }

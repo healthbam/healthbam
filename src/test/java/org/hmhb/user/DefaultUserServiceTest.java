@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import com.google.api.services.plus.model.Person;
 import org.hmhb.audit.AuditHelper;
 import org.hmhb.authentication.JwtAuthenticationService;
 import org.hmhb.authorization.AuthorizationService;
@@ -20,6 +19,7 @@ import org.hmhb.exception.user.UserNonAdminCannotEscalateToAdminException;
 import org.hmhb.exception.user.UserNotAllowedToAccessOtherProfileException;
 import org.hmhb.exception.user.UserNotFoundException;
 import org.hmhb.exception.user.UserSuperAdminCannotBeModifiedByOthers;
+import org.hmhb.oauth.GoogleUserInfo;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.env.Environment;
@@ -98,7 +98,6 @@ public class DefaultUserServiceTest {
         userInDb.setFirstName(FIRST_NAME + "-old");
         userInDb.setLastName(LAST_NAME + "-old");
         userInDb.setImageUrl(IMAGE_URL + "-old");
-        userInDb.setProfileUrl(PROFILE_URL + "-old");
         userInDb.setCreatedBy("system-generated");
         userInDb.setCreatedOn(BEFORE);
 
@@ -110,24 +109,21 @@ public class DefaultUserServiceTest {
         expected.setFirstName(FIRST_NAME);
         expected.setLastName(LAST_NAME);
         expected.setImageUrl(IMAGE_URL);
-        expected.setProfileUrl(PROFILE_URL);
         expected.setCreatedBy("system-generated");
         expected.setCreatedOn(BEFORE);
         expected.setUpdatedBy("system-updated-from-google-login");
         expected.setUpdatedOn(NOW);
 
-        Person.Image image = new Person.Image();
-        image.setUrl(IMAGE_URL);
-
-        Person.Name name = new Person.Name();
-        name.setFamilyName(LAST_NAME);
-        name.setGivenName(FIRST_NAME);
-
-        Person gPlusProfile = new Person();
-        gPlusProfile.setUrl(PROFILE_URL);
-        gPlusProfile.setDisplayName(DISPLAY_NAME);
-        gPlusProfile.setImage(image);
-        gPlusProfile.setName(name);
+        GoogleUserInfo googleUserInfo = new GoogleUserInfo(
+                "sub",
+                DISPLAY_NAME,
+                FIRST_NAME,
+                LAST_NAME,
+                IMAGE_URL,
+                EMAIL,
+                true,
+                "en"
+        );
 
         /* Train the mocks. */
         when(auditHelper.getCurrentTime()).thenReturn(NOW);
@@ -135,7 +131,7 @@ public class DefaultUserServiceTest {
         when(dao.save(expected)).thenReturn(expected);
 
         /* Make the call. */
-        HmhbUser actual = toTest.saveWithGoogleData(EMAIL, gPlusProfile);
+        HmhbUser actual = toTest.saveWithGoogleData(EMAIL, googleUserInfo);
 
         /* Verify the results. */
         assertEquals(userInDb, actual);
@@ -150,22 +146,19 @@ public class DefaultUserServiceTest {
         expected.setFirstName(FIRST_NAME);
         expected.setLastName(LAST_NAME);
         expected.setImageUrl(IMAGE_URL);
-        expected.setProfileUrl(PROFILE_URL);
         expected.setCreatedBy("system-generated");
         expected.setCreatedOn(NOW);
 
-        Person.Image image = new Person.Image();
-        image.setUrl(IMAGE_URL);
-
-        Person.Name name = new Person.Name();
-        name.setFamilyName(LAST_NAME);
-        name.setGivenName(FIRST_NAME);
-
-        Person gPlusProfile = new Person();
-        gPlusProfile.setUrl(PROFILE_URL);
-        gPlusProfile.setDisplayName(DISPLAY_NAME);
-        gPlusProfile.setImage(image);
-        gPlusProfile.setName(name);
+        GoogleUserInfo googleUserInfo = new GoogleUserInfo(
+                "sub",
+                DISPLAY_NAME,
+                FIRST_NAME,
+                LAST_NAME,
+                IMAGE_URL,
+                EMAIL,
+                true,
+                "en"
+        );
 
         /* Train the mocks. */
         when(auditHelper.getCurrentTime()).thenReturn(NOW);
@@ -173,7 +166,7 @@ public class DefaultUserServiceTest {
         when(dao.save(expected)).thenReturn(expected);
 
         /* Make the call. */
-        HmhbUser actual = toTest.saveWithGoogleData(EMAIL, gPlusProfile);
+        HmhbUser actual = toTest.saveWithGoogleData(EMAIL, googleUserInfo);
 
         /* Verify the results. */
         assertEquals(expected, actual);

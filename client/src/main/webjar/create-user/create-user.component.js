@@ -64,7 +64,7 @@
     module.component(
         "healthBamCreateUser",
         {
-            templateUrl: "create-user.html",
+            templateUrl: "/create-user.html",
             controller: CreateUserController,
             controllerAs: "createUser"
         }

@@ -34,7 +34,7 @@
     module.component(
         "healthBamProgramCard",
         {
-            templateUrl: "program-card.html",
+            templateUrl: "/program-card.html",
             controller: ProgramCardController,
             controllerAs: "programCard",
             bindings: {

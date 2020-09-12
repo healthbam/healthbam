@@ -264,7 +264,7 @@
     module.component(
         "healthBamProgramDetails",
         {
-            templateUrl: "program-details.html",
+            templateUrl: "/program-details.html",
             controller: ProgramDetailsController,
             controllerAs: "programDetails"
         }

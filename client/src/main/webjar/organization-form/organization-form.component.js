@@ -38,7 +38,7 @@
     module.component(
         "healthBamOrganizationForm",
         {
-            templateUrl: "organization-form.html",
+            templateUrl: "/organization-form.html",
             controller: OrganizationFormController,
             controllerAs: "organizationForm",
             bindings: {

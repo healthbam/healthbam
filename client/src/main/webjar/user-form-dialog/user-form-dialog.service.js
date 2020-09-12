@@ -28,7 +28,7 @@
         ) {
 
             var dialogOptions = {
-                templateUrl: "user-form-dialog.html",
+                templateUrl: "/user-form-dialog.html",
                 controller: "UserFormDialogController",
                 controllerAs: "userFormDialog",
                 targetEvent: $event,

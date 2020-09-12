@@ -248,70 +248,42 @@
 
     gulp.task(
         "copySource",
-        [
-            "cleanDestination"
-        ],
-        copySource
+        gulp.series(cleanDestination, copySource)
     );
 
     gulp.task(
         "test",
-        [
-            "cleanDestination"
-        ],
-        test
+        gulp.series(cleanDestination, test)
     );
 
     gulp.task(
         "lint",
-        [
-            "cleanDestination"
-        ],
-        lint
+        gulp.series(cleanDestination, lint)
     );
 
     gulp.task(
         "processStyles",
-        [
-            "cleanDestination"
-        ],
-        processStyles
+        gulp.series(cleanDestination, processStyles)
     );
 
     gulp.task(
         "processHtml",
-        [
-            "cleanDestination"
-        ],
-        processHtml
+        gulp.series(cleanDestination, processHtml)
     );
 
     gulp.task(
         "processScripts",
-        [
-            "copySource",
-            "processHtml"
-        ],
-        processScripts
+        gulp.series(copySource, processHtml, processScripts)
     );
 
     gulp.task(
         "build",
-        [
-            "copySource",
-            "lint",
-            "test",
-            "processStyles",
-            "processHtml",
-            "processScripts"
-        ]
+        gulp.series(copySource, lint, test, processStyles, processHtml, processScripts)
     );
 
     gulp.task(
         "default",
-        [
-            "build"
-        ]
+        gulp.series("build")
     );
 
     /* Set up all configs. */

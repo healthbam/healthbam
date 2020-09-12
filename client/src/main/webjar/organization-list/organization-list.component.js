@@ -90,7 +90,7 @@
     module.component(
         "healthBamOrganizationList",
         {
-            templateUrl: "organization-list.html",
+            templateUrl: "/organization-list.html",
             controller: OrganizationListController,
             controllerAs: "organizationList"
         }
